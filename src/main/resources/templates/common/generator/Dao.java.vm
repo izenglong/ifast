@@ -1,0 +1,15 @@
+package ${package}.dao;
+
+import ${package}.domain.${className}DO;
+import ${package}.base.BaseDao;
+
+/**
+ * 
+ * <pre>
+ * ${comments}
+ * </pre>
+ * <small> ${datetime} | ${author}</small>
+ */
+public interface ${className}Dao extends BaseDao<${className}DO> {
+
+}

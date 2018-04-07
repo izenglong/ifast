@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ifast.sys.dao.MenuDao">
+
+	<select id="listMenuByUserId" resultType="com.ifast.sys.domain.MenuDO">
+		select distinct
+		m.id , parent_id, name, url,
+		perms,`type`,icon,order_num,gmt_create, gmt_modified
+		from sys_menu m
+		left
+		join sys_role_menu rm on m.id = rm.menu_id left join
+		sys_user_role ur
+		on rm.role_id =ur.role_id where ur.user_id = #{id}
+		and
+		m.type in(0,1)
+		order by
+		m.order_num
+	</select>
+
+	<select id="listUserPerms" resultType="string">
+		select distinct m.perms
+		from sys_menu m left join
+		sys_role_menu rm on m.id = rm.menu_id
+		left join sys_user_role ur
+		on rm.role_id = ur.role_id 
+		where ur.user_id = #{id}
+	</select>
+</mapper>

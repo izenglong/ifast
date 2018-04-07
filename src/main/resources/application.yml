@@ -1,0 +1,41 @@
+banner:
+  location: config/banner.txt
+  encoding: utf-8
+server:
+  context-path: /
+  session-timeout: 1800
+  tomcat:
+    max-threads: 1000
+    min-spare-threads: 30
+  port: 8088
+  uri-encoding: utf-8
+security:
+  basic:
+    enabled: false
+spring:
+  thymeleaf:
+    mode: LEGACYHTML5
+    cache: false
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  profiles:
+    active: dev
+  http:
+    multipart:
+      max-file-size: 30Mb
+      max-request-size: 30Mb
+  devtools:
+    restart:
+      enabled: true
+mybatis-plus:
+  mapper-locations: classpath:/mapper/**/*Mapper.xml
+  typeAliasesPackage: com.ifast.**.domain
+  global-config:
+    id-type: 0
+    field-strategy: 2
+    db-column-underline: true
+    capital-mode: true
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false

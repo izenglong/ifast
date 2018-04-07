@@ -1,0 +1,15 @@
+package ${package}.service;
+
+import ${package}.domain.${className}DO;
+import ${package}.base.CoreService;
+
+/**
+ * 
+ * <pre>
+ * ${comments}
+ * </pre>
+ * <small> ${datetime} | ${author}</small>
+ */
+public interface ${className}Service extends CoreService<${className}DO> {
+    
+}

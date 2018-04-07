@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ifast.sys.dao.DeptDao">
+
+	
+	<select id="listParentDept" resultType="long">
+		select DISTINCT parent_id from sys_dept
+	</select>
+
+    <select id="getDeptUserNumber" resultType="int">
+		select count(*) from sys_user where id = #{value}
+	</select>
+</mapper>
