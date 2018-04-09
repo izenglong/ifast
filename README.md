@@ -1,8 +1,8 @@
 # 简介
-IFast版本是一款基于Spring Boot + Mybatis + Mybatis Plus搭建的快速开发平台。IFast集成了代码生成器，具有高效的开发效率。以Spring Boot为基础框架，Mybatis plus为数据访问层， Apache Shiro为权限授权层，Ehcahe对常用数据进行缓存，基于Bootstrap构建的Admin LTE作为前端框架。
+IFast是一款基于Spring Boot + Mybatis + Mybatis Plus搭建的快速开发平台。IFast集成了代码生成器，具有高效的开发效率。以Spring Boot为基础框架，Mybatis plus为数据访问层， Apache Shiro为权限授权层，Ehcahe对常用数据进行缓存，基于Bootstrap构建的Admin LTE作为前端框架。
 
 # 定位
- * 中小型企业项目开发脚手架，实用为主 
+ * 中小型企业项目开发脚手架，以基础建设和实用性为主 
  * 接私活利器 
  * 个人学习
 
@@ -33,11 +33,16 @@ IFast内置很多优秀的基础功能和高效的代码生成工具，包括：
  * 树结构控件：jQuery zTree
  * 日期控件： datepicker
 
-# 简单使用说明
+# 快速上手
  * 导入ifast.sql文件到mysql数据库
  * 导入项目到Eclipse.
  * 修改数据库配置文件application-dev.xml中的账号密码.
  * 启动项目,管理员账号  admin / 1
+ 
+# 交流、反馈、参与贡献
+ * QQ群：[746358408](https://jq.qq.com/?_wv=1027&k=5Ofijn8)
+ * E-mail：izenglong@163.com
+ * gitee：https://gitee.com/icron/ifast
 
 # 目录结构说明
 ```
