@@ -1,7 +1,7 @@
 package ${package}.dao;
 
 import ${package}.domain.${className}DO;
-import ${package}.base.BaseDao;
+import com.ifast.common.base.BaseDao;
 
 /**
  * 

@@ -19,7 +19,7 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import ${package}.domain.${className}DO;
 import ${package}.service.${className}Service;
-import com.ifast.common.utils.Result<T>;
+import com.ifast.common.utils.Result;
 
 /**
  * 

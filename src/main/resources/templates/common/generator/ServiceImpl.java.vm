@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import ${package}.dao.${className}Dao;
 import ${package}.domain.${className}DO;
 import ${package}.service.${className}Service;
-import ${package}.base.CoreServiceImpl;
+import com.ifast.common.base.base.CoreServiceImpl;
 
 /**
  * 
