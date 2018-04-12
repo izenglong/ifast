@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+                                                                							                                                                <div class="form-group">	
+								<label class="col-sm-3 control-label">公众号id：</label>
+								<div class="col-sm-8">
+									<input id="mpId" name="mpId" class="form-control" type="text">
+								</div>
+							</div>
+														                                                                <div class="form-group">	
+								<label class="col-sm-3 control-label">用户的标识，对当前公众号唯一：</label>
+								<div class="col-sm-8">
+									<input id="openid" name="openid" class="form-control" type="text">
+								</div>
+							</div>
+														                                                                <div class="form-group">	
+								<label class="col-sm-3 control-label">昵称：</label>
+								<div class="col-sm-8">
+									<input id="nickname" name="nickname" class="form-control" type="text">
+								</div>
+							</div>
+														                                                                <div class="form-group">	
+								<label class="col-sm-3 control-label">用户是否订阅该公众号标识，值为0时，代表此用户没有关注该公众号，拉取不到其余信息。0未关注，1已关注：</label>
+								<div class="col-sm-8">
+									<input id="subscribe" name="subscribe" class="form-control" type="text">
+								</div>
+							</div>
+														                                                                <div class="form-group">	
+								<label class="col-sm-3 control-label">用户关注时间，为时间戳。如果用户曾多次关注，则取最后关注时间：</label>
+								<div class="col-sm-8">
+									<input id="subscribeTime" name="subscribeTime" class="form-control" type="text">
+								</div>
+							</div>
+														                                                                <div class="form-group">	
+								<label class="col-sm-3 control-label">关注来源：</label>
+								<div class="col-sm-8">
+									<input id="subscribeKey" name="subscribeKey" class="form-control" type="text">
+								</div>
+							</div>
+														                                                                <div class="form-group">	
+								<label class="col-sm-3 control-label">用户的性别，值为1时是男性，值为2时是女性，值为0时是未知：</label>
+								<div class="col-sm-8">
+									<input id="sex" name="sex" class="form-control" type="text">
+								</div>
+							</div>
+														                                                                <div class="form-group">	
+								<label class="col-sm-3 control-label">：</label>
+								<div class="col-sm-8">
+									<input id="city" name="city" class="form-control" type="text">
+								</div>
+							</div>
+														                                                                <div class="form-group">	
+								<label class="col-sm-3 control-label">：</label>
+								<div class="col-sm-8">
+									<input id="country" name="country" class="form-control" type="text">
+								</div>
+							</div>
+														                                                                <div class="form-group">	
+								<label class="col-sm-3 control-label">：</label>
+								<div class="col-sm-8">
+									<input id="province" name="province" class="form-control" type="text">
+								</div>
+							</div>
+														                                                                <div class="form-group">	
+								<label class="col-sm-3 control-label">语言：</label>
+								<div class="col-sm-8">
+									<input id="language" name="language" class="form-control" type="text">
+								</div>
+							</div>
+														                                                                <div class="form-group">	
+								<label class="col-sm-3 control-label">用户头像，最后一个数值代表正方形头像大小（有0、46、64、96、132数值可选，0代表640*640正方形头像），用户没有头像时该项为空。若用户更换头像，原有头像URL将失效。：</label>
+								<div class="col-sm-8">
+									<input id="headimgurl" name="headimgurl" class="form-control" type="text">
+								</div>
+							</div>
+														                                                                <div class="form-group">	
+								<label class="col-sm-3 control-label">：</label>
+								<div class="col-sm-8">
+									<input id="unionid" name="unionid" class="form-control" type="text">
+								</div>
+							</div>
+														                                                                <div class="form-group">	
+								<label class="col-sm-3 control-label">公众号运营者对粉丝的备注，公众号运营者可在微信公众平台用户管理界面对粉丝添加备注：</label>
+								<div class="col-sm-8">
+									<input id="remark" name="remark" class="form-control" type="text">
+								</div>
+							</div>
+														                                                                <div class="form-group">	
+								<label class="col-sm-3 control-label">分组ID：</label>
+								<div class="col-sm-8">
+									<input id="groupid" name="groupid" class="form-control" type="text">
+								</div>
+							</div>
+														                                                                <div class="form-group">	
+								<label class="col-sm-3 control-label">用户状态 1:正常，0：禁用：</label>
+								<div class="col-sm-8">
+									<input id="status" name="status" class="form-control" type="text">
+								</div>
+							</div>
+														                                                                <div class="form-group">	
+								<label class="col-sm-3 control-label">：</label>
+								<div class="col-sm-8">
+									<input id="tagidList" name="tagidList" class="form-control" type="text">
+								</div>
+							</div>
+																					<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/wxmp/mpFans/add.js">
+	</script>
+</body>
+</html>

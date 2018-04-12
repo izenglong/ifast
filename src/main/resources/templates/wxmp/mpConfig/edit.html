@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+							<input id="id" name="id" th:value="${mpConfig.id}" type="hidden">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">token：</label>
+								<div class="col-sm-8">
+									<input id="token" name="token" th:value="${mpConfig.token}"
+										class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">appId：</label>
+								<div class="col-sm-8">
+									<input id="appId" name="appId" th:value="${mpConfig.appId}"
+										class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">appSecret：</label>
+								<div class="col-sm-8">
+									<input id="appSecret" name="appSecret"
+										th:value="${mpConfig.appSecret}" class="form-control"
+										type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">1加密 0不加密：</label>
+								<div class="col-sm-8">
+									<input id="msgMode" name="msgMode"
+										th:value="${mpConfig.msgMode}" class="form-control"
+										type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">秘钥：</label>
+								<div class="col-sm-8">
+									<input id="msgSecret" name="msgSecret"
+										th:value="${mpConfig.msgSecret}" class="form-control"
+										type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">公众号名字：</label>
+								<div class="col-sm-8">
+									<input id="mpName" name="mpName" th:value="${mpConfig.mpName}"
+										class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">公众号类型： 1.订阅号 2.服务号
+									3.企业号 4.小程序 5. 测试号：</label>
+								<div class="col-sm-8">
+									<input id="appType" name="appType"
+										th:value="${mpConfig.appType}" class="form-control"
+										type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">认证授权：1已认证 0未认证：</label>
+								<div class="col-sm-8">
+									<input id="isAuth" name="isAuth" th:value="${mpConfig.isAuth}"
+										class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">提示订阅URL：</label>
+								<div class="col-sm-8">
+									<input id="subscribeUrl" name="subscribeUrl"
+										th:value="${mpConfig.subscribeUrl}" class="form-control"
+										type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">logo：</label>
+								<div class="col-sm-8">
+									<input id="logo" name="logo" th:value="${mpConfig.logo}"
+										class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">创建时间：</label>
+								<div class="col-sm-8">
+									<input id="createTime" name="createTime"
+										th:value="${mpConfig.createTime}" class="form-control"
+										type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/wxmp/mpConfig/edit.js">
+		
+	</script>
+</body>
+</html>
