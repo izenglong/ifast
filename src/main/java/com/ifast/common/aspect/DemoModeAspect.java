@@ -29,9 +29,9 @@ import com.ifast.common.utils.HttpContextUtils;
  */
 @Aspect
 @Component
-public class TestUserAspect {
+public class DemoModeAspect {
 
-    private static final Logger log = LoggerFactory.getLogger(TestUserAspect.class);
+    private static final Logger log = LoggerFactory.getLogger(DemoModeAspect.class);
 
     @Autowired
     private IFastConfig config;
