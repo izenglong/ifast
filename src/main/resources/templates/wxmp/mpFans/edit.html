@@ -31,7 +31,7 @@
                                         <input type="radio" value="1" th:checked="${mpFans.sex == 1}" id="sex1" name="sex">男 
                                     </label> 
                                      <label class="radio-inline" for="sex2"> 
-                                        <input type="radio" value="0" th:checked="${mpFans.sex == 2}" id="sex2" name="sex">女
+                                        <input type="radio" value="2" th:checked="${mpFans.sex == 2}" id="sex2" name="sex">女
                                      </label>
 								</div>
 							</div>
@@ -56,7 +56,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">关注时间：</label>
 								<div class="col-sm-8">
-									<input id="subscribeTime" name="subscribeTime" th:value="${mpFans.subscribeTime} eq null ? '' : ${#dates.format(mpFans.subscribeTime, 'yyyy-MM-dd HH:mm:ss')}" class="form-control" type="text">
+									<input id="subscribeTime" name="subscribeTime" th:value="${mpFans.subscribeTime} eq null ? '' : ${#dates.format(mpFans.subscribeTime, 'yyyy-MM-dd HH:mm:ss')}" class="form-control" type="text" readonly>
 								</div>
 							</div>
 							<div class="form-group">
