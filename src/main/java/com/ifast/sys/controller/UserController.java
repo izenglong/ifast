@@ -66,8 +66,6 @@ public class UserController extends BaseController {
 
         Wrapper<UserDO> wrapper = new EntityWrapper<UserDO>(userDTO);
         page = userService.selectPage(page, wrapper);
-        int total = userService.selectCount(wrapper);
-        page.setTotal(total);
         return Result.ok(page);
     }
 

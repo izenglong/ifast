@@ -52,8 +52,6 @@ public class DictController extends BaseController {
 
         Wrapper<DictDO> wrapper = new EntityWrapper<DictDO>(dictDTO);
         page = sysDictService.selectPage(page, wrapper);
-        int total = sysDictService.selectCount(wrapper);
-        page.setTotal(total);
         return Result.ok(page);
     }
 

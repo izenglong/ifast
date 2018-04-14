@@ -46,8 +46,6 @@ public class JobController extends BaseController {
 
         Wrapper<TaskDO> wrapper = new EntityWrapper<TaskDO>(taskDTO);
         page = taskScheduleJobService.selectPage(page, wrapper);
-        int total = taskScheduleJobService.selectCount(wrapper);
-        page.setTotal(total);
         return Result.ok(page);
     }
 
