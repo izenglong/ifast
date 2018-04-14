@@ -1,6 +1,7 @@
 ifast:
   projectName: ifast
   projectRootURL: http://localhost:8088/
+  demoMode: false
 logging:
   level:
     com.ifast: info

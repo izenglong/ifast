@@ -1,6 +1,7 @@
 ifast:
   projectName: ifast
   projectRootURL: http://ifast.site/
+  demoMode: false
 logging:
   level:
     com.ifast: info

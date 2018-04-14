@@ -1,12 +1,15 @@
 package com.ifast;
 
 import org.mybatis.spring.annotation.MapperScan;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import com.ifast.common.config.IFastConfig;
 import com.ifast.common.utils.SpringContextHolder;
 
 /**
@@ -21,6 +24,8 @@ import com.ifast.common.utils.SpringContextHolder;
 @SpringBootApplication
 public class Application {
     
+    private static Logger log = LoggerFactory.getLogger(Application.class);
+    
     /** 
      * <pre>
      * </pre>
@@ -29,8 +34,15 @@ public class Application {
      */
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
+        printProjectConfigs();
+    }
+
+    private static void printProjectConfigs() {
         ServerProperties serverProperties = SpringContextHolder.getApplicationContext().getBean(ServerProperties.class);
-        System.out.println("==================> run at http://localhost:" + serverProperties.getPort() + serverProperties.getContextPath() + "  <==================");
+        IFastConfig config = SpringContextHolder.getApplicationContext().getBean(IFastConfig.class);
+        log.info("开启演示模式：" + config.isDemoMode());
+        log.info("开启调试模式：" + config.isDevMode());
+        log.info("==================> run at http://localhost:" + serverProperties.getPort() + serverProperties.getContextPath() + "  <==================");
     }
 
 }

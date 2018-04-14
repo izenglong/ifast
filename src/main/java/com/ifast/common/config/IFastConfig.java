@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 /**
  * <pre>
  * </pre>
+ * 
  * <small> 2018年4月6日 | Aron</small>
  */
 @Component
@@ -19,6 +20,31 @@ public class IFastConfig {
      * 项目根目录，末尾带 "/"
      */
     private String projectRootURL;
+
+    /**
+     * 演示模式
+     */
+    private boolean demoMode;
+    /**
+     * 调试模式
+     */
+    private boolean devMode;
+
+    public boolean isDemoMode() {
+        return demoMode;
+    }
+
+    public void setDemoMode(boolean demoMode) {
+        this.demoMode = demoMode;
+    }
+
+    public boolean isDevMode() {
+        return devMode;
+    }
+
+    public void setDevMode(boolean devMode) {
+        this.devMode = devMode;
+    }
 
     public String getProjectRootURL() {
         return projectRootURL;

@@ -110,7 +110,7 @@ public class FileController extends BaseController {
      */
     @PostMapping("/remove")
     @ResponseBody
-    // @RequiresPermissions("common:remove")
+     @RequiresPermissions("common:remove")
     public Result<String> remove(Long id) {
         sysFileService.deleteById(id);
         return Result.ok();
