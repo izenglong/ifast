@@ -49,8 +49,6 @@ public class ${className}Controller {
         
         Wrapper<${className}DO> wrapper = new EntityWrapper<${className}DO>(${classname}DTO);
         page = ${classname}Service.selectPage(page, wrapper);
-        int total = ${classname}Service.selectCount(wrapper);
-        page.setTotal(total);
         return Result.ok(page);
 	}
 	
@@ -75,10 +73,8 @@ public class ${className}Controller {
 	@PostMapping("/save")
 	@RequiresPermissions("${pathName}:${classname}:add")
 	public Result<String> save( ${className}DO ${classname}){
-		if(${classname}Service.insert(${classname})){
-			return Result.ok();
-		}
-		return Result.fail();
+		${classname}Service.insert(${classname});
+        return Result.ok();
 	}
 	/**
 	 * 修改
@@ -98,10 +94,8 @@ public class ${className}Controller {
 	@ResponseBody
 	@RequiresPermissions("${pathName}:${classname}:remove")
 	public Result<String>  remove( ${pk.attrType} ${pk.attrname}){
-		if(${classname}Service.deleteById(${pk.attrname})){
-            return Result.ok();
-		}
-		return Result.fail();
+		${classname}Service.deleteById(${pk.attrname});
+        return Result.ok();
 	}
 	
 	/**
