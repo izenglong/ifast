@@ -1,4 +1,3 @@
-
 var prefix = "/wxmp/mpFans"
 $(function() {
 	load();
@@ -10,9 +9,9 @@ function load() {
 					{
 						method : 'get', // 服务器数据的请求方式 get or post
 						url : prefix + "/list", // 服务器数据的加载地址
-					//	showRefresh : true,
-					//	showToggle : true,
-					//	showColumns : true,
+						// showRefresh : true,
+						// showToggle : true,
+						// showColumns : true,
 						iconSize : 'outline',
 						toolbar : '#exampleToolbar',
 						striped : true, // 设置为true会有隔行变色效果
@@ -23,18 +22,19 @@ function load() {
 						// //发送到服务器的数据编码类型
 						pageSize : 10, // 如果设置了分页，每页数据条数
 						pageNumber : 1, // 如果设置了分布，首页页码
-						//search : true, // 是否显示搜索框
+						// search : true, // 是否显示搜索框
 						showColumns : false, // 是否显示内容下拉框（选择显示的列）
-						sidePagination : "server", // 设置在哪里进行分页，可选值为"client" 或者 "server"
+						sidePagination : "server", // 设置在哪里进行分页，可选值为"client" 或者
+													// "server"
 						queryParamsType : "",
 						// //设置为limit则会发送符合RESTFull格式的参数
 						queryParams : function(params) {
 							return {
-								//说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
-							     pageNumber : params.pageNumber,
-                                  pageSize : params.pageSize  
-					           // name:$('#searchName').val(),
-					           // username:$('#searchName').val()
+								// 说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
+								pageNumber : params.pageNumber,
+								pageSize : params.pageSize
+							// name:$('#searchName').val(),
+							// username:$('#searchName').val()
 							};
 						},
 						// //请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数，例如 toolbar 中的参数 如果
@@ -43,104 +43,142 @@ function load() {
 						// pageSize, pageNumber, searchText, sortName,
 						// sortOrder.
 						// 返回false将会终止请求
-						responseHandler : function(res){
-                            console.log(res);
-                            return {
-                                "total": res.data.total,//总数
-                                "rows": res.data.records   //数据
-                             };
-                        },
+						responseHandler : function(res) {
+							console.log(res);
+							return {
+								"total" : res.data.total,// 总数
+								"rows" : res.data.records
+							// 数据
+							};
+						},
 						columns : [
 								{
 									checkbox : true
 								},
-																{
-									field : 'id', 
-									title : '主键' 
+								{
+									field : 'id',
+									title : 'ID'
 								},
-																{
-									field : 'mpId', 
-									title : '公众号id' 
+//								{
+//									field : 'mpId',
+//									title : '公众号ID'
+//								},
+								{
+									field : 'headimgurl',
+									title : '头像',
+									formatter : function(value, row, index) {
+										if(value){
+											return '<img src="' + value + '" style="width:32px;height:32px;" />'
+										}
+										return value;
+									}
 								},
-																{
-									field : 'openid', 
-									title : '用户的标识，对当前公众号唯一' 
+								{
+									field : 'nickname',
+									title : '昵称'
 								},
-																{
-									field : 'nickname', 
-									title : '昵称' 
+								{
+									field : 'sex',
+									title : '性别',
+									formatter : function(value, row, index) {
+										if(value == 1){
+											return "男";
+										}else if(value == 2){
+											return "女";
+										}else{
+											return "未知"
+										}
+									}
 								},
-																{
-									field : 'subscribe', 
-									title : '用户是否订阅该公众号标识，值为0时，代表此用户没有关注该公众号，拉取不到其余信息。0未关注，1已关注' 
+//								{
+//									field : 'openid',
+//									title : 'openid'
+//								},
+								{
+									field : 'subscribe',
+									title : '关注状态',
+									formatter : function(value, row, index) {
+										if(value == 1){
+											return "已关注";
+										}else if(value == 0){
+											return "未关注";
+										}else{
+											return "未知"
+										}
+									}
 								},
-																{
-									field : 'subscribeTime', 
-									title : '用户关注时间，为时间戳。如果用户曾多次关注，则取最后关注时间' 
+								{
+									field : 'subscribeTime',
+									title : '关注时间'
 								},
-																{
-									field : 'subscribeKey', 
-									title : '关注来源' 
+								{
+									field : 'subscribeKey',
+									title : '关注来源'
 								},
-																{
-									field : 'sex', 
-									title : '用户的性别，值为1时是男性，值为2时是女性，值为0时是未知' 
+								{
+									field : 'city',
+									title : '市'
 								},
-																{
-									field : 'city', 
-									title : '' 
+								{
+									field : 'country',
+									title : '区'
 								},
-																{
-									field : 'country', 
-									title : '' 
+								{
+									field : 'province',
+									title : '省'
 								},
-																{
-									field : 'province', 
-									title : '' 
-								},
-																{
-									field : 'language', 
-									title : '语言' 
-								},
-																{
-									field : 'headimgurl', 
-									title : '用户头像，最后一个数值代表正方形头像大小（有0、46、64、96、132数值可选，0代表640*640正方形头像），用户没有头像时该项为空。若用户更换头像，原有头像URL将失效。' 
-								},
-																{
-									field : 'unionid', 
-									title : '' 
-								},
-																{
-									field : 'remark', 
-									title : '公众号运营者对粉丝的备注，公众号运营者可在微信公众平台用户管理界面对粉丝添加备注' 
-								},
-																{
-									field : 'groupid', 
-									title : '分组ID' 
-								},
-																{
-									field : 'status', 
-									title : '用户状态 1:正常，0：禁用' 
-								},
-																{
-									field : 'tagidList', 
-									title : '' 
-								},
-																{
+//								{
+//									field : 'language',
+//									title : '语言'
+//								},
+//								{
+//									field : 'unionid',
+//									title : 'unionid'
+//								},
+//								{
+//									field : 'remark',
+//									title : '备注'
+//								},
+//								{
+//									field : 'groupid',
+//									title : '分组ID'
+//								},
+//								{
+//									field : 'status',
+//									title : '用户状态',
+//									formatter : function(value, row, index) {
+//										if(value == 1){
+//											return "正常";
+//										}else if(value == 0){
+//											return "禁用";
+//										}else{
+//											return "未知"
+//										}
+//									}
+//								},
+//								{
+//									field : 'tagidList',
+//									title : '标签列表'
+//								},
+								{
 									title : '操作',
 									field : 'id',
 									align : 'center',
 									formatter : function(value, row, index) {
-										var e = '<a class="btn btn-primary btn-sm '+s_edit_h+'" href="#" mce_href="#" title="编辑" onclick="edit(\''
+										var e = '<a class="btn btn-primary btn-sm '
+												+ s_edit_h
+												+ '" href="#" mce_href="#" title="编辑" onclick="edit(\''
 												+ row.id
 												+ '\')"><i class="fa fa-edit"></i></a> ';
-										var d = '<a class="btn btn-warning btn-sm '+s_remove_h+'" href="#" title="删除"  mce_href="#" onclick="remove(\''
+										var d = '<a class="btn btn-warning btn-sm '
+												+ s_remove_h
+												+ '" href="#" title="删除"  mce_href="#" onclick="remove(\''
 												+ row.id
 												+ '\')"><i class="fa fa-remove"></i></a> ';
 										var f = '<a class="btn btn-success btn-sm" href="#" title="备用"  mce_href="#" onclick="resetPwd(\''
 												+ row.id
 												+ '\')"><i class="fa fa-key"></i></a> ';
-										return e + d ;
+										return e + d;
 									}
 								} ]
 					});
@@ -173,16 +211,16 @@ function remove(id) {
 		btn : [ '确定', '取消' ]
 	}, function() {
 		$.ajax({
-			url : prefix+"/remove",
+			url : prefix + "/remove",
 			type : "post",
 			data : {
 				'id' : id
 			},
 			success : function(r) {
-				if (r.code==0) {
+				if (r.code == 0) {
 					layer.msg(r.msg);
 					reLoad();
-				}else{
+				} else {
 					layer.msg(r.msg);
 				}
 			}

@@ -22,7 +22,7 @@
                                        <input type="radio" value="1" id="appType1" name="appType">订阅号
                                     </label> 
                                     <label class="radio-inline" for="appType2"> 
-                                       <input type="radio" value="2" id="appType2" name="appType"> 服务号 
+                                       <input type="radio" checked="checked" value="2" id="appType2" name="appType"> 服务号 
                                     </label> 
                                      <label class="radio-inline" for="appType3"> 
                                         <input type="radio" value="3" id="appType3" name="appType">企业号 
@@ -32,6 +32,17 @@
                                     </label> 
                                      <label class="radio-inline" for="appType5"> 
                                         <input type="radio" value="5" id="appType" name="appType">测试号
+                                     </label>
+                                </div>
+                            </div>
+                             <div class="form-group">
+                                <label class="col-sm-3 control-label">已认证：</label>
+                                <div class="col-sm-8">
+                                    <label class="radio-inline" for="isAuth1"> 
+                                        <input type="radio" checked="checked" value="1" id="isAuth1" name="isAuth">是 
+                                    </label> 
+                                     <label class="radio-inline" for="isAuth0"> 
+                                        <input type="radio" value="0" id="isAuth0" name="isAuth">否
                                      </label>
                                 </div>
                             </div>
@@ -57,10 +68,10 @@
                                 <label class="col-sm-3 control-label" for="msgMode">消息加密：</label>
                                 <div class="col-sm-9">
                                     <label class="radio-inline" for="msgMode1"> 
-                                       <input type="radio" checked="" value="1" id="msgMode1" name="msgMode">是
+                                       <input type="radio" value="1" id="msgMode1" name="msgMode">是
                                     </label> 
                                     <label class="radio-inline" for="msgMode0"> 
-                                       <input type="radio" value="0" id="msgMode0" name="msgMode">否
+                                       <input type="radio" checked="checked" value="0" id="msgMode0" name="msgMode">否
                                     </label>
                                 </div>
                             </div>
@@ -70,28 +81,32 @@
                                     <input id="msgSecret" name="msgSecret" class="form-control" type="text">
                                 </div>
                             </div>
-                            
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">已认证：</label>
-                                <div class="col-sm-8">
-                                    <label class="radio-inline" for="isAuth1"> 
-                                        <input type="radio" value="1" id="isAuth1" name="isAuth">是 
-                                    </label> 
-                                     <label class="radio-inline" for="isAuth0"> 
-                                        <input type="radio" value="0" id="isAuth0" name="isAuth">否
-                                     </label>
-                                </div>
-                            </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">提示订阅URL：</label>
                                 <div class="col-sm-8">
                                     <input id="subscribeUrl" name="subscribeUrl" class="form-control" type="text">
                                 </div>
                             </div>
+                            
+                            <style>
+                             #btnUpload{
+                                 margin-top: 10px;
+                             }
+                             .layui-upload-file {
+                                display: none!important;
+                                opacity: .01;
+                                filter: Alpha(opacity=1);
+                            }
+                            </style>
+                            
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">logo：</label>
                                 <div class="col-sm-8">
-                                    <input id="logo" name="logo" class="form-control" type="text">
+                                    <img id="imgLogo" src="" style="width:100px;display:block;">
+                                    <input type="hidden" id="logo" name="logo" >
+                                    <button type="button" class="btn btn-success" id="btnUpload">
+                                        <i class="fa fa-cloud"></i>上传文件
+                                    </button>
                                 </div>
                             </div>
 							<div class="form-group">
@@ -106,8 +121,26 @@
 		</div>
 	</div>
 	<div th:include="include::footer"></div>
-	<script type="text/javascript" src="/js/appjs/wxmp/mpConfig/add.js">
-		
-	</script>
+	<script type="text/javascript" src="/js/appjs/wxmp/mpConfig/add.js"></script>
+	<script src="/js/layui.js"></script>
+	<script type="text/javascript">
+    layui.use('upload', function () {
+        var upload = layui.upload;
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#btnUpload', //绑定元素
+            url: '/common/sysFile/upload', //上传接口
+            size: 1000,
+            accept: 'file',
+            done: function (r) {
+                $("#imgLogo").attr("src", r.data)
+                $("#logo").val(r.data)
+            },
+            error: function (r) {
+                layer.msg(r.msg);
+            }
+        });
+    });
+    </script>
 </body>
 </html>

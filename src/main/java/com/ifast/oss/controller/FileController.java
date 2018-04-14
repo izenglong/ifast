@@ -40,14 +40,14 @@ public class FileController extends BaseController {
     private FileService sysFileService;
 
     @GetMapping()
-    @RequiresPermissions("common:sysFile:sysFile")
+    @RequiresPermissions("oss:file:file")
     String sysFile(Model model) {
         return "common/file/file";
     }
 
     @ResponseBody
     @GetMapping("/list")
-    @RequiresPermissions("common:sysFile:sysFile")
+    @RequiresPermissions("oss:file:list")
     public Result<Page<FileDO>> list(Integer pageNumber, Integer pageSize, FileDO fileDTO) {
         // 查询列表数据
         Page<FileDO> page = new Page<>(pageNumber, pageSize);
@@ -58,13 +58,13 @@ public class FileController extends BaseController {
     }
 
     @GetMapping("/add")
-    // @RequiresPermissions("common:bComments")
+     @RequiresPermissions("oss:file:add")
     String add() {
         return "common/sysFile/add";
     }
 
     @GetMapping("/edit")
-    // @RequiresPermissions("common:bComments")
+     @RequiresPermissions("oss:file:update")
     String edit(Long id, Model model) {
         FileDO sysFile = sysFileService.selectById(id);
         model.addAttribute("sysFile", sysFile);
@@ -75,7 +75,7 @@ public class FileController extends BaseController {
      * 信息
      */
     @RequestMapping("/info/{id}")
-    @RequiresPermissions("common:info")
+    @RequiresPermissions("oss:file:info")
     public Result<FileDO> info(@PathVariable("id") Long id) {
         FileDO sysFile = sysFileService.selectById(id);
         return Result.ok(sysFile);
@@ -86,7 +86,7 @@ public class FileController extends BaseController {
      */
     @ResponseBody
     @PostMapping("/save")
-    @RequiresPermissions("common:save")
+    @RequiresPermissions("oss:file:add")
     public Result<String> save(FileDO sysFile) {
         sysFileService.insert(sysFile);
         return Result.ok();
@@ -96,7 +96,7 @@ public class FileController extends BaseController {
      * 修改
      */
     @RequestMapping("/update")
-    @RequiresPermissions("common:update")
+    @RequiresPermissions("oss:file:update")
     public Result<String> update(@RequestBody FileDO sysFile) {
         sysFileService.updateById(sysFile);
 
@@ -108,7 +108,7 @@ public class FileController extends BaseController {
      */
     @PostMapping("/remove")
     @ResponseBody
-     @RequiresPermissions("common:remove")
+     @RequiresPermissions("oss:file:remove")
     public Result<String> remove(Long id) {
         sysFileService.deleteById(id);
         return Result.ok();
@@ -119,7 +119,7 @@ public class FileController extends BaseController {
      */
     @PostMapping("/batchRemove")
     @ResponseBody
-    @RequiresPermissions("common:remove")
+    @RequiresPermissions("oss:file:remove")
     public Result<String> remove(@RequestParam("ids[]") Long[] ids) {
         sysFileService.deleteBatchIds(Arrays.asList(ids));
         return Result.ok();
@@ -127,15 +127,17 @@ public class FileController extends BaseController {
 
     @ResponseBody
     @PostMapping("/upload")
+    @RequiresPermissions("oss:file:add")
     Result<String> upload(@RequestParam("file") MultipartFile file) {
+        String url = "";
         try {
-            sysFileService.upload(file.getBytes(), file.getOriginalFilename());
+            url = sysFileService.upload(file.getBytes(), file.getOriginalFilename());
         } catch (IOException e) {
             e.printStackTrace();
             return Result.build(EnumErrorCode.FileUploadGetBytesError.getCode(),
                     EnumErrorCode.FileUploadGetBytesError.getMsg());
         }
-        return Result.ok();
+        return Result.ok(url);
     }
 
 }
