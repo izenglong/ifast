@@ -49,8 +49,6 @@ public class ConfigController {
 
         Wrapper<ConfigDO> wrapper = new EntityWrapper<ConfigDO>(configDTO);
         page = configService.selectPage(page, wrapper);
-        int total = configService.selectCount(wrapper);
-        page.setTotal(total);
         return Result.ok(page);
     }
 

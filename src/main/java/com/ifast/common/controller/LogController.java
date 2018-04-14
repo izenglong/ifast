@@ -44,8 +44,6 @@ public class LogController {
 
         Wrapper<LogDO> wrapper = new EntityWrapper<LogDO>(logDTO);
         page = logService.selectPage(page, wrapper);
-        int total = logService.selectCount(wrapper);
-        page.setTotal(total);
         return Result.ok(page);
     }
 

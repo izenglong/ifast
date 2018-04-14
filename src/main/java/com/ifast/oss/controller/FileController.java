@@ -54,8 +54,6 @@ public class FileController extends BaseController {
 
         Wrapper<FileDO> wrapper = new EntityWrapper<FileDO>(fileDTO);
         page = sysFileService.selectPage(page, wrapper);
-        int total = sysFileService.selectCount(wrapper);
-        page.setTotal(total);
         return Result.ok(page);
     }
 

@@ -1,10 +1,13 @@
 package com.ifast.common.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import com.baomidou.mybatisplus.plugins.PaginationInterceptor;
 
 @Configuration
 public class MyBatisConfig {
-    
+
 //    /**
 //     * mybatis-plus SQL执行效率插件【生产环境可以关闭】
 //     */
@@ -13,13 +16,16 @@ public class MyBatisConfig {
 //        return new PerformanceInterceptor();
 //    }
 
-//    /**
-//     * mybatis-plus分页插件<br>
-//     * 文档：http://mp.baomidou.com<br>
-//     */
-//    @Bean
-//    public PaginationInterceptor paginationInterceptor() {
-//        PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
+    /**
+     * 分页插件
+     * 
+     * @return
+     * @author zhongweiyuan
+     * @date 2018年4月14日下午4:13:15
+     */
+    @Bean
+    public PaginationInterceptor paginationInterceptor() {
+        PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
 //        paginationInterceptor.setLocalPage(true);// 开启 PageHelper 的支持
 //        /*
 //         * 【测试多租户】 SQL 解析处理拦截器<br>
@@ -63,13 +69,7 @@ public class MyBatisConfig {
 //                return false;
 //            }
 //        });
-//        return paginationInterceptor;
-//    }
+        return paginationInterceptor;
+    }
 
 }
-
-
-
-
-
-
