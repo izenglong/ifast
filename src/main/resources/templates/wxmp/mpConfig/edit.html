@@ -11,13 +11,6 @@
 						<form class="form-horizontal m-t" id="signupForm">
 							<input id="id" name="id" th:value="${mpConfig.id}" type="hidden">
 							<div class="form-group">
-								<label class="col-sm-3 control-label">token：</label>
-								<div class="col-sm-8">
-									<input id="token" name="token" th:value="${mpConfig.token}"
-										class="form-control" type="text">
-								</div>
-							</div>
-							<div class="form-group">
 								<label class="col-sm-3 control-label">appId：</label>
 								<div class="col-sm-8">
 									<input id="appId" name="appId" th:value="${mpConfig.appId}"
@@ -33,11 +26,21 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label">1加密 0不加密：</label>
+								<label class="col-sm-3 control-label">token：</label>
 								<div class="col-sm-8">
-									<input id="msgMode" name="msgMode"
-										th:value="${mpConfig.msgMode}" class="form-control"
-										type="text">
+									<input id="token" name="token" th:value="${mpConfig.token}"
+										class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label" for="msgMode">消息加密：</label>
+								<div class="col-sm-9">
+									<label class="radio-inline" for="msgMode1"> 
+									   <input type="radio" checked="" value="1" th:checked="${mpConfig.msgMode == 1}" id="msgMode1" name="msgMode">是
+									</label> 
+									<label class="radio-inline" for="msgMode0"> 
+									   <input type="radio" value="0" th:checked="${mpConfig.msgMode == 0}" id="msgMode0" name="msgMode">否
+									</label>
 								</div>
 							</div>
 							<div class="form-group">
@@ -56,19 +59,34 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label">公众号类型： 1.订阅号 2.服务号
-									3.企业号 4.小程序 5. 测试号：</label>
-								<div class="col-sm-8">
-									<input id="appType" name="appType"
-										th:value="${mpConfig.appType}" class="form-control"
-										type="text">
+								<label class="col-sm-3 control-label">公众号类型：</label>
+								<div class="col-sm-9">
+									<label class="radio-inline" for="appType1"> 
+									   <input type="radio" value="1" th:checked="${mpConfig.appType == 1}" id="appType1" name="appType">订阅号
+									</label> 
+									<label class="radio-inline" for="appType2"> 
+									   <input type="radio" value="2" th:checked="${mpConfig.appType == 2}" id="appType2" name="appType"> 服务号 
+									</label> 
+                                     <label class="radio-inline" for="appType3"> 
+                                        <input type="radio" value="3" th:checked="${mpConfig.appType == 3}" id="appType3" name="appType">企业号 
+									</label> 
+                                     <label class="radio-inline" for="appType4"> 
+                                        <input type="radio" value="4" th:checked="${mpConfig.appType == 4}" id="appType4" name="appType">小程序 
+									</label> 
+                                     <label class="radio-inline" for="appType5"> 
+                                        <input type="radio" value="5" th:checked="${mpConfig.appType == 5}" id="appType" name="appType">测试号
+                                     </label>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label">认证授权：1已认证 0未认证：</label>
+								<label class="col-sm-3 control-label">已认证：</label>
 								<div class="col-sm-8">
-									<input id="isAuth" name="isAuth" th:value="${mpConfig.isAuth}"
-										class="form-control" type="text">
+									<label class="radio-inline" for="isAuth1"> 
+                                        <input type="radio" value="1" th:checked="${mpConfig.isAuth == 1}" id="isAuth1" name="isAuth">是 
+                                    </label> 
+                                     <label class="radio-inline" for="isAuth0"> 
+                                        <input type="radio" value="0" th:checked="${mpConfig.isAuth == 0}" id="isAuth0" name="isAuth">否
+                                     </label>
 								</div>
 							</div>
 							<div class="form-group">
@@ -90,8 +108,8 @@
 								<label class="col-sm-3 control-label">创建时间：</label>
 								<div class="col-sm-8">
 									<input id="createTime" name="createTime"
-										th:value="${mpConfig.createTime}" class="form-control"
-										type="text">
+										th:value="${#dates.format(mpConfig.createTime,'yyyy-MM-dd HH:mm:ss')}" class="form-control"
+										type="text" readonly>
 								</div>
 							</div>
 							<div class="form-group">

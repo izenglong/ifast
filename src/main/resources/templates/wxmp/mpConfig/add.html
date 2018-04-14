@@ -9,73 +9,92 @@
 				<div class="ibox float-e-margins">
 					<div class="ibox-content">
 						<form class="form-horizontal m-t" id="signupForm">
-                                                                							                                                                <div class="form-group">	
-								<label class="col-sm-3 control-label">token：</label>
-								<div class="col-sm-8">
-									<input id="token" name="token" class="form-control" type="text">
-								</div>
-							</div>
-														                                                                <div class="form-group">	
-								<label class="col-sm-3 control-label">APPID：</label>
-								<div class="col-sm-8">
-									<input id="appId" name="appId" class="form-control" type="text">
-								</div>
-							</div>
-														                                                                <div class="form-group">	
-								<label class="col-sm-3 control-label">AppSecret：</label>
-								<div class="col-sm-8">
-									<input id="appSecret" name="appSecret" class="form-control" type="text">
-								</div>
-							</div>
-														                                                                <div class="form-group">	
-								<label class="col-sm-3 control-label">1加密 0不加密：</label>
-								<div class="col-sm-8">
-									<input id="msgMode" name="msgMode" class="form-control" type="text">
-								</div>
-							</div>
-														                                                                <div class="form-group">	
-								<label class="col-sm-3 control-label">秘钥：</label>
-								<div class="col-sm-8">
-									<input id="msgSecret" name="msgSecret" class="form-control" type="text">
-								</div>
-							</div>
-														                                                                <div class="form-group">	
-								<label class="col-sm-3 control-label">公众号名字：</label>
-								<div class="col-sm-8">
-									<input id="mpName" name="mpName" class="form-control" type="text">
-								</div>
-							</div>
-														                                                                <div class="form-group">	
-								<label class="col-sm-3 control-label">公众号类型： 1.订阅号 2.服务号 3.企业号 4.小程序 5. 测试号：</label>
-								<div class="col-sm-8">
-									<input id="appType" name="appType" class="form-control" type="text">
-								</div>
-							</div>
-														                                                                <div class="form-group">	
-								<label class="col-sm-3 control-label">认证授权：1已认证 0未认证：</label>
-								<div class="col-sm-8">
-									<input id="isAuth" name="isAuth" class="form-control" type="text">
-								</div>
-							</div>
-														                                                                <div class="form-group">	
-								<label class="col-sm-3 control-label">提示订阅URL：</label>
-								<div class="col-sm-8">
-									<input id="subscribeUrl" name="subscribeUrl" class="form-control" type="text">
-								</div>
-							</div>
-														                                                                <div class="form-group">	
-								<label class="col-sm-3 control-label">logo：</label>
-								<div class="col-sm-8">
-									<input id="logo" name="logo" class="form-control" type="text">
-								</div>
-							</div>
-														                                                                <div class="form-group">	
-								<label class="col-sm-3 control-label">创建时间：</label>
-								<div class="col-sm-8">
-									<input id="createTime" name="createTime" class="form-control" type="text">
-								</div>
-							</div>
-																					<div class="form-group">
+						<div class="form-group">
+                                <label class="col-sm-3 control-label">公众号名：</label>
+                                <div class="col-sm-8">
+                                    <input id="mpName" name="mpName" class="form-control" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">公众号类型：</label>
+                                <div class="col-sm-9">
+                                    <label class="radio-inline" for="appType1"> 
+                                       <input type="radio" value="1" id="appType1" name="appType">订阅号
+                                    </label> 
+                                    <label class="radio-inline" for="appType2"> 
+                                       <input type="radio" value="2" id="appType2" name="appType"> 服务号 
+                                    </label> 
+                                     <label class="radio-inline" for="appType3"> 
+                                        <input type="radio" value="3" id="appType3" name="appType">企业号 
+                                    </label> 
+                                     <label class="radio-inline" for="appType4"> 
+                                        <input type="radio" value="4" id="appType4" name="appType">小程序 
+                                    </label> 
+                                     <label class="radio-inline" for="appType5"> 
+                                        <input type="radio" value="5" id="appType" name="appType">测试号
+                                     </label>
+                                </div>
+                            </div>
+							<div class="form-group">
+                                <label class="col-sm-3 control-label">appId：</label>
+                                <div class="col-sm-8">
+                                    <input id="appId" name="appId" class="form-control" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">appSecret：</label>
+                                <div class="col-sm-8">
+                                    <input id="appSecret" name="appSecret" class="form-control" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">token：</label>
+                                <div class="col-sm-8">
+                                    <input id="token" name="token" class="form-control" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="msgMode">消息加密：</label>
+                                <div class="col-sm-9">
+                                    <label class="radio-inline" for="msgMode1"> 
+                                       <input type="radio" checked="" value="1" id="msgMode1" name="msgMode">是
+                                    </label> 
+                                    <label class="radio-inline" for="msgMode0"> 
+                                       <input type="radio" value="0" id="msgMode0" name="msgMode">否
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">消息秘钥：</label>
+                                <div class="col-sm-8">
+                                    <input id="msgSecret" name="msgSecret" class="form-control" type="text">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">已认证：</label>
+                                <div class="col-sm-8">
+                                    <label class="radio-inline" for="isAuth1"> 
+                                        <input type="radio" value="1" id="isAuth1" name="isAuth">是 
+                                    </label> 
+                                     <label class="radio-inline" for="isAuth0"> 
+                                        <input type="radio" value="0" id="isAuth0" name="isAuth">否
+                                     </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">提示订阅URL：</label>
+                                <div class="col-sm-8">
+                                    <input id="subscribeUrl" name="subscribeUrl" class="form-control" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">logo：</label>
+                                <div class="col-sm-8">
+                                    <input id="logo" name="logo" class="form-control" type="text">
+                                </div>
+                            </div>
+							<div class="form-group">
 								<div class="col-sm-8 col-sm-offset-3">
 									<button type="submit" class="btn btn-primary">提交</button>
 								</div>
@@ -84,10 +103,11 @@
 					</div>
 				</div>
 			</div>
-	</div>
+		</div>
 	</div>
 	<div th:include="include::footer"></div>
 	<script type="text/javascript" src="/js/appjs/wxmp/mpConfig/add.js">
+		
 	</script>
 </body>
 </html>
