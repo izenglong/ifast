@@ -46,9 +46,9 @@ public class DictController extends BaseController {
     @ResponseBody
     @GetMapping("/list")
     @RequiresPermissions("common:sysDict:sysDict")
-    public Result<Page<DictDO>> list(Integer pageNumber, Integer pageSize, DictDO dictDTO) {
+    public Result<Page<DictDO>> list(DictDO dictDTO) {
         // 查询列表数据
-        Page<DictDO> page = new Page<>(pageNumber, pageSize);
+        Page<DictDO> page = getPage(DictDO.class);
 
         Wrapper<DictDO> wrapper = new EntityWrapper<DictDO>(dictDTO);
         page = sysDictService.selectPage(page, wrapper);

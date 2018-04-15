@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.ifast.common.base.BaseController;
 import com.ifast.common.domain.LogDO;
 import com.ifast.common.service.LogService;
 import com.ifast.common.utils.Result;
@@ -26,7 +27,7 @@ import com.ifast.common.utils.Result;
  */
 @RequestMapping("/common/log")
 @Controller
-public class LogController {
+public class LogController extends BaseController {
     @Autowired
     LogService logService;
     String prefix = "common/log";
@@ -38,9 +39,9 @@ public class LogController {
 
     @ResponseBody
     @GetMapping("/list")
-    public Result<Page<LogDO>> list(Integer pageNumber, Integer pageSize, LogDO logDTO) {
+    public Result<Page<LogDO>> list(LogDO logDTO) {
         // 查询列表数据
-        Page<LogDO> page = new Page<>(pageNumber, pageSize);
+        Page<LogDO> page = getPage(LogDO.class);
 
         Wrapper<LogDO> wrapper = new EntityWrapper<LogDO>(logDTO);
         page = logService.selectPage(page, wrapper);

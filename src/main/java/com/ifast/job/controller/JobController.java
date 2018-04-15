@@ -40,12 +40,10 @@ public class JobController extends BaseController {
 
     @ResponseBody
     @GetMapping("/list")
-    public Result<Page<TaskDO>> list(Integer pageNumber, Integer pageSize, TaskDO taskDTO) {
+    public Result<Page<TaskDO>> list(TaskDO taskDTO) {
         // 查询列表数据
-        Page<TaskDO> page = new Page<>(pageNumber, pageSize);
-
         Wrapper<TaskDO> wrapper = new EntityWrapper<TaskDO>(taskDTO);
-        page = taskScheduleJobService.selectPage(page, wrapper);
+        Page<TaskDO> page = taskScheduleJobService.selectPage(getPage(TaskDO.class), wrapper);
         return Result.ok(page);
     }
 

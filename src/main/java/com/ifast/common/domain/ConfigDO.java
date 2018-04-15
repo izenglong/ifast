@@ -3,6 +3,7 @@ package com.ifast.common.domain;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
@@ -17,7 +18,7 @@ import com.baomidou.mybatisplus.annotations.TableName;
  * @date 2018-04-06 01:05:22
  */
  @TableName("sys_config")
-public class ConfigDO implements Serializable {
+public class ConfigDO extends Model<ConfigDO> implements Serializable {
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
     
@@ -92,5 +93,10 @@ public class ConfigDO implements Serializable {
      */
     public Date getCreateTime() {
         return createTime;
+    }
+    @Override
+    protected Serializable pkVal() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.ifast.common.base.BaseController;
 import com.ifast.common.domain.ConfigDO;
 import com.ifast.common.service.ConfigService;
 import com.ifast.common.utils.Result;
@@ -30,7 +31,7 @@ import com.ifast.common.utils.Result;
 
 @Controller
 @RequestMapping("/common/config")
-public class ConfigController {
+public class ConfigController extends BaseController {
     @Autowired
     private ConfigService configService;
 
@@ -43,9 +44,9 @@ public class ConfigController {
     @ResponseBody
     @GetMapping("/list")
     @RequiresPermissions("common:config:config")
-    public Result<Page<ConfigDO>> list(Integer pageNumber, Integer pageSize, ConfigDO configDTO) {
+    public Result<Page<ConfigDO>> list(ConfigDO configDTO) {
         // 查询列表数据
-        Page<ConfigDO> page = new Page<>(pageNumber, pageSize);
+        Page<ConfigDO> page = getPage(ConfigDO.class);
 
         Wrapper<ConfigDO> wrapper = new EntityWrapper<ConfigDO>(configDTO);
         page = configService.selectPage(page, wrapper);
