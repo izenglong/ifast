@@ -19,6 +19,7 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.ifast.wxmp.domain.MpConfigDO;
 import com.ifast.wxmp.service.MpConfigService;
+import com.ifast.common.base.BaseController;
 import com.ifast.common.utils.Result;
 
 /**
@@ -31,7 +32,7 @@ import com.ifast.common.utils.Result;
  */
 @Controller
 @RequestMapping("/wxmp/mpConfig")
-public class MpConfigController {
+public class MpConfigController extends BaseController {
     @Autowired
     private MpConfigService mpConfigService;
 
@@ -44,12 +45,9 @@ public class MpConfigController {
     @ResponseBody
     @GetMapping("/list")
     @RequiresPermissions("wxmp:mpConfig:mpConfig")
-    public Result<Page<MpConfigDO>> list(Integer pageNumber, Integer pageSize, MpConfigDO mpConfigDTO) {
-        // 查询列表数据
-        Page<MpConfigDO> page = new Page<>(pageNumber, pageSize);
-
+    public Result<Page<MpConfigDO>> list(MpConfigDO mpConfigDTO) {
         Wrapper<MpConfigDO> wrapper = new EntityWrapper<MpConfigDO>(mpConfigDTO);
-        page = mpConfigService.selectPage(page, wrapper);
+        Page<MpConfigDO> page = mpConfigService.selectPage(getPage(MpConfigDO.class), wrapper);
         return Result.ok(page);
     }
 

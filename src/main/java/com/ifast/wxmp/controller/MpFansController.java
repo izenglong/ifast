@@ -1,6 +1,5 @@
 package com.ifast.wxmp.controller;
 
-
 import java.util.Arrays;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -19,6 +18,7 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.ifast.wxmp.domain.MpFansDO;
 import com.ifast.wxmp.service.MpFansService;
+import com.ifast.common.base.BaseController;
 import com.ifast.common.utils.Result;
 
 /**
@@ -26,93 +26,86 @@ import com.ifast.common.utils.Result;
  * <pre>
  * 微信粉丝表
  * </pre>
+ * 
  * <small> 2018-04-11 23:27:06 | Aron</small>
  */
 @Controller
 @RequestMapping("/wxmp/mpFans")
-public class MpFansController {
-	@Autowired
-	private MpFansService mpFansService;
-	
-	@GetMapping()
-	@RequiresPermissions("wxmp:mpFans:mpFans")
-	String MpFans(){
-	    return "wxmp/mpFans/mpFans";
-	}
-	
-	@ResponseBody
-	@GetMapping("/list")
-	@RequiresPermissions("wxmp:mpFans:mpFans")
-	public Result<Page<MpFansDO>> list(Integer pageNumber, Integer pageSize, MpFansDO mpFansDTO){
-		// 查询列表数据
-        Page<MpFansDO> page = new Page<>(pageNumber, pageSize);
-        
-        Wrapper<MpFansDO> wrapper = new EntityWrapper<MpFansDO>(mpFansDTO);
-        page = mpFansService.selectPage(page, wrapper);
-        int total = mpFansService.selectCount(wrapper);
-        page.setTotal(total);
-        return Result.ok(page);
-	}
-	
-	@GetMapping("/add")
-	@RequiresPermissions("wxmp:mpFans:add")
-	String add(){
-	    return "wxmp/mpFans/add";
-	}
+public class MpFansController extends BaseController {
+    @Autowired
+    private MpFansService mpFansService;
 
-	@GetMapping("/edit/{id}")
-	@RequiresPermissions("wxmp:mpFans:edit")
-	String edit(@PathVariable("id") Long id,Model model){
-		MpFansDO mpFans = mpFansService.selectById(id);
-		model.addAttribute("mpFans", mpFans);
-	    return "wxmp/mpFans/edit";
-	}
-	
-	/**
-	 * 保存
-	 */
-	@ResponseBody
-	@PostMapping("/save")
-	@RequiresPermissions("wxmp:mpFans:add")
-	public Result<String> save( MpFansDO mpFans){
-		if(mpFansService.insert(mpFans)){
-			return Result.ok();
-		}
-		return Result.fail();
-	}
-	/**
-	 * 修改
-	 */
-	@ResponseBody
-	@RequestMapping("/update")
-	@RequiresPermissions("wxmp:mpFans:edit")
-	public Result<String>  update( MpFansDO mpFans){
-		mpFansService.updateById(mpFans);
-		return Result.ok();
-	}
-	
-	/**
-	 * 删除
-	 */
-	@PostMapping( "/remove")
-	@ResponseBody
-	@RequiresPermissions("wxmp:mpFans:remove")
-	public Result<String>  remove( Long id){
-		if(mpFansService.deleteById(id)){
-            return Result.ok();
-		}
-		return Result.fail();
-	}
-	
-	/**
-	 * 删除
-	 */
-	@PostMapping( "/batchRemove")
-	@ResponseBody
-	@RequiresPermissions("wxmp:mpFans:batchRemove")
-	public Result<String>  remove(@RequestParam("ids[]") Long[] ids){
-		mpFansService.deleteBatchIds(Arrays.asList(ids));
-		return Result.ok();
-	}
-	
+    @GetMapping()
+    @RequiresPermissions("wxmp:mpFans:mpFans")
+    String MpFans() {
+        return "wxmp/mpFans/mpFans";
+    }
+
+    @ResponseBody
+    @GetMapping("/list")
+    @RequiresPermissions("wxmp:mpFans:mpFans")
+    public Result<Page<MpFansDO>> list(MpFansDO mpFansDTO) {
+        Wrapper<MpFansDO> wrapper = new EntityWrapper<MpFansDO>(mpFansDTO);
+        Page<MpFansDO> page = mpFansService.selectPage(getPage(MpFansDO.class), wrapper);
+        return Result.ok(page);
+    }
+
+    @GetMapping("/add")
+    @RequiresPermissions("wxmp:mpFans:add")
+    String add() {
+        return "wxmp/mpFans/add";
+    }
+
+    @GetMapping("/edit/{id}")
+    @RequiresPermissions("wxmp:mpFans:edit")
+    String edit(@PathVariable("id") Long id, Model model) {
+        MpFansDO mpFans = mpFansService.selectById(id);
+        model.addAttribute("mpFans", mpFans);
+        return "wxmp/mpFans/edit";
+    }
+
+    /**
+     * 保存
+     */
+    @ResponseBody
+    @PostMapping("/save")
+    @RequiresPermissions("wxmp:mpFans:add")
+    public Result<String> save(MpFansDO mpFans) {
+        mpFansService.insert(mpFans);
+        return Result.ok();
+    }
+
+    /**
+     * 修改
+     */
+    @ResponseBody
+    @RequestMapping("/update")
+    @RequiresPermissions("wxmp:mpFans:edit")
+    public Result<String> update(MpFansDO mpFans) {
+        mpFansService.updateById(mpFans);
+        return Result.ok();
+    }
+
+    /**
+     * 删除
+     */
+    @PostMapping("/remove")
+    @ResponseBody
+    @RequiresPermissions("wxmp:mpFans:remove")
+    public Result<String> remove(Long id) {
+        mpFansService.deleteById(id);
+        return Result.ok();
+    }
+
+    /**
+     * 删除
+     */
+    @PostMapping("/batchRemove")
+    @ResponseBody
+    @RequiresPermissions("wxmp:mpFans:batchRemove")
+    public Result<String> remove(@RequestParam("ids[]") Long[] ids) {
+        mpFansService.deleteBatchIds(Arrays.asList(ids));
+        return Result.ok();
+    }
+
 }
