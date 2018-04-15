@@ -32,6 +32,13 @@ IFast内置很多优秀的基础功能和高效的代码生成工具，包括：
  * 对话框：layer
  * 树结构控件：jQuery zTree
  * 日期控件： datepicker
+ 
+# 运行截图
+![运行截图](http://p6r7ke2jc.bkt.clouddn.com/ifast/20180415/login-1523788364377.png)
+
+# 在线演示
+
+> 演示地址： [http://ifast.site](http://ifast.site)
 
 # 快速上手
  * 导入ifast.sql文件到mysql数据库
