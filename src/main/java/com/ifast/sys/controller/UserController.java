@@ -60,12 +60,10 @@ public class UserController extends BaseController {
 
     @GetMapping("/list")
     @ResponseBody
-    public Result<Page<UserDO>> list(Integer pageNumber, Integer pageSize, UserDO userDTO) {
+    public Result<Page<UserDO>> list(UserDO userDTO) {
         // 查询列表数据
-        Page<UserDO> page = new Page<>(pageNumber, pageSize);
-
         Wrapper<UserDO> wrapper = new EntityWrapper<UserDO>(userDTO);
-        page = userService.selectPage(page, wrapper);
+        Page<UserDO> page = userService.selectPage(getPage(UserDO.class), wrapper);
         return Result.ok(page);
     }
 

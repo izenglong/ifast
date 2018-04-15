@@ -48,12 +48,10 @@ public class FileController extends BaseController {
     @ResponseBody
     @GetMapping("/list")
     @RequiresPermissions("common:sysFile:sysFile")
-    public Result<Page<FileDO>> list(Integer pageNumber, Integer pageSize, FileDO fileDTO) {
+    public Result<Page<FileDO>> list(FileDO fileDTO) {
         // 查询列表数据
-        Page<FileDO> page = new Page<>(pageNumber, pageSize);
-
         Wrapper<FileDO> wrapper = new EntityWrapper<FileDO>(fileDTO);
-        page = sysFileService.selectPage(page, wrapper);
+        Page<FileDO> page = sysFileService.selectPage(getPage(FileDO.class), wrapper);
         return Result.ok(page);
     }
 
