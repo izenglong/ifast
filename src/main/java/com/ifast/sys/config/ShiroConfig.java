@@ -1,6 +1,8 @@
 package com.ifast.sys.config;
 
-import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashMap;
 
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.mgt.SecurityManager;
@@ -14,32 +16,26 @@ import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.ifast.sys.shiro.UserRealm;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashMap;
+import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 
+/**
+ * <pre>
+ * . cache ehcache
+ * . realm(cache)
+ * . securityManager（realm）
+ * . ShiroFilterFactoryBean 注册
+ * 
+ * </pre>
+ * <small> 2018年4月18日 | Aron</small>
+ */
 @Configuration
 public class ShiroConfig {
-    @Bean
-    public EhCacheManager getEhCacheManager() {
-        EhCacheManager em = new EhCacheManager();
-        em.setCacheManagerConfigFile("classpath:config/ehcache.xml");
-        return em;
-    }
-
-    @Bean
-    UserRealm userRealm(EhCacheManager cacheManager) {
-        UserRealm userRealm = new UserRealm();
-        userRealm.setCacheManager(cacheManager);
-        return userRealm;
-    }
-
+    
     @Bean
     SessionDAO sessionDAO() {
         MemorySessionDAO sessionDAO = new MemorySessionDAO();
@@ -54,6 +50,20 @@ public class ShiroConfig {
         sessionManager.setSessionListeners(listeners);
         sessionManager.setSessionDAO(sessionDAO());
         return sessionManager;
+    }
+    
+    @Bean
+    public EhCacheManager getEhCacheManager() {
+        EhCacheManager em = new EhCacheManager();
+        em.setCacheManagerConfigFile("classpath:config/ehcache.xml");
+        return em;
+    }
+    
+    @Bean
+    UserRealm userRealm(EhCacheManager cacheManager) {
+        UserRealm userRealm = new UserRealm();
+        userRealm.setCacheManager(cacheManager);
+        return userRealm;
     }
 
     @Bean
@@ -85,15 +95,13 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/test/**", "anon");
         filterChainDefinitionMap.put("/logout", "logout");
         filterChainDefinitionMap.put("/", "anon");
-        filterChainDefinitionMap.put("/blog", "anon");
-        filterChainDefinitionMap.put("/blog/open/**", "anon");
         filterChainDefinitionMap.put("/**", "authc");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }
 
-    @Bean("lifecycleBeanPostProcessor")
+    @Bean
     public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
         return new LifecycleBeanPostProcessor();
     }
@@ -111,8 +119,7 @@ public class ShiroConfig {
     }
 
     @Bean
-    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(
-            @Qualifier("securityManager") SecurityManager securityManager) {
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;

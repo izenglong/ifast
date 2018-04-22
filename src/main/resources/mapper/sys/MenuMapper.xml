@@ -5,25 +5,21 @@
 
 	<select id="listMenuByUserId" resultType="com.ifast.sys.domain.MenuDO">
 		select distinct
-		m.id , parent_id, name, url,
-		perms,`type`,icon,order_num,gmt_create, gmt_modified
+		  m.id , parent_id, name, url, perms,`type`,icon,order_num,gmt_create, gmt_modified
 		from sys_menu m
-		left
-		join sys_role_menu rm on m.id = rm.menu_id left join
-		sys_user_role ur
-		on rm.role_id =ur.role_id where ur.user_id = #{id}
-		and
-		m.type in(0,1)
-		order by
-		m.order_num
+		left join sys_role_menu rm on m.id = rm.menu_id 
+		left join sys_user_role ur on rm.role_id =ur.role_id 
+		where 
+		  ur.user_id = #{id} 
+		  and m.type in(0,1)
+		order by m.order_num
 	</select>
 
 	<select id="listUserPerms" resultType="string">
-		select distinct m.perms
-		from sys_menu m left join
-		sys_role_menu rm on m.id = rm.menu_id
-		left join sys_user_role ur
-		on rm.role_id = ur.role_id 
-		where ur.user_id = #{id}
+		select distinct m.perms from sys_menu m 
+		left join sys_role_menu rm on m.id = rm.menu_id
+		left join sys_user_role ur on rm.role_id = ur.role_id 
+		where 
+		  ur.user_id = #{id}
 	</select>
 </mapper>

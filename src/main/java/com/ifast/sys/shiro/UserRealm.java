@@ -1,7 +1,5 @@
 package com.ifast.sys.shiro;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.shiro.authc.AuthenticationException;
@@ -33,22 +31,22 @@ public class UserRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection arg0) {
         Long userId = ShiroUtils.getUserId();
         MenuService menuService = SpringContextHolder.getBean(MenuService.class);
-        Set<String> perms = menuService.listPerms(userId);
+        Set<String> permsSet = menuService.listPerms(userId);
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        info.setStringPermissions(perms);
+        info.setStringPermissions(permsSet);
         return info;
     }
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         String username = (String) token.getPrincipal();
-        Map<String, Object> map = new HashMap<>(16);
-        map.put("username", username);
         String password = new String((char[]) token.getCredentials());
 
         UserDao userMapper = SpringContextHolder.getBean(UserDao.class);
+        UserDO entity = new UserDO();
+        entity.setUsername(username);
         // 查询用户信息
-        UserDO user = userMapper.selectByMap(map).get(0);
+        UserDO user = userMapper.selectOne(entity );
 
         // 账号不存在
         if (user == null) {
