@@ -104,9 +104,9 @@ ifast以基础建设和实用性为切入点，内置了众多很多优秀的基
          │ 
          ├─ templates ---- 页面模板
          │ 
-         ├─application*.yml------ 项目配置文件
+         ├─ application*.yml------ 项目配置文件
          │ 
-         ├─generator.properties------- 代码生成配置
+         ├─ generator.properties------- 代码生成配置
 
 ```
 
