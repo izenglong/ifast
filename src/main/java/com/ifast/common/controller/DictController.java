@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.ifast.common.base.BaseController;
+import com.ifast.common.base.AdminBaseController;
 import com.ifast.common.domain.DictDO;
 import com.ifast.common.service.DictService;
 import com.ifast.common.utils.Result;
@@ -33,7 +33,7 @@ import com.ifast.common.utils.Result;
  */
 @Controller
 @RequestMapping("/common/sysDict")
-public class DictController extends BaseController {
+public class DictController extends AdminBaseController {
     @Autowired
     private DictService sysDictService;
 

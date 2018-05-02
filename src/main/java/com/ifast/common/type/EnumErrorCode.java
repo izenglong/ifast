@@ -29,6 +29,15 @@ public enum EnumErrorCode {
     
     , userLoginFail(40401, "用户或密码错误")
     , userUpdatePwd4adminNotAllowed(40402, "超级管理员的账号不允许直接重置！")
+    
+    
+    // API
+    , apiAuthorizationHeaderInvalid(44000, "未验证的授权信息")
+    , apiAuthorizationSignInvalid(44001, "未验证的授权信息")
+    , apiAuthorizationInvalid(44002, "token不合法")
+    , apiAuthorizationOutOfTime(44003, "token超时失效")
+    
+    , apiUserLoginError(44010, "用户名或密码错误")
     ;
 
     private int code;

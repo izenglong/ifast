@@ -46,7 +46,7 @@ import com.ifast.sys.vo.UserVO;
  * <small> 2018年3月23日 | Aron</small>
  */
 @Transactional
-@Service
+@Service("sysUserServiceImpl")
 public class UserServiceImpl extends ServiceImpl<UserDao, UserDO> implements UserService {
     @Autowired
     UserRoleDao userRoleMapper;

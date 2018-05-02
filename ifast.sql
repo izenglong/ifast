@@ -18,6 +18,29 @@ SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
+--  Table structure for `app_user`
+-- ----------------------------
+DROP TABLE IF EXISTS `app_user`;
+CREATE TABLE `app_user` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `real_name` varchar(20) DEFAULT NULL,
+  `mobile` varchar(20) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `last_login_time` datetime DEFAULT NULL,
+  `uname` varchar(20) DEFAULT NULL,
+  `passwd` varchar(100) DEFAULT NULL,
+  `openid` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+-- ----------------------------
+--  Records of `app_user`
+-- ----------------------------
+BEGIN;
+INSERT INTO `app_user` VALUES ('1', 'Aron', '15277779999', '2018-04-01 21:59:50', '2018-05-02 21:06:51', 'Aron', 'Aron', 'oy03r0BhZIURZGTNfHZfwijCXkYQ');
+COMMIT;
+
+-- ----------------------------
 --  Table structure for `sys_config`
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_config`;

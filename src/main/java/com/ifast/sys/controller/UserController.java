@@ -22,7 +22,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.ifast.common.annotation.Log;
-import com.ifast.common.base.BaseController;
+import com.ifast.common.base.AdminBaseController;
 import com.ifast.common.domain.DictDO;
 import com.ifast.common.domain.Tree;
 import com.ifast.common.service.DictService;
@@ -43,7 +43,7 @@ import com.ifast.sys.vo.UserVO;
  */
 @RequestMapping("/sys/user")
 @Controller
-public class UserController extends BaseController {
+public class UserController extends AdminBaseController {
     private String prefix = "sys/user";
     @Autowired
     UserService userService;

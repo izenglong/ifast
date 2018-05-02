@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ifast.common.base.BaseController;
+import com.ifast.common.base.AdminBaseController;
 import com.ifast.common.config.Constant;
 import com.ifast.common.domain.Tree;
 import com.ifast.common.type.EnumErrorCode;
@@ -35,7 +35,7 @@ import io.swagger.annotations.ApiOperation;
  */
 @Controller
 @RequestMapping("/sys/dept")
-public class DeptController extends BaseController {
+public class DeptController extends AdminBaseController {
     private String prefix = "sys/dept";
     @Autowired
     private DeptService sysDeptService;

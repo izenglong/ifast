@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.ifast.common.base.BaseController;
+import com.ifast.common.base.AdminBaseController;
 import com.ifast.common.domain.ConfigDO;
 import com.ifast.common.service.ConfigService;
 import com.ifast.common.utils.Result;
@@ -31,7 +31,7 @@ import com.ifast.common.utils.Result;
 
 @Controller
 @RequestMapping("/common/config")
-public class ConfigController extends BaseController {
+public class ConfigController extends AdminBaseController {
     @Autowired
     private ConfigService configService;
 

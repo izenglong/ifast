@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ifast.common.annotation.Log;
-import com.ifast.common.base.BaseController;
+import com.ifast.common.base.AdminBaseController;
 import com.ifast.common.utils.Result;
 import com.ifast.sys.domain.RoleDO;
 import com.ifast.sys.service.RoleService;
@@ -28,7 +28,7 @@ import com.ifast.sys.service.RoleService;
  */
 @RequestMapping("/sys/role")
 @Controller
-public class RoleController extends BaseController {
+public class RoleController extends AdminBaseController {
     String prefix = "sys/role";
     @Autowired
     RoleService roleService;

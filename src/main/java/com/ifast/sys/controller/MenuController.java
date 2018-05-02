@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ifast.common.annotation.Log;
-import com.ifast.common.base.BaseController;
+import com.ifast.common.base.AdminBaseController;
 import com.ifast.common.domain.Tree;
 import com.ifast.common.utils.Result;
 import com.ifast.sys.domain.MenuDO;
@@ -27,7 +27,7 @@ import com.ifast.sys.service.MenuService;
  */
 @RequestMapping("/sys/menu")
 @Controller
-public class MenuController extends BaseController {
+public class MenuController extends AdminBaseController {
     String prefix = "sys/menu";
     @Autowired
     MenuService menuService;

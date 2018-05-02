@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ifast.common.annotation.Log;
-import com.ifast.common.base.BaseController;
+import com.ifast.common.base.AdminBaseController;
 import com.ifast.common.domain.Tree;
 import com.ifast.common.type.EnumErrorCode;
 import com.ifast.common.utils.MD5Utils;
@@ -31,7 +31,7 @@ import com.ifast.sys.service.MenuService;
  * <small> 2018年3月23日 | Aron</small>
  */
 @Controller
-public class LoginController extends BaseController {
+public class LoginController extends AdminBaseController {
 
     @Autowired
     MenuService menuService;

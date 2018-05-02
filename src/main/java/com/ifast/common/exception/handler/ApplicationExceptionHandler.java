@@ -7,6 +7,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.ifast.api.exception.IFastApiException;
 import com.ifast.common.exception.IFastException;
 import com.ifast.common.type.EnumErrorCode;
 import com.ifast.common.utils.Result;
@@ -20,10 +21,26 @@ public class ApplicationExceptionHandler {
     private Logger log = LoggerFactory.getLogger(getClass());
 
     /**
+     * API异常
+     */
+    @ExceptionHandler(IFastApiException.class)
+    public Result<String> handleIFastApiException(IFastApiException e) {
+        log.info("handleIFastApiException");
+        try {
+            int code = Integer.parseInt(e.getMessage());
+            return Result.build(code, EnumErrorCode.getMsgByCode(code));
+        } catch (NumberFormatException e1) {
+            log.info("错误码使用错误，异常内容请抛出EnumErrorCode类的枚举值");
+            return Result.build(EnumErrorCode.unknowFail.getCode(), EnumErrorCode.unknowFail.getMsg());
+        }
+    }
+
+    /**
      * 自定义异常
      */
     @ExceptionHandler(IFastException.class)
-    public Result<String> handleBDException(IFastException e) {
+    public Result<String> handleIFastException(IFastException e) {
+        log.info("handleIFastException");
         try {
             int code = Integer.parseInt(e.getMessage());
             return Result.build(code, EnumErrorCode.getMsgByCode(code));

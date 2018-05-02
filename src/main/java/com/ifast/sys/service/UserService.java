@@ -18,7 +18,7 @@ import com.ifast.sys.vo.UserVO;
  * 
  * <small> 2018年3月23日 | Aron</small>
  */
-@Service
+@Service("sysUserService")
 public interface UserService extends IService<UserDO> {
 
     boolean exit(Map<String, Object> params);

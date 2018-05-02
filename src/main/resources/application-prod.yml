@@ -2,6 +2,9 @@ ifast:
   projectName: ifast
   projectRootURL: http://ifast.site/
   demoMode: true
+  jwt:
+    userPrimaryKey: userId
+    expireTime: 300000
 logging:
   level:
     com.ifast: info

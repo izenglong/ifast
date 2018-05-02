@@ -19,7 +19,7 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.ifast.wxmp.domain.MpConfigDO;
 import com.ifast.wxmp.service.MpConfigService;
-import com.ifast.common.base.BaseController;
+import com.ifast.common.base.AdminBaseController;
 import com.ifast.common.utils.Result;
 
 /**
@@ -32,7 +32,7 @@ import com.ifast.common.utils.Result;
  */
 @Controller
 @RequestMapping("/wxmp/mpConfig")
-public class MpConfigController extends BaseController {
+public class MpConfigController extends AdminBaseController {
     @Autowired
     private MpConfigService mpConfigService;
 

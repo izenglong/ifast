@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.ifast.common.base.BaseController;
+import com.ifast.common.base.AdminBaseController;
 import com.ifast.common.utils.Result;
 import com.ifast.job.domain.TaskDO;
 import com.ifast.job.service.JobService;
@@ -29,7 +29,7 @@ import com.ifast.job.service.JobService;
  */
 @Controller
 @RequestMapping("/common/job")
-public class JobController extends BaseController {
+public class JobController extends AdminBaseController {
     @Autowired
     private JobService taskScheduleJobService;
 

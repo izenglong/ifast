@@ -3,6 +3,8 @@ package com.ifast.common.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+import com.ifast.api.config.JWTConfig;
+
 /**
  * <pre>
  * </pre>
@@ -29,6 +31,8 @@ public class IFastConfig {
      * 调试模式
      */
     private boolean devMode;
+
+    private JWTConfig jwt;
 
     public boolean isDemoMode() {
         return demoMode;
@@ -60,6 +64,21 @@ public class IFastConfig {
 
     public void setProjectName(String projectName) {
         this.projectName = projectName;
+    }
+
+
+    public JWTConfig getJwt() {
+        return jwt;
+    }
+
+    public void setJwt(JWTConfig jwt) {
+        this.jwt = jwt;
+    }
+
+    @Override
+    public String toString() {
+        return "IFastConfig [projectName=" + projectName + ", projectRootURL=" + projectRootURL + ", demoMode="
+                + demoMode + ", devMode=" + devMode + ", jwt=" + jwt + "]";
     }
 
 }

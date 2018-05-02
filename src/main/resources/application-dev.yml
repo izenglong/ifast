@@ -2,6 +2,9 @@ ifast:
   projectName: ifast
   projectRootURL: http://localhost:8088/
   demoMode: false
+  jwt:
+    userPrimaryKey: userId
+    expireTime: 3000000
 logging:
   level:
     com.ifast: info
@@ -34,3 +37,5 @@ spring:
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
     # 合并多个DruidDataSource的监控数据
     #useGlobalDataSourceStat: true
+  session: 
+    store-type: HASH_MAP

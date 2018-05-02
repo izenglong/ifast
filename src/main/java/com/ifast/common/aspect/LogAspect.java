@@ -84,7 +84,7 @@ public class LogAspect {
         // 设置IP地址
         sysLog.setIp(IPUtils.getIpAddr(request));
         // 用户名
-        UserDO currUser = ShiroUtils.getUser();
+        UserDO currUser = ShiroUtils.getSysUser();
         if (null == currUser) {
             if (null != sysLog.getParams()) {
                 sysLog.setUserId(-1L);
@@ -95,7 +95,7 @@ public class LogAspect {
             }
         } else {
             sysLog.setUserId(ShiroUtils.getUserId());
-            sysLog.setUsername(ShiroUtils.getUser().getUsername());
+            sysLog.setUsername(ShiroUtils.getSysUser().getUsername());
         }
         sysLog.setTime((int) time);
         // 系统当前时间

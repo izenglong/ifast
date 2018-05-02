@@ -18,7 +18,7 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.ifast.wxmp.domain.MpFansDO;
 import com.ifast.wxmp.service.MpFansService;
-import com.ifast.common.base.BaseController;
+import com.ifast.common.base.AdminBaseController;
 import com.ifast.common.utils.Result;
 
 /**
@@ -31,7 +31,7 @@ import com.ifast.common.utils.Result;
  */
 @Controller
 @RequestMapping("/wxmp/mpFans")
-public class MpFansController extends BaseController {
+public class MpFansController extends AdminBaseController {
     @Autowired
     private MpFansService mpFansService;
 
