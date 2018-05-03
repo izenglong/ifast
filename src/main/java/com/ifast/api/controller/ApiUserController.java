@@ -3,7 +3,6 @@ package com.ifast.api.controller;
 import com.ifast.api.pojo.dto.UserLoginDTO;
 import com.ifast.api.pojo.vo.TokenVO;
 import com.ifast.api.service.UserService;
-import com.ifast.common.base.ApiBaseController;
 import com.ifast.common.utils.Result;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -24,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/user/")
 //@Api(tags = { "测试API" })
-public class ApiUserController extends ApiBaseController {
+public class ApiUserController{
     @Autowired
     private UserService userService;
 
