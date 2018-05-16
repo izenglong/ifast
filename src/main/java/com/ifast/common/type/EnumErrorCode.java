@@ -12,7 +12,7 @@ public enum EnumErrorCode {
     ok(200, "请求成功")
     , unknowFail(500, "未知错误")
     , pageNotFound(404, "页面不存在")
-    , notAuthorization(415, "未授权")
+    , notAuthorization(405, "未授权")
     
     
     , duplicateKeyExist(40000, "记录已存在")

@@ -1,28 +1,23 @@
 package com.ifast.common.controller;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.ifast.common.annotation.Log;
 import com.ifast.common.base.AdminBaseController;
 import com.ifast.common.domain.DictDO;
 import com.ifast.common.service.DictService;
 import com.ifast.common.utils.Result;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <pre>
@@ -36,13 +31,15 @@ import com.ifast.common.utils.Result;
 public class DictController extends AdminBaseController {
     @Autowired
     private DictService sysDictService;
-
+    
+    @Log("进入数据字典列表页面")
     @GetMapping()
     @RequiresPermissions("common:sysDict:sysDict")
     String sysDict() {
         return "common/sysDict/sysDict";
     }
-
+    
+    @Log("查询数据字典列表")
     @ResponseBody
     @GetMapping("/list")
     @RequiresPermissions("common:sysDict:sysDict")
@@ -54,7 +51,8 @@ public class DictController extends AdminBaseController {
         page = sysDictService.selectPage(page, wrapper);
         return Result.ok(page);
     }
-
+    
+    @Log("进入数据字典添加页面")
     @GetMapping("/add")
     @RequiresPermissions("common:sysDict:add")
     String add() {
@@ -72,6 +70,7 @@ public class DictController extends AdminBaseController {
     /**
      * 保存
      */
+    @Log("添加数据字典")
     @ResponseBody
     @PostMapping("/save")
     @RequiresPermissions("common:sysDict:add")
@@ -83,6 +82,7 @@ public class DictController extends AdminBaseController {
     /**
      * 修改
      */
+    @Log("更新数据字典")
     @ResponseBody
     @RequestMapping("/update")
     @RequiresPermissions("common:sysDict:edit")
@@ -94,6 +94,7 @@ public class DictController extends AdminBaseController {
     /**
      * 删除
      */
+    @Log("删除数据字典")
     @PostMapping("/remove")
     @ResponseBody
     @RequiresPermissions("common:sysDict:remove")
@@ -105,6 +106,7 @@ public class DictController extends AdminBaseController {
     /**
      * 删除
      */
+    @Log("删除数据字典")
     @PostMapping("/batchRemove")
     @ResponseBody
     @RequiresPermissions("common:sysDict:batchRemove")
@@ -112,7 +114,8 @@ public class DictController extends AdminBaseController {
         sysDictService.deleteBatchIds(Arrays.asList(ids));
         return Result.ok();
     }
-
+    
+    @Log("查询数据字典key列表")
     @GetMapping("/type")
     @ResponseBody
     public List<DictDO> listType() {
@@ -120,6 +123,7 @@ public class DictController extends AdminBaseController {
     };
 
     // 类别已经指定增加
+    @Log("进入数据字典添加页面")
     @GetMapping("/add/{type}/{description}")
     @RequiresPermissions("common:sysDict:add")
     String addD(Model model, @PathVariable("type") String type, @PathVariable("description") String description) {
@@ -127,7 +131,8 @@ public class DictController extends AdminBaseController {
         model.addAttribute("description", description);
         return "common/sysDict/add";
     }
-
+    
+    @Log("根据key查询数据字典信息")
     @ResponseBody
     @GetMapping("/list/{type}")
     public List<DictDO> listByType(@PathVariable("type") String type) {

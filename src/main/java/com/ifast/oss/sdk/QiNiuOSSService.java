@@ -76,4 +76,7 @@ public class QiNiuOSSService {
         this.token = token;
     }
 
+    public class QiNiuOSSServiceBuilder{
+        
+    }
 }

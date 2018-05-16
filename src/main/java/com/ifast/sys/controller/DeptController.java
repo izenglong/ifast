@@ -1,21 +1,6 @@
 package com.ifast.sys.controller;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
+import com.ifast.common.annotation.Log;
 import com.ifast.common.base.AdminBaseController;
 import com.ifast.common.config.Constant;
 import com.ifast.common.domain.Tree;
@@ -23,8 +8,17 @@ import com.ifast.common.type.EnumErrorCode;
 import com.ifast.common.utils.Result;
 import com.ifast.sys.domain.DeptDO;
 import com.ifast.sys.service.DeptService;
-
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <pre>
@@ -41,6 +35,7 @@ public class DeptController extends AdminBaseController {
     private DeptService sysDeptService;
 
     @GetMapping()
+    @Log("进入部分页面")
     @RequiresPermissions("system:sysDept:sysDept")
     String dept() {
         return prefix + "/dept";
@@ -49,12 +44,14 @@ public class DeptController extends AdminBaseController {
     @ApiOperation(value = "获取部门列表", notes = "")
     @ResponseBody
     @GetMapping("/list")
+    @Log("获取部门列表")
     @RequiresPermissions("system:sysDept:sysDept")
     public List<DeptDO> list() {
         return sysDeptService.selectList(null);
     }
 
     @GetMapping("/add/{pId}")
+    @Log("进入添加部门页面")
     @RequiresPermissions("system:sysDept:add")
     String add(@PathVariable("pId") Long pId, Model model) {
         model.addAttribute("pId", pId);
@@ -68,6 +65,7 @@ public class DeptController extends AdminBaseController {
 
     @GetMapping("/edit/{deptId}")
     @RequiresPermissions("system:sysDept:edit")
+    @Log("编辑部门")
     String edit(@PathVariable("deptId") Long deptId, Model model) {
         DeptDO sysDept = sysDeptService.selectById(deptId);
         model.addAttribute("sysDept", sysDept);
@@ -86,6 +84,7 @@ public class DeptController extends AdminBaseController {
     @ResponseBody
     @PostMapping("/save")
     @RequiresPermissions("system:sysDept:add")
+    @Log("保存部门")
     public Result<String> save(DeptDO sysDept) {
         sysDeptService.insert(sysDept);
         return Result.ok();
@@ -108,6 +107,7 @@ public class DeptController extends AdminBaseController {
     @PostMapping("/remove")
     @ResponseBody
     @RequiresPermissions("system:sysDept:remove")
+    @Log("删除部门")
     public Result<String> remove(Long id) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("parent_id", id);
@@ -131,6 +131,7 @@ public class DeptController extends AdminBaseController {
     @PostMapping("/batchRemove")
     @ResponseBody
     @RequiresPermissions("system:sysDept:batchRemove")
+    @Log("删除部门")
     public Result<String> remove(@RequestParam("ids[]") Long[] deptIds) {
         sysDeptService.deleteBatchIds(Arrays.asList(deptIds));
         return Result.ok();
@@ -138,6 +139,7 @@ public class DeptController extends AdminBaseController {
 
     @GetMapping("/tree")
     @ResponseBody
+    @Log("查询部门树形数据")
     public Tree<DeptDO> tree() {
         Tree<DeptDO> tree = new Tree<DeptDO>();
         tree = sysDeptService.getTree();
@@ -145,6 +147,7 @@ public class DeptController extends AdminBaseController {
     }
 
     @GetMapping("/treeView")
+    @Log("进入部门树形显示页面")
     String treeView() {
         return prefix + "/deptTree";
     }

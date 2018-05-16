@@ -1,23 +1,18 @@
 package com.ifast.sys.controller;
 
-import java.util.List;
-
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.ifast.common.annotation.Log;
 import com.ifast.common.base.AdminBaseController;
 import com.ifast.common.domain.Tree;
 import com.ifast.common.utils.Result;
 import com.ifast.sys.domain.MenuDO;
 import com.ifast.sys.service.MenuService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * <pre>
@@ -31,13 +26,15 @@ public class MenuController extends AdminBaseController {
     String prefix = "sys/menu";
     @Autowired
     MenuService menuService;
-
+    
+    @Log("进入系统菜单页面")
     @RequiresPermissions("sys:menu:menu")
     @GetMapping()
     String menu(Model model) {
         return prefix + "/menu";
     }
-
+    
+    @Log("查询菜单列表")
     @RequiresPermissions("sys:menu:menu")
     @RequestMapping("/list")
     @ResponseBody
@@ -101,7 +98,8 @@ public class MenuController extends AdminBaseController {
         menuService.deleteById(id);
         return Result.ok();
     }
-
+    
+    @Log("查询菜单树形数据")
     @GetMapping("/tree")
     @ResponseBody
     Tree<MenuDO> tree() {
@@ -109,7 +107,8 @@ public class MenuController extends AdminBaseController {
         tree = menuService.getTree();
         return tree;
     }
-
+    
+    @Log("根据角色ID查询菜单树形数据")
     @GetMapping("/tree/{roleId}")
     @ResponseBody
     Tree<MenuDO> tree(@PathVariable("roleId") Long roleId) {

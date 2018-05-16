@@ -54,7 +54,7 @@ public class JWTAuthenticationFilter extends BasicHttpAuthenticationFilter {
                 executeLogin(request, response);
             } catch (IFastApiException e) {
             	e.printStackTrace();
-                response415(request, response);
+                response405(request, response);
             }catch (Exception e2){
 	            e2.printStackTrace();
 	            response500(request, response);
@@ -91,13 +91,13 @@ public class JWTAuthenticationFilter extends BasicHttpAuthenticationFilter {
 	}
 
     /**
-     * 登录失败跳转到 /shiro/415
+     * 登录失败跳转到 /shiro/405
      */
-    private void response415(ServletRequest req, ServletResponse resp) {
-        log.warn("request not allowed. sendRedirect to /shiro/415");
+    private void response405(ServletRequest req, ServletResponse resp) {
+        log.warn("request not allowed. sendRedirect to /shiro/405");
         try {
             HttpServletResponse httpServletResponse = (HttpServletResponse) resp;
-            httpServletResponse.sendRedirect("/shiro/415");
+            httpServletResponse.sendRedirect("/shiro/405");
         } catch (IOException e) {
             log.error(e.getMessage());
         }

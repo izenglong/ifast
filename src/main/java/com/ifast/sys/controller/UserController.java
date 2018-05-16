@@ -51,13 +51,15 @@ public class UserController extends AdminBaseController {
     RoleService roleService;
     @Autowired
     DictService dictService;
-
+    
+    @Log("进入系统用户列表页面")
     @RequiresPermissions("sys:user:user")
     @GetMapping("")
     String user(Model model) {
         return prefix + "/user";
     }
-
+    
+    @Log("查询系统用户列表")
     @GetMapping("/list")
     @ResponseBody
     public Result<Page<UserDO>> list(UserDO userDTO) {
@@ -67,6 +69,7 @@ public class UserController extends AdminBaseController {
         return Result.ok(page);
     }
 
+    
     @RequiresPermissions("sys:user:add")
     @Log("添加用户")
     @GetMapping("/add")
@@ -132,7 +135,8 @@ public class UserController extends AdminBaseController {
         userService.deleteBatchIds(Arrays.asList(userIds));
         return Result.ok();
     }
-
+    
+    @Log("退出")
     @PostMapping("/exit")
     @ResponseBody
     boolean exit(@RequestParam Map<String, Object> params) {
@@ -168,7 +172,8 @@ public class UserController extends AdminBaseController {
         return Result.ok();
 
     }
-
+    
+    @Log("查询系统用户属性树形数据")
     @GetMapping("/tree")
     @ResponseBody
     public Tree<DeptDO> tree() {
@@ -176,12 +181,14 @@ public class UserController extends AdminBaseController {
         tree = userService.getTree();
         return tree;
     }
-
+    
+    @Log("进入系统用户树形显示页面")
     @GetMapping("/treeView")
     String treeView() {
         return prefix + "/userTree";
     }
-
+    
+    @Log("进入个人中心")
     @GetMapping("/personal")
     String personal(Model model) {
         UserDO userDO = userService.selectById(getUserId());
@@ -192,7 +199,8 @@ public class UserController extends AdminBaseController {
         model.addAttribute("sexList", sexList);
         return prefix + "/personal";
     }
-
+    
+    @Log("上传头像")
     @ResponseBody
     @PostMapping("/uploadImg")
     Result<?> uploadImg(@RequestParam("avatar_file") MultipartFile file, String avatar_data, HttpServletRequest request)

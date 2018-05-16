@@ -1,18 +1,16 @@
 package com.ifast.common.base;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
-
 import com.baomidou.mybatisplus.plugins.Page;
 import com.ifast.api.dao.AppUserDao;
 import com.ifast.api.pojo.domain.AppUserDO;
 import com.ifast.api.util.JWTUtil;
 import com.ifast.common.utils.HttpContextUtils;
 import com.ifast.common.utils.SpringContextHolder;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 

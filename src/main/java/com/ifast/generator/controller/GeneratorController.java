@@ -1,6 +1,7 @@
 package com.ifast.generator.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.ifast.common.annotation.Log;
 import com.ifast.common.type.EnumErrorCode;
 import com.ifast.common.utils.GenUtils;
 import com.ifast.common.utils.Result;
@@ -34,19 +35,22 @@ public class GeneratorController {
     String prefix = "common/generator";
     @Autowired
     GeneratorService generatorService;
-
+    
+    @Log("进入代码生成页面")
     @GetMapping()
     String generator() {
         return prefix + "/list";
     }
-
+    
+    @Log("查询数据表列表")
     @ResponseBody
     @GetMapping("/list")
     List<Map<String, Object>> list() {
         List<Map<String, Object>> list = generatorService.list();
         return list;
     };
-
+    
+    @Log("根据数据表生成代码")
     @RequestMapping("/code/{tableName}")
     public void code(HttpServletRequest request, HttpServletResponse response,
             @PathVariable("tableName") String tableName) throws IOException {
@@ -59,7 +63,8 @@ public class GeneratorController {
 
         IOUtils.write(data, response.getOutputStream());
     }
-
+    
+    @Log("根据数据表批量生成代码")
     @RequestMapping("/batchCode")
     public void batchCode(HttpServletRequest request, HttpServletResponse response, String tables) throws IOException {
         String[] tableNames = new String[] {};
@@ -72,7 +77,8 @@ public class GeneratorController {
 
         IOUtils.write(data, response.getOutputStream());
     }
-
+    
+    @Log("进入代码生成配置编辑页面")
     @GetMapping("/edit")
     public String edit(Model model) {
         Configuration conf = GenUtils.getConfig();
@@ -85,7 +91,8 @@ public class GeneratorController {
         model.addAttribute("property", property);
         return prefix + "/edit";
     }
-
+    
+    @Log("更新代码生成配置")
     @ResponseBody
     @PostMapping("/update")
     Result<String> update(@RequestParam Map<String, Object> map) {

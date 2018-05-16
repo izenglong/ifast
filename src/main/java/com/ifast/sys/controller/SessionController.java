@@ -1,8 +1,9 @@
 package com.ifast.sys.controller;
 
-import java.util.Collection;
-import java.util.List;
-
+import com.ifast.common.annotation.Log;
+import com.ifast.common.utils.Result;
+import com.ifast.sys.domain.UserOnline;
+import com.ifast.sys.service.SessionService;
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,9 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.ifast.common.utils.Result;
-import com.ifast.sys.domain.UserOnline;
-import com.ifast.sys.service.SessionService;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * <pre>
@@ -26,18 +26,21 @@ import com.ifast.sys.service.SessionService;
 public class SessionController {
 	@Autowired
 	SessionService sessionService;
-
+	
+	@Log("进入在线用户列表页面")
 	@GetMapping()
 	public String online() {
 		return "sys/online/online";
 	}
-
+	
+	@Log("查询在线用户列表数据")
 	@ResponseBody
 	@RequestMapping("/list")
 	public List<UserOnline> list() {
 		return sessionService.list();
 	}
-
+	
+	@Log("根据sessionId强踢用户下线")
 	@ResponseBody
 	@RequestMapping("/forceLogout/{sessionId}")
 	public Result<String> forceLogout(@PathVariable("sessionId") String sessionId, RedirectAttributes redirectAttributes) {
@@ -48,9 +51,9 @@ public class SessionController {
 			e.printStackTrace();
 			return Result.fail();
 		}
-
 	}
-
+	
+	@Log("查询在线用户数据列表")
 	@ResponseBody
 	@RequestMapping("/sessionList")
 	public Collection<Session> sessionList() {

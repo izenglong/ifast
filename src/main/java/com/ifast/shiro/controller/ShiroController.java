@@ -17,8 +17,8 @@ import com.ifast.common.utils.Result;
 @RequestMapping("/shiro")
 public class ShiroController extends AdminBaseController {
 
-    @RequestMapping("/415")
-    public Result<String> http415() {
+    @RequestMapping("/405")
+    public Result<String> http405() {
         return Result.build(EnumErrorCode.apiAuthorizationInvalid.getCode(), EnumErrorCode.apiAuthorizationInvalid.getMsg());
     }
     
