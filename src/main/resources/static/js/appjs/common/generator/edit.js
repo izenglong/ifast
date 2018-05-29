@@ -1,4 +1,3 @@
-// 以下为官方示例
 $().ready(function() {
 	validateRule();
 });
@@ -14,7 +13,7 @@ function update() {
 		cache : true,
 		type : "POST",
 		url : "/common/generator/update",
-		data : $('#signupForm').serialize(),// 你的formid
+		data : $('#signupForm').serialize(),
 		async : false,
 		error : function(request) {
 			parent.layer.alert("网络连接超时");

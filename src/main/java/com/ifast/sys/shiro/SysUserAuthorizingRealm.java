@@ -32,7 +32,6 @@ public class SysUserAuthorizingRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        log.debug("==> userrealm doGetAuthorizationInfo");
         Object next = principals.getPrimaryPrincipal();
         log.debug("next class:" + next.getClass());
         SimpleAuthorizationInfo info = null;
@@ -48,7 +47,6 @@ public class SysUserAuthorizingRealm extends AuthorizingRealm {
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        log.info("==> userrealm doGetAuthenticationInfo");
         if(!supports(token)) {
             return null;
         }

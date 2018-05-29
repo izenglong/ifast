@@ -2,14 +2,10 @@ package com.ifast.generator.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.ifast.common.annotation.Log;
-import com.ifast.common.type.EnumErrorCode;
-import com.ifast.common.utils.GenUtils;
+import com.ifast.common.domain.ConfigDO;
+import com.ifast.common.service.ConfigService;
 import com.ifast.common.utils.Result;
 import com.ifast.generator.service.GeneratorService;
-
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,6 +31,9 @@ public class GeneratorController {
     String prefix = "common/generator";
     @Autowired
     GeneratorService generatorService;
+    @Autowired
+    ConfigService configService;
+    
     
     @Log("进入代码生成页面")
     @GetMapping()
@@ -81,32 +80,28 @@ public class GeneratorController {
     @Log("进入代码生成配置编辑页面")
     @GetMapping("/edit")
     public String edit(Model model) {
-        Configuration conf = GenUtils.getConfig();
-        Map<String, Object> property = new HashMap<>(16);
-        property.put("author", conf.getProperty("author"));
-        property.put("email", conf.getProperty("email"));
-        property.put("package", conf.getProperty("package"));
-        property.put("autoRemovePre", conf.getProperty("autoRemovePre"));
-        property.put("tablePrefix", conf.getProperty("tablePrefix"));
-        model.addAttribute("property", property);
+        List<ConfigDO> list = configService.findListByKvType(4400);
+        List<ConfigDO> list2 = configService.findListByKvType(4401);
+        HashMap<String, String> map = new HashMap<>();
+        for(ConfigDO config : list2) {
+            map.put(config.getK(), config.getV());
+        }
+        
+        model.addAttribute("list", list);
+        model.addAttribute("property", map);
         return prefix + "/edit";
     }
     
     @Log("更新代码生成配置")
     @ResponseBody
     @PostMapping("/update")
-    Result<String> update(@RequestParam Map<String, Object> map) {
-        try {
-            PropertiesConfiguration conf = new PropertiesConfiguration("generator.properties");
-            conf.setProperty("author", map.get("author"));
-            conf.setProperty("email", map.get("email"));
-            conf.setProperty("package", map.get("package"));
-            conf.setProperty("autoRemovePre", map.get("autoRemovePre"));
-            conf.setProperty("tablePrefix", map.get("tablePrefix"));
-            conf.save();
-        } catch (ConfigurationException e) {
-            return Result.build(EnumErrorCode.genWriteConfigError.getCode(), EnumErrorCode.genWriteConfigError.getMsg());
+    Result<String> update(@RequestParam Map<String, String> map) {
+        if(!map.containsKey("autoRemovePre")) {
+            map.put("autoRemovePre", "false");
+        }else {
+            map.put("autoRemovePre", "true");
         }
+        configService.updateKV(map);
         return Result.ok();
     }
 }
