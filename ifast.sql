@@ -48,6 +48,7 @@ CREATE TABLE `sys_config` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `k` varchar(100) DEFAULT NULL COMMENT '键',
   `v` varchar(1000) DEFAULT NULL COMMENT '值',
+  `kv_type` int(11) DEFAULT NULL,
   `remark` varchar(100) DEFAULT NULL COMMENT '备注',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
@@ -57,7 +58,7 @@ CREATE TABLE `sys_config` (
 --  Records of `sys_config`
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_config` VALUES ('2', 'oss_qiniu', '{\n\"AccessKey\" : \"8-HMj9EgGNIP-xuOCpSzTn-OMyGOFtR3TxLdn4Uu\",\n\"SecretKey\" : \"SjpGg3V6PsMdJgn42PeEd5Ik-6aNyuwdqV5CPM6A\",\n\"bucket\" : \"ifast\",\n\"AccessUrl\" : \"http://p6r7ke2jc.bkt.clouddn.com/\"\n}', '七牛对象存储配置', '2018-04-06 14:31:26');
+INSERT INTO `sys_config` VALUES ('2', 'oss_qiniu', '{\"AccessKey\" : \"8-HMj9EgGNIP-xuOCpSzTn-OMyGOFtR3TxLdn4Uu\",\"SecretKey\" : \"SjpGg3V6PsMdJgn42PeEd5Ik-6aNyuwdqV5CPM6A\",\"bucket\" : \"ifast\",\"AccessUrl\" : \"http://p6r7ke2jc.bkt.clouddn.com/\"}', '七牛对象存储配置', '2018-04-06 14:31:26', '4300'), ('3', 'author', 'Aron', '代码生成器配置', '2018-05-27 19:57:04', '4401'), ('4', 'email', 'izenglong@163.com', '代码生成器配置', '2018-05-27 19:57:04', '4401'), ('5', 'package', 'com.ifast', '代码生成器配置', '2018-05-27 19:57:04', '4401'), ('6', 'autoRemovePre', 'true', '代码生成器配置', '2018-05-27 19:57:04', '4401'), ('7', 'tablePrefix', 'app', '代码生成器配置', '2018-05-27 19:57:04', '4401'), ('8', 'tinyint', 'Integer', '代码生成器配置', '2018-05-27 19:57:04', '4400'), ('9', 'smallint', 'Integer', '代码生成器配置', '2018-05-27 19:57:04', '4400'), ('10', 'mediumint', 'Integer', '代码生成器配置', '2018-05-27 19:57:04', '4400'), ('11', 'int', 'Integer', '代码生成器配置', '2018-05-27 19:57:04', '4400'), ('12', 'integer', 'Integer', '代码生成器配置', '2018-05-27 19:57:04', '4400'), ('13', 'bigint', 'Long', '代码生成器配置', '2018-05-27 19:57:04', '4400'), ('14', 'float', 'Float', '代码生成器配置', '2018-05-27 19:57:04', '4400'), ('15', 'double', 'Double', '代码生成器配置', '2018-05-27 19:57:04', '4400'), ('16', 'decimal', 'BigDecimal', '代码生成器配置', '2018-05-27 19:57:04', '4400'), ('17', 'bit', 'Boolean', '代码生成器配置', '2018-05-27 19:57:04', '4400'), ('18', 'char', 'String', '代码生成器配置', '2018-05-27 19:57:04', '4400'), ('19', 'varchar', 'String', '代码生成器配置', '2018-05-27 19:57:04', '4400'), ('20', 'tinytext', 'String', '代码生成器配置', '2018-05-27 19:57:04', '4400'), ('21', 'text', 'String', '代码生成器配置', '2018-05-27 19:57:04', '4400'), ('22', 'mediumtext', 'String', '代码生成器配置', '2018-05-27 19:57:04', '4400'), ('23', 'longtext', 'String', '代码生成器配置', '2018-05-27 19:57:04', '4400'), ('24', 'date', 'Date', '代码生成器配置', '2018-05-27 19:57:04', '4400'), ('25', 'datetime', 'Date', '代码生成器配置', '2018-05-27 19:57:04', '4400'), ('26', 'timestamp', 'Date', '代码生成器配置', '2018-05-27 19:57:04', '4400');
 COMMIT;
 
 -- ----------------------------
