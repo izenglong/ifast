@@ -12,9 +12,6 @@ import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
@@ -25,10 +22,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ifast.common.config.Constant;
+import com.ifast.common.domain.ConfigDO;
 import com.ifast.common.exception.IFastException;
+import com.ifast.common.service.ConfigService;
 import com.ifast.common.type.EnumErrorCode;
 import com.ifast.generator.domain.ColumnDO;
 import com.ifast.generator.domain.TableDO;
+import com.ifast.generator.type.EnumGen;
 
 /**
  * 代码生成器 工具类
@@ -36,7 +36,7 @@ import com.ifast.generator.domain.TableDO;
 public class GenUtils {
 
     private static Logger log = LoggerFactory.getLogger(GenUtils.class);
-    
+
     public static List<String> getTemplates() {
         List<String> templates = new ArrayList<String>();
         templates.add("templates/common/generator/domain.java.vm");
@@ -59,15 +59,16 @@ public class GenUtils {
      * 生成代码
      */
 
-    public static void generatorCode(Map<String, String> table, List<Map<String, String>> columns, ZipOutputStream zip) {
+    public static void generatorCode(Map<String, String> table, List<Map<String, String>> columns,
+            ZipOutputStream zip) {
         // 配置信息
-        Configuration config = getConfig();
+        Map<String, String> config = getConfig();
         // 表信息
         TableDO tableDO = new TableDO();
         tableDO.setTableName(table.get("tableName"));
         tableDO.setComments(table.get("tableComment"));
         // 表名转换成Java类名
-        String className = tableToJava(tableDO.getTableName(), config.getString("tablePrefix"), config.getString("autoRemovePre"));
+        String className = tableToJava(tableDO.getTableName(), config.get("tablePrefix"), config.get("autoRemovePre"));
         tableDO.setClassName(className);
         tableDO.setClassname(StringUtils.uncapitalize(className));
 
@@ -86,7 +87,7 @@ public class GenUtils {
             columnDO.setAttrname(StringUtils.uncapitalize(attrName));
 
             // 列的数据类型，转换成Java类型
-            String attrType = config.getString(columnDO.getDataType(), "unknowType");
+            String attrType = config.get(columnDO.getDataType());
             columnDO.setAttrType(attrType);
 
             // 是否主键
@@ -115,11 +116,12 @@ public class GenUtils {
         map.put("pk", tableDO.getPk());
         map.put("className", tableDO.getClassName());
         map.put("classname", tableDO.getClassname());
-        map.put("pathName", config.getString("package").substring(config.getString("package").lastIndexOf(".") + 1));
+        String pack = config.get("package");
+        map.put("pathName", pack.substring(pack.lastIndexOf(".") + 1));
         map.put("columns", tableDO.getColumns());
-        map.put("package", config.getString("package"));
-        map.put("author", config.getString("author"));
-        map.put("email", config.getString("email"));
+        map.put("package", pack);
+        map.put("author", config.get("author"));
+        map.put("email", config.get("email"));
         map.put("datetime", DateUtils.format(new Date(), DateUtils.DATE_TIME_PATTERN_19));
         VelocityContext context = new VelocityContext(map);
 
@@ -133,7 +135,8 @@ public class GenUtils {
 
             try {
                 // 添加到zip
-                zip.putNextEntry(new ZipEntry(getFileName(template, tableDO.getClassname(), tableDO.getClassName(), config.getString("package").substring(config.getString("package").lastIndexOf(".") + 1))));
+                zip.putNextEntry(new ZipEntry(getFileName(template, tableDO.getClassname(), tableDO.getClassName(),
+                        pack.substring(pack.lastIndexOf(".") + 1))));
                 IOUtils.write(sw.toString(), zip, "UTF-8");
                 IOUtils.closeQuietly(sw);
                 zip.closeEntry();
@@ -168,12 +171,13 @@ public class GenUtils {
     /**
      * 获取配置信息
      */
-    public static Configuration getConfig() {
-        try {
-            return new PropertiesConfiguration("generator.properties");
-        } catch (ConfigurationException e) {
-            throw new IFastException(EnumErrorCode.genReadConfigError.getCodeStr());
-        }
+    public static Map<String, String> getConfig() {
+        ConfigService configService = SpringContextHolder.getBean(ConfigService.class);
+        List<ConfigDO> list = configService.findListByKvType(EnumGen.KvType.base.getValue());
+        list.addAll(configService.findListByKvType(EnumGen.KvType.mapping.getValue()));
+        Map<String, String> config = new HashMap<>();
+        list.stream().forEach(kv -> config.put(kv.getK(), kv.getV()));
+        return config;
     }
 
     /**
@@ -181,7 +185,6 @@ public class GenUtils {
      */
     public static String getFileName(String template, String classname, String className, String packageName) {
         String packagePath = "main" + File.separator + "java" + File.separator;
-        // String modulesname=config.getString("packageName");
         if (StringUtils.isNotBlank(packageName)) {
             packagePath += packageName.replace(".", File.separator) + File.separator;
         }
@@ -193,10 +196,6 @@ public class GenUtils {
         if (template.contains("Dao.java.vm")) {
             return packagePath + "dao" + File.separator + className + "Dao.java";
         }
-
-        // if(template.contains("Mapper.java.vm")){
-        // return packagePath + "dao" + File.separator + className + "Mapper.java";
-        // }
 
         if (template.contains("Service.java.vm")) {
             return packagePath + "service" + File.separator + className + "Service.java";
@@ -218,8 +217,6 @@ public class GenUtils {
         if (template.contains("list.html.vm")) {
             return "main" + File.separator + "resources" + File.separator + "templates" + File.separator + packageName
                     + File.separator + classname + File.separator + classname + ".html";
-            // + "modules" + File.separator + "generator" + File.separator +
-            // className.toLowerCase() + ".html";
         }
         if (template.contains("add.html.vm")) {
             return "main" + File.separator + "resources" + File.separator + "templates" + File.separator + packageName
@@ -234,8 +231,6 @@ public class GenUtils {
             return "main" + File.separator + "resources" + File.separator + "static" + File.separator + "js"
                     + File.separator + "appjs" + File.separator + packageName + File.separator + classname
                     + File.separator + classname + ".js";
-            // + "modules" + File.separator + "generator" + File.separator +
-            // className.toLowerCase() + ".js";
         }
         if (template.contains("add.js.vm")) {
             return "main" + File.separator + "resources" + File.separator + "static" + File.separator + "js"
@@ -248,9 +243,9 @@ public class GenUtils {
                     + File.separator + "edit.js";
         }
 
-         if(template.contains("menu.sql.vm")){
-             return className.toLowerCase() + "_menu.sql";
-         }
+        if (template.contains("menu.sql.vm")) {
+            return className.toLowerCase() + "_menu.sql";
+        }
 
         return null;
     }

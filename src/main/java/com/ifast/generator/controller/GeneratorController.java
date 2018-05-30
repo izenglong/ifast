@@ -6,6 +6,8 @@ import com.ifast.common.domain.ConfigDO;
 import com.ifast.common.service.ConfigService;
 import com.ifast.common.utils.Result;
 import com.ifast.generator.service.GeneratorService;
+import com.ifast.generator.type.EnumGen;
+
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -80,8 +82,8 @@ public class GeneratorController {
     @Log("进入代码生成配置编辑页面")
     @GetMapping("/edit")
     public String edit(Model model) {
-        List<ConfigDO> list = configService.findListByKvType(4400);
-        List<ConfigDO> list2 = configService.findListByKvType(4401);
+        List<ConfigDO> list = configService.findListByKvType(EnumGen.KvType.mapping.getValue());
+        List<ConfigDO> list2 = configService.findListByKvType(EnumGen.KvType.base.getValue());
         HashMap<String, String> map = new HashMap<>();
         for(ConfigDO config : list2) {
             map.put(config.getK(), config.getV());
