@@ -66,7 +66,8 @@ ifast以基础建设和实用性为切入点，内置了众多很多优秀的基
 # 交流、反馈、参与贡献
  * QQ群：[746358408](https://jq.qq.com/?_wv=1027&k=5Ofijn8)
  * E-mail：izenglong@163.com
- * gitee：https://gitee.com/icron/ifast
+ * gitee地址：https://gitee.com/icron/ifast
+ * github地址：https://github.com/izenglong/ifast
 
 # 目录结构说明
 ```
