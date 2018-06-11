@@ -48,9 +48,9 @@ CREATE TABLE `sys_config` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `k` varchar(100) DEFAULT NULL COMMENT '键',
   `v` varchar(1000) DEFAULT NULL COMMENT '值',
-  `kv_type` int(11) DEFAULT NULL,
   `remark` varchar(100) DEFAULT NULL COMMENT '备注',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `kv_type` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
