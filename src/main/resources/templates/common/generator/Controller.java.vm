@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.ifast.common.base.BaseController;
+import com.ifast.common.base.AdminBaseController;
 import ${package}.domain.${className}DO;
 import ${package}.service.${className}Service;
 import com.ifast.common.utils.Result;
@@ -31,7 +31,7 @@ import com.ifast.common.utils.Result;
  */
 @Controller
 @RequestMapping("/${pathName}/${classname}")
-public class ${className}Controller extends BaseController {
+public class ${className}Controller extends AdminBaseController {
 	@Autowired
 	private ${className}Service ${classname}Service;
 	
