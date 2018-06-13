@@ -1,0 +1,60 @@
+package com.ifast.wxmp.util;
+
+import java.util.Hashtable;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.ifast.wxmp.service.MpConfigService;
+
+import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
+
+/**
+ * 
+ * <pre>
+ * </pre>
+ * 
+ * <small> 2018年6月13日 | Aron</small>
+ */
+@Component
+public class WxMpConfigHolder implements InitializingBean {
+
+    private static final Logger log = LoggerFactory.getLogger(WxMpConfigHolder.class);
+
+    @Autowired
+    private MpConfigService mpConfigService;
+
+    private static final Hashtable<String, WxMpInMemoryConfigStorage> mpConfigs = new Hashtable<>();
+
+    // 存String方便
+    private static final ThreadLocal<String> currentAppId = new ThreadLocal<String>();
+
+    public static void setCurrentAppId(String aliasName) {
+        currentAppId.set(aliasName);
+    }
+
+    public static String getCurrentAppId() {
+        return currentAppId.get();
+    }
+
+    public static WxMpInMemoryConfigStorage getWxMpInMemoryConfigStorage() {
+        return mpConfigs.get(currentAppId.get());
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        mpConfigService.selectList(null).stream().forEach(bean -> {
+            final WxMpInMemoryConfigStorage config = new WxMpInMemoryConfigStorage();
+            config.setAppId(bean.getAppId());// 设置微信公众号的appid
+            config.setSecret(bean.getAppSecret());// 设置微信公众号的app corpSecret
+            config.setToken(bean.getToken());// 设置微信公众号的token
+            config.setAesKey(bean.getMsgSecret());// 设置消息加解密密钥
+            log.debug("公众号配置初始化：{}", config);
+            mpConfigs.put(bean.getAppId(), config);
+
+        });
+    }
+}
