@@ -129,6 +129,7 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setUnauthorizedUrl("/shiro/415");
         LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         filterChainDefinitionMap.put("/api/**", "jwt"); // api
+        filterChainDefinitionMap.put("/wx/**", "anon"); // 微信接入
         filterChainDefinitionMap.put("/shiro/**", "anon");
         filterChainDefinitionMap.put("/login", "anon");
         filterChainDefinitionMap.put("/css/**", "anon");

@@ -1,11 +1,11 @@
 package com.ifast.wxmp.domain;
 
-import java.io.Serializable;
-import java.util.Date;
-
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+
+import java.io.Serializable;
+import java.util.Date;
 
 
 
@@ -274,5 +274,29 @@ public class MpFansDO implements Serializable {
      */
     public String getTagidList() {
         return tagidList;
+    }
+
+    @Override
+    public String toString() {
+        return "MpFansDO{" +
+                "id=" + id +
+                ", mpId=" + mpId +
+                ", openid='" + openid + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", subscribe=" + subscribe +
+                ", subscribeTime=" + subscribeTime +
+                ", subscribeKey='" + subscribeKey + '\'' +
+                ", sex=" + sex +
+                ", city='" + city + '\'' +
+                ", country='" + country + '\'' +
+                ", province='" + province + '\'' +
+                ", language='" + language + '\'' +
+                ", headimgurl='" + headimgurl + '\'' +
+                ", unionid='" + unionid + '\'' +
+                ", remark='" + remark + '\'' +
+                ", groupid=" + groupid +
+                ", status=" + status +
+                ", tagidList='" + tagidList + '\'' +
+                '}';
     }
 }

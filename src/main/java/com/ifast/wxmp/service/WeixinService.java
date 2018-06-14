@@ -1,9 +1,8 @@
 package com.ifast.wxmp.service;
 
-import javax.annotation.PostConstruct;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +35,7 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
  * <small> 2018年6月13日 | Aron</small>
  */
 @Service
-public class WeixinService extends WxMpServiceImpl {
+public class WeixinService extends WxMpServiceImpl implements InitializingBean {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
@@ -67,11 +66,6 @@ public class WeixinService extends WxMpServiceImpl {
     private SubscribeHandler subscribeHandler;
 
     private WxMpMessageRouter router;
-
-    @PostConstruct
-    public void init() {
-        this.refreshRouter();
-    }
 
     @Override
     public WxMpConfigStorage getWxMpConfigStorage() {
@@ -163,6 +157,11 @@ public class WeixinService extends WxMpServiceImpl {
 
     protected AbstractHandler getScanHandler() {
         return null;
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        this.refreshRouter();
     }
 
 }

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ifast.common.utils.Result;
+import com.ifast.common.base.AdminBaseController;
 import com.ifast.wxmp.service.WeixinService;
 import com.ifast.wxmp.util.WxMpConfigHolder;
 
@@ -29,7 +29,7 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
  */
 @RestController
 @RequestMapping("/wx/mp/msg")
-public class WxMsgController {
+public class WxMsgController extends AdminBaseController {
     
     @Autowired
     private WeixinService wxService;
@@ -100,16 +100,10 @@ public class WxMsgController {
     }
     
     protected WeixinService getWxService() {
+        if(wxService.getRequestHttpClient() == null) {
+            wxService.initHttp();
+        }
         return this.wxService;
     }
     
-    @GetMapping("/")
-    private Result<String> msgGet() {
-        return Result.ok();
-    }
-    
-    @PostMapping("/")
-    public Result<String> msgPost() {
-        return Result.ok();
-    }
 }
