@@ -36,7 +36,7 @@ public class OSS {
         ossConfig.setQiNiuBucket(bucket);
         ossConfig.setQiNiuAccessURL(accessUrl);
         
-        return new QiNiuOSSService(ossConfig, Zone.zone2(), bucket, ak, sk);
+        return new QiNiuOSSService(ossConfig, Zone.zone2());
     }
 
 }
