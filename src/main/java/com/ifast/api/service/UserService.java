@@ -12,5 +12,6 @@ import com.ifast.common.base.CoreService;
 public interface UserService extends CoreService<AppUserDO> {
     
     TokenVO getToken(String uname, String passwd) ;
+    TokenVO refreshToken(String uname, String refreshToken);
     AppUserDO findByUname(String uname);
 }

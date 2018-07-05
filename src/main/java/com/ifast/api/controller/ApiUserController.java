@@ -34,6 +34,14 @@ public class ApiUserController{
         TokenVO token = userService.getToken(loginDTO.getUname(), loginDTO.getPasswd());
         return Result.ok(token);
     }
+    
+    @PostMapping("refresh")
+//    @Log("api测试-刷新token")
+    @ApiOperation("api测试-刷新token")
+    public Result<?> refresh(@RequestParam String uname, @RequestBody final String refresh_token) {
+    	TokenVO token = userService.refreshToken(uname, refresh_token);
+    	return Result.ok(token);
+    }
 
     @GetMapping("/require_auth")
     @RequiresAuthentication

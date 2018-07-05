@@ -1,5 +1,6 @@
 package com.ifast.api.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
@@ -11,6 +12,7 @@ import com.ifast.api.pojo.vo.TokenVO;
 import com.ifast.api.service.UserService;
 import com.ifast.api.util.JWTUtil;
 import com.ifast.common.base.CoreServiceImpl;
+import com.ifast.common.config.IFastConfig;
 import com.ifast.common.type.EnumErrorCode;
 
 /**
@@ -21,6 +23,7 @@ import com.ifast.common.type.EnumErrorCode;
  */
 @Service
 public class UserServiceImpl extends CoreServiceImpl<AppUserDao, AppUserDO> implements UserService {
+	@Autowired private IFastConfig ifastConfig;
 
     @Override
     public TokenVO getToken(String uname, String passwd) {
@@ -34,13 +37,23 @@ public class UserServiceImpl extends CoreServiceImpl<AppUserDao, AppUserDO> impl
             throw new IFastApiException(EnumErrorCode.apiUserLoginError.getCodeStr());
         }
 
-        TokenVO vo = new TokenVO();
-        vo.setToken(JWTUtil.sign(user.getId() + "", uname + passwd));
-        vo.setRefleshToken("refleshToken");
-        return vo;
+        return createToken(user);
     }
 
     @Override
+	public TokenVO refreshToken(String uname, String refreshToken) {
+    	String userId = JWTUtil.getUserId(refreshToken);
+    	if(userId!=null && userId.equals(uname)) {
+    		AppUserDO user = findByUname(uname);
+    		if(user != null) {
+				boolean verify = JWTUtil.verify(refreshToken, uname, user.getId() + user.getPasswd());
+				if(verify) return createToken(user);
+    		}
+    	}
+    	throw new IFastApiException(EnumErrorCode.apiAuthorizationInvalid.getCodeStr());
+	}
+
+	@Override
     public AppUserDO findByUname(String uname) {
         AppUserDO userDO = new AppUserDO();
         userDO.setUname(uname);
@@ -49,4 +62,12 @@ public class UserServiceImpl extends CoreServiceImpl<AppUserDao, AppUserDO> impl
         return bean;
     }
 
+	private TokenVO createToken(AppUserDO user) {
+        TokenVO vo = new TokenVO();
+        vo.setToken(JWTUtil.sign(user.getId() + "", user.getUname() + user.getPasswd()));
+        vo.setRefleshToken(JWTUtil.refreshToken(user.getUname(), user.getId() + user.getPasswd()));
+        vo.setTokenExpire(ifastConfig.getJwt().getExpireTime());
+        vo.setRefreshTokenExpire(ifastConfig.getJwt().getRefreshTokenExpire());
+        return vo;
+	}
 }

@@ -96,4 +96,17 @@ public class JWTUtil {
             throw new IFastApiException(EnumErrorCode.apiAuthorizationInvalid.getCodeStr());
         }
     }
+    
+    /** refresh_token规则与token不同，不能用于访问接口 */
+    public static String refreshToken(String uname, String secret) {
+    	try {
+    		Date date = new Date(System.currentTimeMillis() + ifastConfig.getJwt().getRefreshTokenExpire());
+    		Algorithm algorithm = Algorithm.HMAC256(secret);
+    		// 附带username信息
+    		return JWT.create().withClaim(ifastConfig.getJwt().getUserPrimaryKey(), uname).withExpiresAt(date)
+    				.sign(algorithm);
+    	} catch (UnsupportedEncodingException e) {
+    		throw new IFastApiException(EnumErrorCode.apiAuthorizationInvalid.getCodeStr());
+    	}
+    }
 }
