@@ -1,6 +1,7 @@
 package com.ifast.api.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
@@ -12,6 +13,7 @@ import com.ifast.api.pojo.vo.TokenVO;
 import com.ifast.api.service.UserService;
 import com.ifast.api.util.JWTUtil;
 import com.ifast.common.base.CoreServiceImpl;
+import com.ifast.common.config.CacheConfiguration;
 import com.ifast.common.config.IFastConfig;
 import com.ifast.common.type.EnumErrorCode;
 
@@ -24,10 +26,10 @@ import com.ifast.common.type.EnumErrorCode;
 @Service
 public class UserServiceImpl extends CoreServiceImpl<AppUserDao, AppUserDO> implements UserService {
 	@Autowired private IFastConfig ifastConfig;
+	private Cache tokenExpires = null;
 
-    @Override
+	@Override
     public TokenVO getToken(String uname, String passwd) {
-
         AppUserDO user = findByUname(uname);
         if (null == user) {
             throw new IFastApiException(EnumErrorCode.apiUserLoginError.getCodeStr());
@@ -47,10 +49,29 @@ public class UserServiceImpl extends CoreServiceImpl<AppUserDao, AppUserDO> impl
     		AppUserDO user = findByUname(uname);
     		if(user != null) {
 				boolean verify = JWTUtil.verify(refreshToken, uname, user.getId() + user.getPasswd());
-				if(verify) return createToken(user);
+				if(verify && expireToken(null, refreshToken)) {
+					return createToken(user);
+				}
     		}
     	}
     	throw new IFastApiException(EnumErrorCode.apiAuthorizationInvalid.getCodeStr());
+	}
+
+	@Override
+	public Boolean expireToken(String token, String refreshToken) {
+		Boolean expire = Boolean.FALSE;
+		if(token!=null && JWTUtil.getUserId(token)!=null && tokenExpires.putIfAbsent(token, null)==null) {
+			expire = Boolean.TRUE;
+		}
+		if(refreshToken!=null && JWTUtil.getUserId(refreshToken)!=null && tokenExpires.putIfAbsent(refreshToken, null)==null) {
+			if(expire.booleanValue() == false) expire = Boolean.TRUE;
+		}
+		return expire;
+	}
+
+	@Override
+	public boolean checkExpire(String token) {
+		return tokenExpires().get(token)!=null;
 	}
 
 	@Override
@@ -69,5 +90,10 @@ public class UserServiceImpl extends CoreServiceImpl<AppUserDao, AppUserDO> impl
         vo.setTokenExpire(ifastConfig.getJwt().getExpireTime());
         vo.setRefreshTokenExpire(ifastConfig.getJwt().getRefreshTokenExpire());
         return vo;
+	}
+	
+	private Cache tokenExpires() {
+		if(tokenExpires == null) tokenExpires = CacheConfiguration.dynaConfigCache("tokenExpires", 0, ifastConfig.getJwt().getRefreshTokenExpire(), 1000);
+		return tokenExpires;
 	}
 }

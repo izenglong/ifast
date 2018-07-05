@@ -87,6 +87,10 @@ public class JWTAuthorizingRealm extends AuthorizingRealm {
         if (!JWTUtil.verify(token, userDO.getId() + "", userDO.getUname() + userDO.getPasswd())) {
             throw new IncorrectCredentialsException(EnumErrorCode.apiAuthorizationHeaderInvalid.getCodeStr());
         }
+        
+        if(userService.checkExpire(token)) {
+        	throw new ExpiredCredentialsException(EnumErrorCode.apiAuthorizationInvalid.getCodeStr());
+        }
 
         return new SimpleAuthenticationInfo(token, token, getName());
     }

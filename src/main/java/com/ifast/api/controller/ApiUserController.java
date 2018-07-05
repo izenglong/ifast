@@ -1,17 +1,24 @@
 package com.ifast.api.controller;
 
-import com.ifast.api.pojo.dto.UserLoginDTO;
-import com.ifast.api.pojo.vo.TokenVO;
-import com.ifast.api.service.UserService;
-import com.ifast.common.utils.Result;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.ifast.api.pojo.dto.UserLoginDTO;
+import com.ifast.api.pojo.vo.TokenVO;
+import com.ifast.api.service.UserService;
+import com.ifast.common.utils.Result;
+
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * <pre>
@@ -41,6 +48,14 @@ public class ApiUserController{
     public Result<?> refresh(@RequestParam String uname, @RequestBody final String refresh_token) {
     	TokenVO token = userService.refreshToken(uname, refresh_token);
     	return Result.ok(token);
+    }
+    
+    @PostMapping("logout")
+//    @Log("api测试-刷新token")
+    @ApiOperation("api测试-注销token")
+    public Result<?> logout(String token, String refresh_token) {
+    	Boolean expire = userService.expireToken(token, refresh_token);
+    	return Result.ok(expire);
     }
 
     @GetMapping("/require_auth")
