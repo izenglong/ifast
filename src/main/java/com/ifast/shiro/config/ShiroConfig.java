@@ -126,7 +126,7 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setSecurityManager(securityManager());
         shiroFilterFactoryBean.setLoginUrl("/login");
         shiroFilterFactoryBean.setSuccessUrl("/index");
-        shiroFilterFactoryBean.setUnauthorizedUrl("/shiro/415");
+        shiroFilterFactoryBean.setUnauthorizedUrl("/shiro/405");
         LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         filterChainDefinitionMap.put("/api/**", "jwt"); // api
         filterChainDefinitionMap.put("/swagger-ui.html**", "anon");

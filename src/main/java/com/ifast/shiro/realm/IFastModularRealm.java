@@ -1,7 +1,9 @@
 package com.ifast.shiro.realm;
 
-import com.ifast.api.shiro.JWTAuthenticationTokenToken;
+import java.util.Collection;
+
 import org.apache.shiro.ShiroException;
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -12,7 +14,7 @@ import org.apache.shiro.realm.Realm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collection;
+import com.ifast.api.shiro.JWTAuthenticationTokenToken;
 
 /**
  * <pre>
@@ -52,48 +54,45 @@ public class IFastModularRealm extends ModularRealmAuthenticator {
         if (log.isTraceEnabled()) {
             log.trace("Iterating through {} realms for PAM authentication", realms.size());
         }
+        AuthenticationException ex = null;
         for (Realm realm : realms) {
             aggregate = strategy.beforeAttempt(realm, token, aggregate);
 
             if (realm.supports(token) && token instanceof JWTAuthenticationTokenToken) {
                 log.debug("-API doMultiRealmAuthentication");
                 AuthenticationInfo info = null;
-                Throwable t = null;
                 try {
                     info = realm.getAuthenticationInfo(token);
-                } catch (Throwable throwable) {
-                    t = throwable;
-                    if (log.isWarnEnabled()) {
-                        String msg = "Realm [" + realm + "] threw an exception during a multi-realm authentication attempt:";
-                        log.warn(msg, t);
-                    }
+                } catch (AuthenticationException e) {
+                    ex = e;
                 }
     
-                aggregate = strategy.afterAttempt(realm, token, info, aggregate, t);
+                aggregate = strategy.afterAttempt(realm, token, info, aggregate, ex);
     
             }else if (realm.supports(token) && token instanceof UsernamePasswordToken) {
                 log.debug("-ADMIN doMultiRealmAuthentication");
                 AuthenticationInfo info = null;
-                Throwable t = null;
                 try {
                     info = realm.getAuthenticationInfo(token);
-                } catch (Throwable throwable) {
-                    t = throwable;
-                    if (log.isWarnEnabled()) {
-                        String msg = "Realm [" + realm + "] threw an exception during a multi-realm authentication attempt:";
-                        log.warn(msg, t);
-                    }
+                } catch (AuthenticationException e) {
+                    ex = e;
                 }
 
-                aggregate = strategy.afterAttempt(realm, token, info, aggregate, t);
+                aggregate = strategy.afterAttempt(realm, token, info, aggregate, ex);
 
             } else {
                 log.debug("Realm [{}] does not support token {}.  Skipping realm.", realm, token);
             }
         }
 
-        aggregate = strategy.afterAllAttempts(token, aggregate);
+        try{
+        	aggregate = strategy.afterAllAttempts(token, aggregate);
+        }catch (Exception e) {
+			log.debug(e.getMessage());
+		}
 
+        if(ex != null) throw ex;
+        
         return aggregate;
     }
 

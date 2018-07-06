@@ -32,11 +32,11 @@ public class UserServiceImpl extends CoreServiceImpl<AppUserDao, AppUserDO> impl
     public TokenVO getToken(String uname, String passwd) {
         AppUserDO user = findByUname(uname);
         if (null == user) {
-            throw new IFastApiException(EnumErrorCode.apiUserLoginError.getCodeStr());
+            throw new IFastApiException(EnumErrorCode.apiAuthorizationLoginFailed.getCodeStr());
         }
 
         if (!user.getPasswd().equals(passwd)) {
-            throw new IFastApiException(EnumErrorCode.apiUserLoginError.getCodeStr());
+            throw new IFastApiException(EnumErrorCode.apiAuthorizationLoginFailed.getCodeStr());
         }
 
         return createToken(user);
@@ -49,28 +49,41 @@ public class UserServiceImpl extends CoreServiceImpl<AppUserDao, AppUserDO> impl
     		AppUserDO user = findByUname(uname);
     		if(user != null) {
 				boolean verify = JWTUtil.verify(refreshToken, uname, user.getId() + user.getPasswd());
-				if(verify && expireToken(null, refreshToken)) {
+				if(verify && logoutToken(null, refreshToken)) {
 					return createToken(user);
+				}else if(verify) {
+					throw new IFastApiException(EnumErrorCode.apiAuthorizationLoggedout.getCodeStr());
+				}else {
+					throw new IFastApiException(EnumErrorCode.apiAuthorizationFailed.getCodeStr());
 				}
     		}
+    	}else if(userId != null) {
+    		throw new IFastApiException(EnumErrorCode.apiAuthorizationLoginFailed.getCodeStr());
     	}
     	throw new IFastApiException(EnumErrorCode.apiAuthorizationInvalid.getCodeStr());
 	}
 
 	@Override
-	public Boolean expireToken(String token, String refreshToken) {
+	public Boolean logoutToken(String token, String refreshToken) {
 		Boolean expire = Boolean.FALSE;
-		if(token!=null && JWTUtil.getUserId(token)!=null && tokenExpires.putIfAbsent(token, null)==null) {
-			expire = Boolean.TRUE;
+		String userId = null, uname = null; AppUserDO user = null;
+		if(token!=null && (userId=JWTUtil.getUserId(token))!=null) {
+			user = selectById(userId);
+			if(user!=null && JWTUtil.verify(token, user.getId() + "", user.getUname() + user.getPasswd())) {
+				if(tokenExpires().putIfAbsent(token, null)==null) expire = Boolean.TRUE;
+			}
 		}
-		if(refreshToken!=null && JWTUtil.getUserId(refreshToken)!=null && tokenExpires.putIfAbsent(refreshToken, null)==null) {
-			if(expire.booleanValue() == false) expire = Boolean.TRUE;
+		if(refreshToken!=null && (uname=JWTUtil.getUserId(refreshToken))!=null) {
+			if(user == null) user = findByUname(uname);
+			if(user!=null && uname.equals(user.getUname()) && JWTUtil.verify(refreshToken, uname, user.getId() + user.getPasswd())) {
+				if(tokenExpires().putIfAbsent(refreshToken, null)==null) expire = Boolean.TRUE;
+			}
 		}
 		return expire;
 	}
 
 	@Override
-	public boolean checkExpire(String token) {
+	public boolean checkLogout(String token) {
 		return tokenExpires().get(token)!=null;
 	}
 

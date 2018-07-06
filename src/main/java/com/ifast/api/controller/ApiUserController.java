@@ -54,7 +54,7 @@ public class ApiUserController{
 //    @Log("api测试-刷新token")
     @ApiOperation("api测试-注销token")
     public Result<?> logout(String token, String refresh_token) {
-    	Boolean expire = userService.expireToken(token, refresh_token);
+    	Boolean expire = userService.logoutToken(token, refresh_token);
     	return Result.ok(expire);
     }
 

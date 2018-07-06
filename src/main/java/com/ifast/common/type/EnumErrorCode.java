@@ -19,7 +19,7 @@ public enum EnumErrorCode {
     
     , genReadConfigError(40100, "代码生成器获取配置文件失败")
     , genWriteConfigError(40101, "代码生成器修改配置文件失败")
-    , genRenderTemplateError(40101, "代码生成器渲染模板失败")
+    , genRenderTemplateError(40102, "代码生成器渲染模板失败")
 
     , FileUploadGetBytesError(40200, "文件上传错误")
     , FileUploadError(40201, "文件上传错误")
@@ -32,12 +32,12 @@ public enum EnumErrorCode {
     
     
     // API
-    , apiAuthorizationHeaderInvalid(44000, "未验证的授权信息")
-    , apiAuthorizationSignInvalid(44001, "未验证的授权信息")
-    , apiAuthorizationInvalid(44002, "token不合法")
-    , apiAuthorizationOutOfTime(44003, "token超时失效")
-    
-    , apiUserLoginError(44010, "用户名或密码错误")
+    , apiAuthorizationLoginFailed(44000, "用户名或密码错误")
+    , apiAuthorizationSignFailed(44000, "token生成失败")
+    , apiAuthorizationInvalid(44001, "token不合法")
+    , apiAuthorizationLoggedout(44002, "token已注销")
+    , apiAuthorizationExpired(44003, "token已过期")
+    , apiAuthorizationFailed(44004, "token认证失败")
     ;
 
     private int code;

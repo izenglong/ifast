@@ -1,11 +1,14 @@
 package com.ifast.common.exception.handler;
 
-import org.apache.shiro.authz.AuthorizationException;
+import org.apache.shiro.ShiroException;
+import org.apache.shiro.authc.ExpiredCredentialsException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import com.ifast.api.exception.IFastApiException;
 import com.ifast.common.exception.IFastException;
@@ -52,25 +55,30 @@ public class ApplicationExceptionHandler {
 
     @ExceptionHandler(DuplicateKeyException.class)
     public Result<String> handleDuplicateKeyException(DuplicateKeyException e) {
-        log.error(e.getMessage(), e);
+        log.error(e.getMessage());
         return Result.build(EnumErrorCode.duplicateKeyExist.getCode(), EnumErrorCode.duplicateKeyExist.getMsg());
     }
 
-    @ExceptionHandler(org.springframework.web.servlet.NoHandlerFoundException.class)
-    public Result<String> noHandlerFoundException(org.springframework.web.servlet.NoHandlerFoundException e) {
-        log.error(e.getMessage(), e);
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public Result<String> noHandlerFoundException(NoHandlerFoundException e) {
+        log.error(e.getMessage());
         return Result.build(EnumErrorCode.pageNotFound.getCode(), EnumErrorCode.pageNotFound.getMsg());
     }
 
-    @ExceptionHandler(AuthorizationException.class)
-    public Result<String> handleAuthorizationException(AuthorizationException e) {
-        log.error(e.getMessage(), e);
+    @ExceptionHandler(ShiroException.class)
+    public Result<String> handleAuthorizationException(ShiroException e) {
+        log.error(e.getMessage());
+        if(e instanceof IncorrectCredentialsException) {
+        	return Result.build(EnumErrorCode.apiAuthorizationFailed.getCode(), EnumErrorCode.apiAuthorizationFailed.getMsg());
+        }else if(e instanceof ExpiredCredentialsException) {
+        	return Result.build(EnumErrorCode.apiAuthorizationExpired.getCode(), EnumErrorCode.apiAuthorizationExpired.getMsg());
+        }
         return Result.build(EnumErrorCode.notAuthorization.getCode(), EnumErrorCode.notAuthorization.getMsg());
     }
 
     @ExceptionHandler(Exception.class)
     public Result<String> handleException(Exception e) {
-        log.error(e.getMessage(), e);
+        log.error(e.getMessage());
         return Result.build(EnumErrorCode.unknowFail.getCode(), EnumErrorCode.unknowFail.getMsg());
     }
 }

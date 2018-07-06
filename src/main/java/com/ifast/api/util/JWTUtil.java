@@ -1,5 +1,11 @@
 package com.ifast.api.util;
 
+import java.io.UnsupportedEncodingException;
+import java.util.Date;
+
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.ExpiredCredentialsException;
+
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -11,9 +17,6 @@ import com.ifast.api.exception.IFastApiException;
 import com.ifast.common.config.IFastConfig;
 import com.ifast.common.type.EnumErrorCode;
 import com.ifast.common.utils.SpringContextHolder;
-
-import java.io.UnsupportedEncodingException;
-import java.util.Date;
 
 /**
  * <pre>
@@ -48,9 +51,9 @@ public class JWTUtil {
             verifier.verify(token);
             return true;
         } catch (TokenExpiredException exception) {
-            throw new IFastApiException(EnumErrorCode.apiAuthorizationOutOfTime.getCodeStr());
+            throw new ExpiredCredentialsException(EnumErrorCode.apiAuthorizationExpired.getMsg());
         }catch (InvalidClaimException exception2){
-            throw new IFastApiException(EnumErrorCode.apiAuthorizationHeaderInvalid.getCodeStr());
+            throw new AuthenticationException(EnumErrorCode.apiAuthorizationInvalid.getMsg());
         }catch (Exception exception3){
             return false;
         }
@@ -93,7 +96,7 @@ public class JWTUtil {
             return JWT.create().withClaim(ifastConfig.getJwt().getUserPrimaryKey(), userId).withExpiresAt(date)
                     .sign(algorithm);
         } catch (UnsupportedEncodingException e) {
-            throw new IFastApiException(EnumErrorCode.apiAuthorizationInvalid.getCodeStr());
+            throw new IFastApiException(EnumErrorCode.apiAuthorizationSignFailed.getCodeStr());
         }
     }
     
@@ -106,7 +109,7 @@ public class JWTUtil {
     		return JWT.create().withClaim(ifastConfig.getJwt().getUserPrimaryKey(), uname).withExpiresAt(date)
     				.sign(algorithm);
     	} catch (UnsupportedEncodingException e) {
-    		throw new IFastApiException(EnumErrorCode.apiAuthorizationInvalid.getCodeStr());
+    		throw new IFastApiException(EnumErrorCode.apiAuthorizationSignFailed.getCodeStr());
     	}
     }
 }

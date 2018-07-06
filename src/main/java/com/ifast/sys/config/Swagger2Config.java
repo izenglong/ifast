@@ -23,8 +23,8 @@ public class Swagger2Config {
     public Docket createRestApi() {
     	IFastConfig ifastConfig = SpringContextHolder.getBean(IFastConfig.class);
     	String projectRootURL = ifastConfig.getProjectRootURL();
-    	int s = projectRootURL.indexOf("//"), e = projectRootURL.indexOf('/', s+2);
-    	String host = projectRootURL.substring(s+2, e);
+    	int s = projectRootURL==null ? -1 : projectRootURL.indexOf("//"), e = s==-1 ? -1 : projectRootURL.indexOf('/', s+2);
+    	String host = s==-1 ? null : projectRootURL.substring(s+2, e==-1 ? projectRootURL.length() : e);
         return new Docket(DocumentationType.SWAGGER_2).host(host).apiInfo(apiInfo()).select()
                 // 为当前包路径
                 .apis(RequestHandlerSelectors.any()).paths(PathSelectors.any()).build();
