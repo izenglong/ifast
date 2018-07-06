@@ -76,16 +76,20 @@ public class JWTAuthorizingRealm extends AuthorizingRealm {
         // 解密获得username，用于和数据库进行对比
         String userId = JWTUtil.getUserId(token);
         if (userId == null) {
-            throw new IncorrectCredentialsException(EnumErrorCode.apiAuthorizationHeaderInvalid.getCodeStr());
+            throw new IncorrectCredentialsException(EnumErrorCode.apiAuthorizationInvalid.getMsg());
         }
 
         AppUserDO userDO = userService.selectById(userId);
         if (userDO == null) {
-            throw new IncorrectCredentialsException(EnumErrorCode.apiAuthorizationHeaderInvalid.getCodeStr());
+            throw new IncorrectCredentialsException(EnumErrorCode.apiAuthorizationInvalid.getMsg());
         }
 
+        if(userService.checkLogout(token)) {
+        	throw new ExpiredCredentialsException(EnumErrorCode.apiAuthorizationLoggedout.getMsg());
+        }
+        
         if (!JWTUtil.verify(token, userDO.getId() + "", userDO.getUname() + userDO.getPasswd())) {
-            throw new IncorrectCredentialsException(EnumErrorCode.apiAuthorizationHeaderInvalid.getCodeStr());
+            throw new IncorrectCredentialsException(EnumErrorCode.apiAuthorizationFailed.getMsg());
         }
 
         return new SimpleAuthenticationInfo(token, token, getName());

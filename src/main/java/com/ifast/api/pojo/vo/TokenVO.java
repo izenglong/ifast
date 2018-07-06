@@ -9,7 +9,9 @@ package com.ifast.api.pojo.vo;
 public class TokenVO {
 
     private String token;
+    private Long tokenExpire;
     private String refleshToken;
+    private Long refreshTokenExpire;
 
     public String getToken() {
         return token;
@@ -27,8 +29,24 @@ public class TokenVO {
         this.refleshToken = refleshToken;
     }
 
-    @Override
+	public Long getTokenExpire() {
+		return tokenExpire;
+	}
+
+	public void setTokenExpire(Long tokenExpire) {
+		this.tokenExpire = tokenExpire;
+	}
+
+	public Long getRefreshTokenExpire() {
+		return refreshTokenExpire;
+	}
+
+	public void setRefreshTokenExpire(Long refreshTokenExpire) {
+		this.refreshTokenExpire = refreshTokenExpire;
+	}
+
+	@Override
     public String toString() {
-        return "TokenVO [token=" + token + ", refleshToken=" + refleshToken + "]";
+        return "TokenVO [token=" + token + ", tokenExpire=" + tokenExpire + ", refleshToken=" + refleshToken + ", refreshTokenExpire=" + refreshTokenExpire + "]";
     }
 }

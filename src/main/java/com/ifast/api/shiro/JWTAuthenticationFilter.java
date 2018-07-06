@@ -1,17 +1,23 @@
 package com.ifast.api.shiro;
 
-import com.ifast.api.exception.IFastApiException;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.shiro.authc.ExpiredCredentialsException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import com.ifast.api.exception.IFastApiException;
 
 /**
  * <pre>
@@ -26,23 +32,16 @@ public class JWTAuthenticationFilter extends BasicHttpAuthenticationFilter {
      * 判断是否为登录请求
      */
     @Override
-    protected boolean isLoginAttempt(ServletRequest request, ServletResponse response) {
-        HttpServletRequest req = (HttpServletRequest) request;
-        String authorization = req.getHeader("Authorization");
-        return authorization != null;
+    protected boolean isLoginAttempt(String authzHeader) {
+    	return authzHeader!=null && authzHeader.length()>0;
     }
-
+    
     @Override
-    protected boolean executeLogin(ServletRequest request, ServletResponse response) throws Exception {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        String authorization = httpServletRequest.getHeader("Authorization");
-        
-        JWTAuthenticationTokenToken token = new JWTAuthenticationTokenToken(authorization);
-        getSubject(request, response).login(token);
-        return true;
-    }
+	protected boolean executeLogin(ServletRequest request, ServletResponse response) throws Exception {
+		return false;//已经在isAccessAllowed登录过了，不执行父类的登录操作（token不同）
+	}
 
-    /**
+	/**
      * 这里返回true，Controller中可以通过 subject.isAuthenticated() 来判断用户是否登入
      * 如果有些资源只有登入用户才能访问，我们只需要在方法上面加上 注解 @RequiresAuthentication
      * 缺点：不能够对GET,POST等请求进行分别过滤鉴权
@@ -50,20 +49,39 @@ public class JWTAuthenticationFilter extends BasicHttpAuthenticationFilter {
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
         if (isLoginAttempt(request, response)) {
+        	String error = "访问非法";
             try {
-                executeLogin(request, response);
-            } catch (IFastApiException e) {
-            	e.printStackTrace();
-                response405(request, response);
-            }catch (Exception e2){
-	            e2.printStackTrace();
-	            response500(request, response);
+            	HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+                String authorization = httpServletRequest.getHeader("Authorization");
+                JWTAuthenticationTokenToken token = new JWTAuthenticationTokenToken(authorization);
+                getSubject(request, response).login(token);
+            	return true;
+            } catch (IFastApiException | IncorrectCredentialsException | ExpiredCredentialsException e) {
+            	error = e.getMessage();
+            } catch (Exception e) {
+            	log.info(e.getMessage());
             }
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("application/json; charset=utf-8");
+            try(PrintWriter writer = response.getWriter()){
+            	writer.write("{\"error\":\""+error+"\"}");
+            }catch (Exception ex) {
+            	log.warn(ex.getMessage());
+            }
+            log.info(error);
+            return false;
         }
         return true;
     }
 
-/**
+    /** 请求结束时登出，每次请求都重新鉴权登录 */
+    @Override
+	protected void cleanup(ServletRequest request, ServletResponse response, Exception existing) throws ServletException, IOException {
+    	getSubject(request, response).logout();
+		super.cleanup(request, response, existing);
+	}
+
+	/**
      * 跨域处理
      */
     @Override
@@ -80,26 +98,4 @@ public class JWTAuthenticationFilter extends BasicHttpAuthenticationFilter {
         return super.preHandle(request, response);
     }
 
-	private void response500(ServletRequest req, ServletResponse resp) {
-		log.warn("request error. sendRedirect to /shiro/500");
-		try {
-			HttpServletResponse httpServletResponse = (HttpServletResponse) resp;
-			httpServletResponse.sendRedirect("/shiro/500");
-		} catch (IOException e) {
-			log.error(e.getMessage());
-		}
-	}
-
-    /**
-     * 登录失败跳转到 /shiro/405
-     */
-    private void response405(ServletRequest req, ServletResponse resp) {
-        log.warn("request not allowed. sendRedirect to /shiro/405");
-        try {
-            HttpServletResponse httpServletResponse = (HttpServletResponse) resp;
-            httpServletResponse.sendRedirect("/shiro/405");
-        } catch (IOException e) {
-            log.error(e.getMessage());
-        }
-    }
 }

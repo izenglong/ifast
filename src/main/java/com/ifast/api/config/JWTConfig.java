@@ -12,6 +12,8 @@ public class JWTConfig {
      * jwt过期时间，单位为毫秒
      */
     private Long expireTime;
+    /** refresh_token过期时间，默认24小时 */
+    private Long refreshTokenExpire = 86400000L;
 
     public String getUserPrimaryKey() {
         return userPrimaryKey;
@@ -29,9 +31,17 @@ public class JWTConfig {
         this.expireTime = expireTime;
     }
 
-    @Override
+    public Long getRefreshTokenExpire() {
+		return refreshTokenExpire;
+	}
+
+	public void setRefreshTokenExpire(Long refreshTokenExpire) {
+		this.refreshTokenExpire = refreshTokenExpire;
+	}
+
+	@Override
     public String toString() {
-        return "JWTConfig [userPrimaryKey=" + userPrimaryKey + ", expireTime=" + expireTime + "]";
+        return "JWTConfig [userPrimaryKey=" + userPrimaryKey + ", expireTime=" + expireTime + ", refreshTokenExpre=" + refreshTokenExpire + "]";
     }
 
 }
