@@ -14,9 +14,8 @@ public interface UserService extends CoreService<AppUserDO> {
     TokenVO getToken(String uname, String passwd) ;
     /** 刷新token */
     TokenVO refreshToken(String uname, String refreshToken);
+    /** 检查token是否有效：未超时、未注销*/
+    boolean verifyToken(String token, boolean refresh);
     /** 注销token */
     Boolean logoutToken(String token, String refreshToken);
-    /** 检查token是否已注销 */
-    boolean checkLogout(String token);
-    AppUserDO findByUname(String uname);
 }

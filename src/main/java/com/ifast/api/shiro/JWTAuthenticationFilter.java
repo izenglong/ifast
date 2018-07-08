@@ -1,9 +1,7 @@
 package com.ifast.api.shiro;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 
-import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.ifast.api.exception.IFastApiException;
+import com.ifast.api.service.UserService;
+import com.ifast.common.utils.SpringContextHolder;
 
 /**
  * <pre>
@@ -49,13 +49,17 @@ public class JWTAuthenticationFilter extends BasicHttpAuthenticationFilter {
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
         if (isLoginAttempt(request, response)) {
-        	String error = "访问非法";
+        	String error = "未授权";
             try {
             	HttpServletRequest httpServletRequest = (HttpServletRequest) request;
                 String authorization = httpServletRequest.getHeader("Authorization");
-                JWTAuthenticationTokenToken token = new JWTAuthenticationTokenToken(authorization);
-                getSubject(request, response).login(token);
-            	return true;
+                if(!SpringContextHolder.getBean(UserService.class).verifyToken(authorization, false)) {
+                	getSubject(request, response).logout();
+                }else {
+	                JWTAuthenticationTokenToken token = new JWTAuthenticationTokenToken(authorization);
+	                getSubject(request, response).login(token);
+	            	return true;
+                }
             } catch (IFastApiException | IncorrectCredentialsException | ExpiredCredentialsException e) {
             	error = e.getMessage();
             } catch (Exception e) {
@@ -64,7 +68,7 @@ public class JWTAuthenticationFilter extends BasicHttpAuthenticationFilter {
             response.setCharacterEncoding("UTF-8");
             response.setContentType("application/json; charset=utf-8");
             try(PrintWriter writer = response.getWriter()){
-            	writer.write("{\"error\":\""+error+"\"}");
+            	writer.write("{\"msg\":\""+error+"\"}");
             }catch (Exception ex) {
             	log.warn(ex.getMessage());
             }
@@ -73,13 +77,6 @@ public class JWTAuthenticationFilter extends BasicHttpAuthenticationFilter {
         }
         return true;
     }
-
-    /** 请求结束时登出，每次请求都重新鉴权登录 */
-    @Override
-	protected void cleanup(ServletRequest request, ServletResponse response, Exception existing) throws ServletException, IOException {
-    	getSubject(request, response).logout();
-		super.cleanup(request, response, existing);
-	}
 
 	/**
      * 跨域处理

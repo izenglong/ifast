@@ -14,9 +14,7 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.ifast.api.exception.IFastApiException;
-import com.ifast.common.config.IFastConfig;
 import com.ifast.common.type.EnumErrorCode;
-import com.ifast.common.utils.SpringContextHolder;
 
 /**
  * <pre>
@@ -26,9 +24,9 @@ import com.ifast.common.utils.SpringContextHolder;
  * <small> 2018年4月28日 | Aron</small>
  */
 public class JWTUtil {
-
-    private static IFastConfig ifastConfig = SpringContextHolder.getBean(IFastConfig.class);
-
+	
+	public static String mykey = "mykey";
+	
     /**
      * <pre>
      * </pre>
@@ -46,8 +44,7 @@ public class JWTUtil {
     public static boolean verify(String token, String userId, String secret) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
-            JWTVerifier verifier = JWT.require(algorithm).withClaim(ifastConfig.getJwt().getUserPrimaryKey(), userId)
-                    .build();
+            JWTVerifier verifier = JWT.require(algorithm).withClaim(mykey, userId).build();
             verifier.verify(token);
             return true;
         } catch (TokenExpiredException exception) {
@@ -72,7 +69,7 @@ public class JWTUtil {
     public static String getUserId(String token) {
         try {
             DecodedJWT jwt = JWT.decode(token);
-            return jwt.getClaim(ifastConfig.getJwt().getUserPrimaryKey()).asString();
+            return jwt.getClaim(mykey).asString();
         } catch (JWTDecodeException e) {
             return null;
         }
@@ -88,28 +85,13 @@ public class JWTUtil {
      * @param secret
      * @return
      */
-    public static String sign(String userId, String secret) {
+    public static String sign(String userId, String secret, long expire) {
         try {
-            Date date = new Date(System.currentTimeMillis() + ifastConfig.getJwt().getExpireTime());
+            Date date = new Date(System.currentTimeMillis() + expire);
             Algorithm algorithm = Algorithm.HMAC256(secret);
-            // 附带username信息
-            return JWT.create().withClaim(ifastConfig.getJwt().getUserPrimaryKey(), userId).withExpiresAt(date)
-                    .sign(algorithm);
+            return JWT.create().withClaim(mykey, userId).withExpiresAt(date).sign(algorithm);
         } catch (UnsupportedEncodingException e) {
             throw new IFastApiException(EnumErrorCode.apiAuthorizationSignFailed.getCodeStr());
         }
-    }
-    
-    /** refresh_token规则与token不同，不能用于访问接口 */
-    public static String refreshToken(String uname, String secret) {
-    	try {
-    		Date date = new Date(System.currentTimeMillis() + ifastConfig.getJwt().getRefreshTokenExpire());
-    		Algorithm algorithm = Algorithm.HMAC256(secret);
-    		// 附带username信息
-    		return JWT.create().withClaim(ifastConfig.getJwt().getUserPrimaryKey(), uname).withExpiresAt(date)
-    				.sign(algorithm);
-    	} catch (UnsupportedEncodingException e) {
-    		throw new IFastApiException(EnumErrorCode.apiAuthorizationSignFailed.getCodeStr());
-    	}
     }
 }
