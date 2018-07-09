@@ -9,11 +9,13 @@ package com.ifast.api.config;
 public class JWTConfig {
     private String userPrimaryKey;
     /**
-     * jwt过期时间，单位为毫秒
+     * jwt过期时间,默认2小时，单位为毫秒
      */
-    private Long expireTime;
-    /** refresh_token过期时间，默认24小时 */
-    private Long refreshTokenExpire = 86400000L;
+    private Long expireTime = 7200000L;
+    /**
+     *  refresh_token过期时间，默认7天，单位为毫秒
+     */
+    private Long refreshTokenExpire = 604800000L;
 
     public String getUserPrimaryKey() {
         return userPrimaryKey;

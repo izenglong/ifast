@@ -1,11 +1,9 @@
 package com.ifast.sys.config;
 
+import com.ifast.common.config.IFastConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import com.ifast.common.config.IFastConfig;
-import com.ifast.common.utils.SpringContextHolder;
-
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -19,12 +17,15 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 public class Swagger2Config {
 
+    @Autowired
+    IFastConfig ifastConfig;
+
     @Bean
     public Docket createRestApi() {
-    	IFastConfig ifastConfig = SpringContextHolder.getBean(IFastConfig.class);
-    	String projectRootURL = ifastConfig.getProjectRootURL();
-    	int s = projectRootURL==null ? -1 : projectRootURL.indexOf("//"), e = s==-1 ? -1 : projectRootURL.indexOf('/', s+2);
-    	String host = s==-1 ? null : projectRootURL.substring(s+2, e==-1 ? projectRootURL.length() : e);
+        String projectRootURL = ifastConfig.getProjectRootURL();
+        int s = projectRootURL == null ? -1 : projectRootURL.indexOf("//");
+        int e = s == -1 ? -1 : projectRootURL.indexOf('/', s + 2);
+        String host = s == -1 ? null : projectRootURL.substring(s + 2, e == -1 ? projectRootURL.length() : e);
         return new Docket(DocumentationType.SWAGGER_2).host(host).apiInfo(apiInfo()).select()
                 // 为当前包路径
                 .apis(RequestHandlerSelectors.any()).paths(PathSelectors.any()).build();

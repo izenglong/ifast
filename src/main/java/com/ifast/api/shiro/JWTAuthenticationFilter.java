@@ -1,14 +1,9 @@
 package com.ifast.api.shiro;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.ifast.api.exception.IFastApiException;
+import com.ifast.common.utils.JSONUtils;
+import com.ifast.common.utils.Result;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.ExpiredCredentialsException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
@@ -17,7 +12,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.ifast.api.exception.IFastApiException;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * <pre>
@@ -33,7 +34,7 @@ public class JWTAuthenticationFilter extends BasicHttpAuthenticationFilter {
      */
     @Override
     protected boolean isLoginAttempt(String authzHeader) {
-    	return authzHeader!=null && authzHeader.length()>0;
+    	return StringUtils.isNotBlank(authzHeader);
     }
     
     @Override
@@ -64,7 +65,9 @@ public class JWTAuthenticationFilter extends BasicHttpAuthenticationFilter {
             response.setCharacterEncoding("UTF-8");
             response.setContentType("application/json; charset=utf-8");
             try(PrintWriter writer = response.getWriter()){
-            	writer.write("{\"error\":\""+error+"\"}");
+                Result result = Result.fail();
+                result.setMsg(error);
+            	writer.write(JSONUtils.beanToJson(result));
             }catch (Exception ex) {
             	log.warn(ex.getMessage());
             }
