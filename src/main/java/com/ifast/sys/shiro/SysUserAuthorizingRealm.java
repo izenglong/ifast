@@ -32,6 +32,7 @@ public class SysUserAuthorizingRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+        log.info("==> admin 授权");
         Object next = principals.getPrimaryPrincipal();
         log.debug("next class:" + next.getClass());
         SimpleAuthorizationInfo info = null;
@@ -47,6 +48,7 @@ public class SysUserAuthorizingRealm extends AuthorizingRealm {
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+        log.info("==> admin 认证");
         if(!supports(token)) {
             return null;
         }

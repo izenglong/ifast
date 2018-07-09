@@ -1,11 +1,11 @@
 package com.ifast.api.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.cache.Cache;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.ifast.api.config.JWTConfig;
 import com.ifast.api.dao.AppUserDao;
 import com.ifast.api.exception.IFastApiException;
 import com.ifast.api.pojo.domain.AppUserDO;
@@ -16,6 +16,7 @@ import com.ifast.common.base.CoreServiceImpl;
 import com.ifast.common.config.CacheConfiguration;
 import com.ifast.common.config.IFastConfig;
 import com.ifast.common.type.EnumErrorCode;
+import com.ifast.common.utils.SpringContextHolder;
 
 /**
  * <pre>
@@ -25,88 +26,82 @@ import com.ifast.common.type.EnumErrorCode;
  */
 @Service
 public class UserServiceImpl extends CoreServiceImpl<AppUserDao, AppUserDO> implements UserService {
-	@Autowired private IFastConfig ifastConfig;
-	private Cache tokenExpires = null;
+	/** Holder for lazy-init */
+	private static class Holder {
+		static final JWTConfig jwt = SpringContextHolder.getBean(IFastConfig.class).getJwt();
+		static final Cache logoutTokens = CacheConfiguration.dynaConfigCache("tokenExpires", 0, jwt.getRefreshTokenExpire(), 1000);
+		static {
+			JWTUtil.mykey = jwt.getUserPrimaryKey();
+		}
+	}
 
 	@Override
     public TokenVO getToken(String uname, String passwd) {
-        AppUserDO user = findByUname(uname);
-        if (null == user) {
+        AppUserDO user = selectOne(new EntityWrapper<AppUserDO>().eq("uname", uname));
+        if (null == user || !user.getPasswd().equals(passwd)) {
             throw new IFastApiException(EnumErrorCode.apiAuthorizationLoginFailed.getCodeStr());
         }
-
-        if (!user.getPasswd().equals(passwd)) {
-            throw new IFastApiException(EnumErrorCode.apiAuthorizationLoginFailed.getCodeStr());
-        }
-
         return createToken(user);
     }
 
     @Override
+	public boolean verifyToken(String token, boolean refresh) {
+    	String userId = null; AppUserDO user = null;
+    	return StringUtils.isNotBlank(token)
+    			&& (userId=JWTUtil.getUserId(token))!=null
+    			&& notLogout(token)
+    			&& (user=refresh?selectOne(new EntityWrapper<AppUserDO>().eq("uname", userId)):selectById(userId))!=null
+    			&& (refresh ? JWTUtil.verify(token, user.getUname(), user.getId()+user.getPasswd()) : JWTUtil.verify(token, userId, user.getUname()+user.getPasswd()));
+	}
+
+	@Override
 	public TokenVO refreshToken(String uname, String refreshToken) {
-    	String userId = JWTUtil.getUserId(refreshToken);
-    	if(userId!=null && userId.equals(uname)) {
-    		AppUserDO user = findByUname(uname);
-    		if(user != null) {
-				boolean verify = JWTUtil.verify(refreshToken, uname, user.getId() + user.getPasswd());
-				if(verify && logoutToken(null, refreshToken)) {
-					return createToken(user);
-				}else if(verify) {
-					throw new IFastApiException(EnumErrorCode.apiAuthorizationLoggedout.getCodeStr());
-				}else {
-					throw new IFastApiException(EnumErrorCode.apiAuthorizationFailed.getCodeStr());
-				}
-    		}
-    	}else if(userId != null) {
-    		throw new IFastApiException(EnumErrorCode.apiAuthorizationLoginFailed.getCodeStr());
-    	}
+		AppUserDO user = null;
+		if(StringUtils.isNotBlank(refreshToken)
+				&& uname.equals(JWTUtil.getUserId(refreshToken))
+				&& notLogout(refreshToken)
+				&& (user=selectOne(new EntityWrapper<AppUserDO>().eq("uname", uname)))!=null
+				&& JWTUtil.verify(refreshToken, user.getUname(), user.getId()+user.getPasswd())
+				&& Holder.logoutTokens.putIfAbsent(refreshToken, null)==null) {
+			return createToken(user);
+		}
     	throw new IFastApiException(EnumErrorCode.apiAuthorizationInvalid.getCodeStr());
 	}
 
 	@Override
 	public Boolean logoutToken(String token, String refreshToken) {
-		Boolean expire = Boolean.FALSE;
-		String userId = null, uname = null; AppUserDO user = null;
-		if(token!=null && (userId=JWTUtil.getUserId(token))!=null) {
-			user = selectById(userId);
-			if(user!=null && JWTUtil.verify(token, user.getId() + "", user.getUname() + user.getPasswd())) {
-				if(tokenExpires().putIfAbsent(token, null)==null) expire = Boolean.TRUE;
-			}
+		Boolean expire = Boolean.FALSE; String userId = null, uname = null; AppUserDO user = null;
+		if(StringUtils.isNotBlank(token)
+				&& (userId=JWTUtil.getUserId(token))!=null
+				&& Holder.logoutTokens.get(token)==null
+				&& (user=selectById(userId))!=null
+				&& JWTUtil.verify(token, userId, user.getUname()+user.getPasswd())
+				&& Holder.logoutTokens.putIfAbsent(token, null)==null) {
+			expire = Boolean.TRUE;
 		}
-		if(refreshToken!=null && (uname=JWTUtil.getUserId(refreshToken))!=null) {
-			if(user == null) user = findByUname(uname);
-			if(user!=null && uname.equals(user.getUname()) && JWTUtil.verify(refreshToken, uname, user.getId() + user.getPasswd())) {
-				if(tokenExpires().putIfAbsent(refreshToken, null)==null) expire = Boolean.TRUE;
-			}
+		if(StringUtils.isNotBlank(refreshToken)
+				&& (uname=JWTUtil.getUserId(refreshToken))!=null
+				&& Holder.logoutTokens.get(refreshToken)==null
+				&& (user!=null || (user=selectOne(new EntityWrapper<AppUserDO>().eq("uname", uname)))!=null)
+				&& JWTUtil.verify(refreshToken, user.getUname(), user.getId()+user.getPasswd())
+				&& Holder.logoutTokens.putIfAbsent(refreshToken, null)==null) {
+			expire = Boolean.TRUE;
 		}
 		return expire;
 	}
 
-	@Override
-	public boolean checkLogout(String token) {
-		return tokenExpires().get(token)!=null;
-	}
-
-	@Override
-    public AppUserDO findByUname(String uname) {
-        AppUserDO userDO = new AppUserDO();
-        userDO.setUname(uname);
-        Wrapper<AppUserDO> wrapper = new EntityWrapper<AppUserDO>(userDO);
-        AppUserDO bean = selectOne(wrapper);
-        return bean;
-    }
-
 	private TokenVO createToken(AppUserDO user) {
         TokenVO vo = new TokenVO();
-        vo.setToken(JWTUtil.sign(user.getId() + "", user.getUname() + user.getPasswd()));
-        vo.setRefleshToken(JWTUtil.refreshToken(user.getUname(), user.getId() + user.getPasswd()));
-        vo.setTokenExpire(ifastConfig.getJwt().getExpireTime());
-        vo.setRefreshTokenExpire(ifastConfig.getJwt().getRefreshTokenExpire());
+        vo.setToken(JWTUtil.sign(user.getId() + "", user.getUname() + user.getPasswd(), Holder.jwt.getExpireTime()));
+        vo.setRefleshToken(JWTUtil.sign(user.getUname(), user.getId() + user.getPasswd(), Holder.jwt.getExpireTime()));
+        vo.setTokenExpire(Holder.jwt.getExpireTime());
+        vo.setRefreshTokenExpire(Holder.jwt.getRefreshTokenExpire());
         return vo;
 	}
 	
-	private Cache tokenExpires() {
-		if(tokenExpires == null) tokenExpires = CacheConfiguration.dynaConfigCache("tokenExpires", 0, ifastConfig.getJwt().getRefreshTokenExpire(), 1000);
-		return tokenExpires;
+	private boolean notLogout(String token) {
+		if(Holder.logoutTokens.get(token)!=null)
+			throw new IFastApiException(EnumErrorCode.apiAuthorizationLoggedout.getMsg());
+		return true;
 	}
 }
