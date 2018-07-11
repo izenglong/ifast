@@ -1,5 +1,7 @@
 package com.ifast.api.exception;
 
+import com.ifast.common.exception.IFastException;
+
 /**
  * <pre>
  * API异常基类
@@ -7,7 +9,7 @@ package com.ifast.api.exception;
  * 
  * <small> 2018年4月19日 | Aron</small>
  */
-public class IFastApiException extends RuntimeException {
+public class IFastApiException extends IFastException {
 
     private static final long serialVersionUID = -4891641110275580161L;
 

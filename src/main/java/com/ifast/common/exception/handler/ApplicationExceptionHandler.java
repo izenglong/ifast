@@ -1,5 +1,8 @@
 package com.ifast.common.exception.handler;
 
+import com.ifast.common.exception.IFastException;
+import com.ifast.common.type.EnumErrorCode;
+import com.ifast.common.utils.Result;
 import org.apache.shiro.ShiroException;
 import org.apache.shiro.authc.ExpiredCredentialsException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -10,11 +13,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import com.ifast.api.exception.IFastApiException;
-import com.ifast.common.exception.IFastException;
-import com.ifast.common.type.EnumErrorCode;
-import com.ifast.common.utils.Result;
-
 /**
  * 异常处理器
  * 
@@ -22,21 +20,6 @@ import com.ifast.common.utils.Result;
 @RestControllerAdvice
 public class ApplicationExceptionHandler {
     private Logger log = LoggerFactory.getLogger(getClass());
-
-    /**
-     * API异常
-     */
-    @ExceptionHandler(IFastApiException.class)
-    public Result<String> handleIFastApiException(IFastApiException e) {
-        log.info("handleIFastApiException");
-        try {
-            int code = Integer.parseInt(e.getMessage());
-            return Result.build(code, EnumErrorCode.getMsgByCode(code));
-        } catch (NumberFormatException e1) {
-            log.info("错误码使用错误，异常内容请抛出EnumErrorCode类的枚举值");
-            return Result.build(EnumErrorCode.unknowFail.getCode(), EnumErrorCode.unknowFail.getMsg());
-        }
-    }
 
     /**
      * 自定义异常
