@@ -23,10 +23,10 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `app_user`;
 CREATE TABLE `app_user` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `real_name` varchar(20) DEFAULT NULL,
+  `realName` varchar(20) DEFAULT NULL,
   `mobile` varchar(20) DEFAULT NULL,
-  `create_time` datetime DEFAULT NULL,
-  `last_login_time` datetime DEFAULT NULL,
+  `createTime` datetime DEFAULT NULL,
+  `lastLoginTime` datetime DEFAULT NULL,
   `uname` varchar(20) DEFAULT NULL,
   `passwd` varchar(100) DEFAULT NULL,
   `openid` varchar(100) DEFAULT NULL,
@@ -49,8 +49,8 @@ CREATE TABLE `sys_config` (
   `k` varchar(100) DEFAULT NULL COMMENT '键',
   `v` varchar(1000) DEFAULT NULL COMMENT '值',
   `remark` varchar(100) DEFAULT NULL COMMENT '备注',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `kv_type` int(11) DEFAULT NULL,
+  `createTime` datetime DEFAULT NULL COMMENT '创建时间',
+  `kvType` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
@@ -67,10 +67,10 @@ COMMIT;
 DROP TABLE IF EXISTS `sys_dept`;
 CREATE TABLE `sys_dept` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `parent_id` bigint(20) DEFAULT NULL COMMENT '上级部门ID，一级部门为0',
+  `parentId` bigint(20) DEFAULT NULL COMMENT '上级部门ID，一级部门为0',
   `name` varchar(50) DEFAULT NULL COMMENT '部门名称',
-  `order_num` int(11) DEFAULT NULL COMMENT '排序',
-  `del_flag` tinyint(4) DEFAULT '0' COMMENT '是否删除  -1：已删除  0：正常',
+  `orderNum` int(11) DEFAULT NULL COMMENT '排序',
+  `delFlag` tinyint(4) DEFAULT '0' COMMENT '是否删除  -1：已删除  0：正常',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COMMENT='部门管理';
 
@@ -92,17 +92,17 @@ CREATE TABLE `sys_dict` (
   `type` varchar(100) COLLATE utf8_bin DEFAULT NULL COMMENT '类型',
   `description` varchar(100) COLLATE utf8_bin DEFAULT NULL COMMENT '描述',
   `sort` decimal(10,0) DEFAULT NULL COMMENT '排序（升序）',
-  `parent_id` bigint(64) DEFAULT '0' COMMENT '父级编号',
-  `create_by` int(64) DEFAULT NULL COMMENT '创建者',
-  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_by` bigint(64) DEFAULT NULL COMMENT '更新者',
-  `update_date` datetime DEFAULT NULL COMMENT '更新时间',
+  `parentId` bigint(64) DEFAULT '0' COMMENT '父级编号',
+  `createBy` int(64) DEFAULT NULL COMMENT '创建者',
+  `createDate` datetime DEFAULT NULL COMMENT '创建时间',
+  `updateBy` bigint(64) DEFAULT NULL COMMENT '更新者',
+  `updateDate` datetime DEFAULT NULL COMMENT '更新时间',
   `remarks` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '备注信息',
-  `del_flag` char(1) COLLATE utf8_bin DEFAULT '0' COMMENT '删除标记',
+  `delFlag` char(1) COLLATE utf8_bin DEFAULT '0' COMMENT '删除标记',
   PRIMARY KEY (`id`),
   KEY `sys_dict_value` (`value`),
   KEY `sys_dict_label` (`name`),
-  KEY `sys_dict_del_flag` (`del_flag`)
+  KEY `sys_dict_del_flag` (`delFlag`)
 ) ENGINE=InnoDB AUTO_INCREMENT=121 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='字典表';
 
 -- ----------------------------
@@ -120,7 +120,7 @@ CREATE TABLE `sys_file` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `type` int(11) DEFAULT NULL COMMENT '文件类型',
   `url` varchar(200) DEFAULT NULL COMMENT 'URL地址',
-  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `createDate` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=152 DEFAULT CHARSET=utf8 COMMENT='文件上传';
 
@@ -137,14 +137,14 @@ COMMIT;
 DROP TABLE IF EXISTS `sys_log`;
 CREATE TABLE `sys_log` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `user_id` bigint(20) DEFAULT NULL COMMENT '用户id',
+  `userId` bigint(20) DEFAULT NULL COMMENT '用户id',
   `username` varchar(50) DEFAULT NULL COMMENT '用户名',
   `operation` varchar(50) DEFAULT NULL COMMENT '用户操作',
   `time` int(11) DEFAULT NULL COMMENT '响应时间',
   `method` varchar(200) DEFAULT NULL COMMENT '请求方法',
   `params` varchar(5000) DEFAULT NULL COMMENT '请求参数',
   `ip` varchar(64) DEFAULT NULL COMMENT 'IP地址',
-  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
+  `gmtCreate` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8846 DEFAULT CHARSET=utf8 COMMENT='系统日志';
 
@@ -161,15 +161,15 @@ COMMIT;
 DROP TABLE IF EXISTS `sys_menu`;
 CREATE TABLE `sys_menu` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `parent_id` bigint(20) DEFAULT NULL COMMENT '父菜单ID，一级菜单为0',
+  `parentId` bigint(20) DEFAULT NULL COMMENT '父菜单ID，一级菜单为0',
   `name` varchar(50) DEFAULT NULL COMMENT '菜单名称',
   `url` varchar(200) DEFAULT NULL COMMENT '菜单URL',
   `perms` varchar(500) DEFAULT NULL COMMENT '授权(多个用逗号分隔，如：user:list,user:create)',
   `type` int(11) DEFAULT NULL COMMENT '类型   0：目录   1：菜单   2：按钮',
   `icon` varchar(50) DEFAULT NULL COMMENT '菜单图标',
-  `order_num` int(11) DEFAULT NULL COMMENT '排序',
-  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
-  `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
+  `orderNum` int(11) DEFAULT NULL COMMENT '排序',
+  `gmtCreate` datetime DEFAULT NULL COMMENT '创建时间',
+  `gmtModified` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=181 DEFAULT CHARSET=utf8 COMMENT='菜单管理';
 
@@ -186,12 +186,12 @@ COMMIT;
 DROP TABLE IF EXISTS `sys_role`;
 CREATE TABLE `sys_role` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `role_name` varchar(100) DEFAULT NULL COMMENT '角色名称',
-  `role_sign` varchar(100) DEFAULT NULL COMMENT '角色标识',
+  `roleName` varchar(100) DEFAULT NULL COMMENT '角色名称',
+  `roleSign` varchar(100) DEFAULT NULL COMMENT '角色标识',
   `remark` varchar(100) DEFAULT NULL COMMENT '备注',
-  `user_id_create` bigint(255) DEFAULT NULL COMMENT '创建用户id',
-  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
-  `gmt_modified` datetime DEFAULT NULL COMMENT '创建时间',
+  `userIdCreate` bigint(255) DEFAULT NULL COMMENT '创建用户id',
+  `gmtCreate` datetime DEFAULT NULL COMMENT '创建时间',
+  `gmtModified` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8 COMMENT='角色';
 
@@ -208,8 +208,8 @@ COMMIT;
 DROP TABLE IF EXISTS `sys_role_menu`;
 CREATE TABLE `sys_role_menu` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `role_id` bigint(20) DEFAULT NULL COMMENT '角色ID',
-  `menu_id` bigint(20) DEFAULT NULL COMMENT '菜单ID',
+  `roleId` bigint(20) DEFAULT NULL COMMENT '角色ID',
+  `menuId` bigint(20) DEFAULT NULL COMMENT '菜单ID',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4308 DEFAULT CHARSET=utf8 COMMENT='角色与菜单对应关系';
 
@@ -226,19 +226,19 @@ COMMIT;
 DROP TABLE IF EXISTS `sys_task`;
 CREATE TABLE `sys_task` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `cron_expression` varchar(255) DEFAULT NULL COMMENT 'cron表达式',
-  `method_name` varchar(255) DEFAULT NULL COMMENT '任务调用的方法名',
-  `is_concurrent` varchar(255) DEFAULT NULL COMMENT '任务是否有状态',
+  `cronExpression` varchar(255) DEFAULT NULL COMMENT 'cron表达式',
+  `methodName` varchar(255) DEFAULT NULL COMMENT '任务调用的方法名',
+  `isConcurrent` varchar(255) DEFAULT NULL COMMENT '任务是否有状态',
   `description` varchar(255) DEFAULT NULL COMMENT '任务描述',
-  `update_by` varchar(64) DEFAULT NULL COMMENT '更新者',
-  `bean_class` varchar(255) DEFAULT NULL COMMENT '任务执行时调用哪个类的方法 包名+类名',
-  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
-  `job_status` varchar(255) DEFAULT NULL COMMENT '任务状态',
-  `job_group` varchar(255) DEFAULT NULL COMMENT '任务分组',
-  `update_date` datetime DEFAULT NULL COMMENT '更新时间',
-  `create_by` varchar(64) DEFAULT NULL COMMENT '创建者',
-  `spring_bean` varchar(255) DEFAULT NULL COMMENT 'Spring bean',
-  `job_name` varchar(255) DEFAULT NULL COMMENT '任务名',
+  `updateBy` varchar(64) DEFAULT NULL COMMENT '更新者',
+  `beanClass` varchar(255) DEFAULT NULL COMMENT '任务执行时调用哪个类的方法 包名+类名',
+  `createDate` datetime DEFAULT NULL COMMENT '创建时间',
+  `jobStatus` varchar(255) DEFAULT NULL COMMENT '任务状态',
+  `jobGroup` varchar(255) DEFAULT NULL COMMENT '任务分组',
+  `updateDate` datetime DEFAULT NULL COMMENT '更新时间',
+  `createBy` varchar(64) DEFAULT NULL COMMENT '创建者',
+  `springBean` varchar(255) DEFAULT NULL COMMENT 'Spring bean',
+  `jobName` varchar(255) DEFAULT NULL COMMENT '任务名',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
@@ -258,17 +258,17 @@ CREATE TABLE `sys_user` (
   `username` varchar(50) DEFAULT NULL COMMENT '用户名',
   `name` varchar(100) DEFAULT NULL,
   `password` varchar(50) DEFAULT NULL COMMENT '密码',
-  `dept_id` bigint(20) DEFAULT NULL,
+  `deptId` bigint(20) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL COMMENT '邮箱',
   `mobile` varchar(100) DEFAULT NULL COMMENT '手机号',
   `status` tinyint(255) DEFAULT NULL COMMENT '状态 0:禁用，1:正常',
-  `user_id_create` bigint(255) DEFAULT NULL COMMENT '创建用户id',
-  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
-  `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
+  `userIdCreate` bigint(255) DEFAULT NULL COMMENT '创建用户id',
+  `gmtCreate` datetime DEFAULT NULL COMMENT '创建时间',
+  `gmtModified` datetime DEFAULT NULL COMMENT '修改时间',
   `sex` bigint(32) DEFAULT NULL COMMENT '性别',
   `birth` datetime DEFAULT NULL COMMENT '出身日期',
-  `pic_id` bigint(32) DEFAULT NULL,
-  `live_address` varchar(500) DEFAULT NULL COMMENT '现居住地',
+  `picId` bigint(32) DEFAULT NULL,
+  `liveAddress` varchar(500) DEFAULT NULL COMMENT '现居住地',
   `hobby` varchar(255) DEFAULT NULL COMMENT '爱好',
   `province` varchar(255) DEFAULT NULL COMMENT '省份',
   `city` varchar(255) DEFAULT NULL COMMENT '所在城市',
@@ -289,8 +289,8 @@ COMMIT;
 DROP TABLE IF EXISTS `sys_user_role`;
 CREATE TABLE `sys_user_role` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `user_id` bigint(20) DEFAULT NULL COMMENT '用户ID',
-  `role_id` bigint(20) DEFAULT NULL COMMENT '角色ID',
+  `userId` bigint(20) DEFAULT NULL COMMENT '用户ID',
+  `roleId` bigint(20) DEFAULT NULL COMMENT '角色ID',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=132 DEFAULT CHARSET=utf8 COMMENT='用户与角色对应关系';
 
@@ -308,17 +308,17 @@ DROP TABLE IF EXISTS `wx_mp_config`;
 CREATE TABLE `wx_mp_config` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `token` varchar(120) DEFAULT NULL,
-  `app_id` varchar(64) NOT NULL COMMENT 'APPID',
-  `app_secret` varchar(128) NOT NULL COMMENT 'AppSecret',
-  `msg_mode` int(11) DEFAULT NULL COMMENT '1加密 0不加密',
-  `msg_secret` varchar(128) DEFAULT NULL,
-  `mp_name` varchar(250) DEFAULT NULL COMMENT '公众号名字',
-  `app_type` int(11) NOT NULL COMMENT '公众号类型： 1.订阅号 2.服务号 3.企业号 4.小程序 5. 测试号',
-  `is_auth` int(11) DEFAULT NULL COMMENT '认证授权：1已认证 0未认证',
-  `subscribe_url` varchar(500) DEFAULT NULL COMMENT '提示订阅URL',
-  `app_key` varchar(100) DEFAULT NULL COMMENT '开放的公众号key',
+  `appId` varchar(64) NOT NULL COMMENT 'APPID',
+  `appSecret` varchar(128) NOT NULL COMMENT 'AppSecret',
+  `msgMode` int(11) DEFAULT NULL COMMENT '1加密 0不加密',
+  `msgSecret` varchar(128) DEFAULT NULL,
+  `mpName` varchar(250) DEFAULT NULL COMMENT '公众号名字',
+  `appType` int(11) NOT NULL COMMENT '公众号类型： 1.订阅号 2.服务号 3.企业号 4.小程序 5. 测试号',
+  `isAuth` int(11) DEFAULT NULL COMMENT '认证授权：1已认证 0未认证',
+  `subscribeUrl` varchar(500) DEFAULT NULL COMMENT '提示订阅URL',
+  `appKey` varchar(100) DEFAULT NULL COMMENT '开放的公众号key',
   `logo` varchar(255) DEFAULT NULL,
-  `create_time` datetime NOT NULL,
+  `createTime` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COMMENT='微信配置表';
 
@@ -335,12 +335,12 @@ COMMIT;
 DROP TABLE IF EXISTS `wx_mp_fans`;
 CREATE TABLE `wx_mp_fans` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `mp_id` bigint(11) NOT NULL COMMENT '公众号id',
+  `mpId` bigint(11) NOT NULL COMMENT '公众号id',
   `openid` varchar(100) DEFAULT NULL COMMENT '用户的标识，对当前公众号唯一',
   `nickname` varchar(100) DEFAULT NULL COMMENT '昵称',
   `subscribe` tinyint(4) DEFAULT NULL COMMENT '用户是否订阅该公众号标识，值为0时，代表此用户没有关注该公众号，拉取不到其余信息。0未关注，1已关注',
-  `subscribe_time` datetime DEFAULT NULL COMMENT '用户关注时间，为时间戳。如果用户曾多次关注，则取最后关注时间',
-  `subscribe_key` varchar(100) DEFAULT NULL COMMENT '关注来源',
+  `subscribeTime` datetime DEFAULT NULL COMMENT '用户关注时间，为时间戳。如果用户曾多次关注，则取最后关注时间',
+  `subscribeKey` varchar(100) DEFAULT NULL COMMENT '关注来源',
   `sex` tinyint(4) DEFAULT NULL COMMENT '用户的性别，值为1时是男性，值为2时是女性，值为0时是未知',
   `city` varchar(100) DEFAULT NULL,
   `country` varchar(100) DEFAULT NULL,
@@ -351,7 +351,7 @@ CREATE TABLE `wx_mp_fans` (
   `remark` varchar(500) DEFAULT NULL COMMENT '公众号运营者对粉丝的备注，公众号运营者可在微信公众平台用户管理界面对粉丝添加备注',
   `groupid` int(20) DEFAULT NULL COMMENT '分组ID',
   `status` tinyint(11) DEFAULT NULL COMMENT '用户状态 1:正常，0：禁用',
-  `tagid_list` varchar(100) DEFAULT NULL,
+  `tagidList` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2905 DEFAULT CHARSET=utf8mb4 COMMENT='微信粉丝表';
 
@@ -368,22 +368,22 @@ COMMIT;
 DROP TABLE IF EXISTS `wx_mp_menu`;
 CREATE TABLE `wx_mp_menu` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `parent_idx` bigint(20) DEFAULT NULL,
-  `menu_type` varchar(50) NOT NULL COMMENT '菜单类型：1主菜单，2链接，3文本，4关键字，5扫码，6发图，7发送位置',
-  `menu_name` varchar(128) NOT NULL,
-  `menu_key` varchar(64) DEFAULT NULL,
-  `menu_url` varchar(500) DEFAULT NULL COMMENT '菜单链接',
-  `reply_content` varchar(500) DEFAULT NULL,
-  `scan_type` int(4) DEFAULT NULL COMMENT '扫码类型：1扫码带事件，2扫码带提示',
-  `picture_type` int(4) DEFAULT NULL COMMENT '发图类型：1，系统拍照发图；2,，拍照或者相册发图；3，微信相册发图',
+  `parentIdx` bigint(20) DEFAULT NULL,
+  `menuType` varchar(50) NOT NULL COMMENT '菜单类型：1主菜单，2链接，3文本，4关键字，5扫码，6发图，7发送位置',
+  `menuName` varchar(128) NOT NULL,
+  `menuKey` varchar(64) DEFAULT NULL,
+  `menuUrl` varchar(500) DEFAULT NULL COMMENT '菜单链接',
+  `replyContent` varchar(500) DEFAULT NULL,
+  `scanType` int(4) DEFAULT NULL COMMENT '扫码类型：1扫码带事件，2扫码带提示',
+  `pictureType` int(4) DEFAULT NULL COMMENT '发图类型：1，系统拍照发图；2,，拍照或者相册发图；3，微信相册发图',
   `location` varchar(255) DEFAULT NULL COMMENT '发送位置',
   `sort` int(11) DEFAULT NULL COMMENT '菜单排序',
   `status` int(4) DEFAULT NULL COMMENT '菜单状态',
-  `create_by` bigint(20) DEFAULT NULL COMMENT '创建人',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_by` bigint(20) DEFAULT NULL COMMENT '更新人',
-  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `mp_id` bigint(20) NOT NULL COMMENT '微信配置ID',
+  `createBy` bigint(20) DEFAULT NULL COMMENT '创建人',
+  `createTime` datetime DEFAULT NULL COMMENT '创建时间',
+  `updateBy` bigint(20) DEFAULT NULL COMMENT '更新人',
+  `updateTime` datetime DEFAULT NULL COMMENT '更新时间',
+  `mpId` bigint(20) NOT NULL COMMENT '微信配置ID',
   `idx` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信菜单表';
@@ -394,26 +394,36 @@ CREATE TABLE `wx_mp_menu` (
 DROP TABLE IF EXISTS `wx_mp_wechat_keys`;
 CREATE TABLE `wx_mp_wechat_keys` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `mp_id` bigint(20) NOT NULL COMMENT '公众号id',
-  `media_id` varchar(50) DEFAULT NULL COMMENT '素材Id',
+  `mpId` bigint(20) NOT NULL COMMENT '公众号id',
+  `mediaId` varchar(50) DEFAULT NULL COMMENT '素材Id',
   `keyword` varchar(200) DEFAULT NULL COMMENT '关键字，以#,#隔开',
   `type` tinyint(4) DEFAULT NULL COMMENT '回复类型，1：关键字 2：关注自动回复 3：默认回复',
-  `reply_type` varchar(20) DEFAULT NULL COMMENT '回复类型，文字：text 图文：news 图片： image 语音：voice 音乐：music 视频：video',
+  `replyType` varchar(20) DEFAULT NULL COMMENT '回复类型，文字：text 图文：news 图片： image 语音：voice 音乐：music 视频：video',
   `content` text COMMENT '内容',
-  `news_id` bigint(20) DEFAULT NULL COMMENT '图文素材Id',
-  `music_title` varchar(100) DEFAULT NULL COMMENT '音乐标题',
-  `music_cover` varchar(255) DEFAULT NULL COMMENT '音乐封面',
-  `music_url` varchar(255) DEFAULT NULL COMMENT '音乐url',
-  `music_desc` varchar(255) DEFAULT NULL COMMENT '音乐描述',
-  `image_url` varchar(255) DEFAULT NULL COMMENT '图片URL',
-  `voice_url` varchar(255) DEFAULT NULL COMMENT '音频URL',
-  `video_title` varchar(100) DEFAULT NULL COMMENT '视频标题',
-  `video_url` varchar(255) DEFAULT NULL COMMENT '视频url',
-  `video_desc` varchar(255) DEFAULT NULL COMMENT '视频描述',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `newsId` bigint(20) DEFAULT NULL COMMENT '图文素材Id',
+  `musicTitle` varchar(100) DEFAULT NULL COMMENT '音乐标题',
+  `musicCover` varchar(255) DEFAULT NULL COMMENT '音乐封面',
+  `musicUrl` varchar(255) DEFAULT NULL COMMENT '音乐url',
+  `musicDesc` varchar(255) DEFAULT NULL COMMENT '音乐描述',
+  `imageUrl` varchar(255) DEFAULT NULL COMMENT '图片URL',
+  `voiceUrl` varchar(255) DEFAULT NULL COMMENT '音频URL',
+  `videoTitle` varchar(100) DEFAULT NULL COMMENT '视频标题',
+  `videoUrl` varchar(255) DEFAULT NULL COMMENT '视频url',
+  `videoDesc` varchar(255) DEFAULT NULL COMMENT '视频描述',
+  `createTime` datetime DEFAULT NULL COMMENT '创建时间',
+  `updateTime` datetime DEFAULT NULL COMMENT '更新时间',
   `status` tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态 0：禁用 1：启用',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='微信-关键字回复';
+
+DROP TABLE IF EXISTS `app_demo_base`;
+CREATE TABLE `app_demo_base` (
+  `id` bigint(20) NOT NULL COMMENT '编号',
+  `deleted` bit(1) DEFAULT b'0' COMMENT '删除标记',
+  `version` smallint(6) DEFAULT '0' COMMENT '版本号',
+  `createTime` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updateTime` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='基础表';
 
 SET FOREIGN_KEY_CHECKS = 1;

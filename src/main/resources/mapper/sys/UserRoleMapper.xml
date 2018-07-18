@@ -4,17 +4,17 @@
 <mapper namespace="com.ifast.sys.dao.UserRoleDao">
 
 	<select id="listRoleId" resultType="long">
-		select role_id from
+		select roleId from
 		sys_user_role where
-		user_id=#{userId}
+		userId=#{userId}
 	</select>
 
 	<delete id="removeByUserId">
-		delete from sys_user_role where user_id=#{userId}
+		delete from sys_user_role where userId=#{userId}
 	</delete>
 
 	<delete id="batchRemoveByUserId">
-		delete from sys_user_role where user_id in
+		delete from sys_user_role where userId in
 		<foreach item="id" collection="array" open="(" separator=","
 			close=")">
 			#{id}
@@ -22,7 +22,7 @@
 	</delete>
 
 	<insert id="batchSave">
-		INSERT INTO sys_user_role(user_id, role_id) values
+		INSERT INTO sys_user_role(userId, roleId) values
 		<foreach item="item" index="index" collection="list"
 			separator=",">
 			(#{item.userId},#{item.roleId})

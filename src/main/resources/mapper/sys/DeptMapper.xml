@@ -5,7 +5,7 @@
 
 	
 	<select id="listParentDept" resultType="long">
-		select DISTINCT parent_id from sys_dept
+		select DISTINCT parentId from sys_dept
 	</select>
 
     <select id="getDeptUserNumber" resultType="int">
