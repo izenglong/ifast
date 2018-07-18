@@ -4,6 +4,6 @@
 <mapper namespace="com.ifast.sys.dao.UserDao">
 
 	<select id="listAllDept" resultType="long">
-		select DISTINCT dept_id from sys_user
+		select DISTINCT deptId from sys_user
 	</select>
 </mapper>

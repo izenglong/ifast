@@ -19,6 +19,8 @@ spring:
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
+    generator:
+      WRITE_NUMBERS_AS_STRINGS: true    
   profiles:
     active: dev
   http:
@@ -32,10 +34,10 @@ mybatis-plus:
   mapper-locations: classpath:/mapper/**/*Mapper.xml
   typeAliasesPackage: com.ifast.**.domain
   global-config:
-    id-type: 0
-    field-strategy: 2
-    db-column-underline: true
-    capital-mode: true
+    id-type: 2
+    field-strategy: 1
+    db-column-underline: false
+    capital-mode: false
   configuration:
-    map-underscore-to-camel-case: true
+    map-underscore-to-camel-case: false
     cache-enabled: false

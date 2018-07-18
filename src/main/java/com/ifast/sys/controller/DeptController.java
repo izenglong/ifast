@@ -110,7 +110,7 @@ public class DeptController extends AdminBaseController {
     @Log("删除部门")
     public Result<String> remove(Long id) {
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("parent_id", id);
+        map.put("parentId", id);
         int size = sysDeptService.selectByMap(map).size();
         if (size > 0) {
             return Result.build(EnumErrorCode.deptUpdateErrorExistChilds.getCode(),
