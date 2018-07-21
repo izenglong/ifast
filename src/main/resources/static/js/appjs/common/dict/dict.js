@@ -29,8 +29,10 @@ function selectLoad() {
 		success : function(data) {
 			//加载数据
 			for (var i = 0; i < data.length; i++) {
+				console.log(data[i])
 				html += '<option value="' + data[i].type + '">' + data[i].description + '</option>'
 			}
+			console.log(html)
 			$(".chosen-select").append(html);
 			$(".chosen-select").chosen({
 				maxHeight : 200
@@ -41,6 +43,7 @@ function selectLoad() {
 				var opt = {
 					query : {
 						type : params.selected,
+						name : $('#searchName').val()
 					}
 				}
 				$('#exampleTable').bootstrapTable('refresh', opt);
@@ -183,6 +186,7 @@ function reLoad() {
 	var opt = {
 		query : {
 			type : $('.chosen-select').val(),
+			name : $('#searchName').val()
 		}
 	}
 	$('#exampleTable').bootstrapTable('refresh', opt);

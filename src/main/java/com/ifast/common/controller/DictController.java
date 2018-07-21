@@ -1,7 +1,5 @@
 package com.ifast.common.controller;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.ifast.common.annotation.Log;
 import com.ifast.common.base.AdminBaseController;
@@ -45,10 +43,7 @@ public class DictController extends AdminBaseController {
     @RequiresPermissions("common:sysDict:sysDict")
     public Result<Page<DictDO>> list(DictDO dictDTO) {
         // 查询列表数据
-        Page<DictDO> page = getPage(DictDO.class);
-
-        Wrapper<DictDO> wrapper = new EntityWrapper<DictDO>(dictDTO);
-        page = sysDictService.selectPage(page, wrapper);
+        Page<DictDO> page = sysDictService.selectPage(getPage(DictDO.class), sysDictService.convertToEntityWrapper("name", dictDTO.getName(), "type", dictDTO.getType()));
         return Result.ok(page);
     }
     
