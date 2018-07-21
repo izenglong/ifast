@@ -3,6 +3,7 @@ package com.ifast.common.base;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,7 +47,7 @@ public abstract class CoreServiceImpl<M extends BaseMapper<T>, T> extends Servic
             return map;
         }
         for (int i = 0; i < params.length; i++) {
-            if (i % 2 == 1) {
+            if (i % 2 == 1 && params[i] != null && StringUtils.isNotBlank(params[i].toString())) {
                 map.put((String) params[i - 1], params[i]);
             }
         }
@@ -59,7 +60,7 @@ public abstract class CoreServiceImpl<M extends BaseMapper<T>, T> extends Servic
             return ew;
         }
         for (int i = 0; i < params.length; i++) {
-            if (i % 2 == 1) {
+            if (i % 2 == 1 && params[i] != null && StringUtils.isNotBlank(params[i].toString())) {
                 ew.eq((String) params[i - 1], params[i]);
             }
         }
