@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.ifast.common.annotation.Log;
 import com.ifast.common.base.AdminBaseController;
@@ -64,8 +62,7 @@ public class UserController extends AdminBaseController {
     @ResponseBody
     public Result<Page<UserDO>> list(UserDO userDTO) {
         // 查询列表数据
-        Wrapper<UserDO> wrapper = new EntityWrapper<UserDO>(userDTO);
-        Page<UserDO> page = userService.selectPage(getPage(UserDO.class), wrapper);
+        Page<UserDO> page = userService.selectPage(getPage(UserDO.class), userService.convertToEntityWrapper("name", userDTO.getName(), "deptId", userDTO.getDeptId()));
         return Result.ok(page);
     }
 

@@ -46,8 +46,8 @@ public class DeptController extends AdminBaseController {
     @GetMapping("/list")
     @Log("获取部门列表")
     @RequiresPermissions("system:sysDept:sysDept")
-    public List<DeptDO> list() {
-        return sysDeptService.selectList(null);
+    public List<DeptDO> list(DeptDO deptDTO) {
+        return sysDeptService.findByKv("name", deptDTO.getName());
     }
 
     @GetMapping("/add/{pId}")
