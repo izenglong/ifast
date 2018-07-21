@@ -94,7 +94,12 @@ function load() {
 					});
 }
 function reLoad() {
-	$('#exampleTable').bootstrapTable('refresh');
+	var opt = {
+			query : {
+				k : $('#searchName').val()
+			}
+		}
+	$('#exampleTable').bootstrapTable('refresh', opt);
 }
 function add() {
 	layer.open({

@@ -1,7 +1,5 @@
 package com.ifast.common.controller;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.ifast.common.annotation.Log;
 import com.ifast.common.base.AdminBaseController;
@@ -43,10 +41,7 @@ public class ConfigController extends AdminBaseController {
     @RequiresPermissions("common:config:config")
     public Result<Page<ConfigDO>> list(ConfigDO configDTO) {
         // 查询列表数据
-        Page<ConfigDO> page = getPage(ConfigDO.class);
-
-        Wrapper<ConfigDO> wrapper = new EntityWrapper<ConfigDO>(configDTO);
-        page = configService.selectPage(page, wrapper);
+        Page<ConfigDO> page = configService.selectPage(getPage(ConfigDO.class), configService.convertToEntityWrapper("k", configDTO.getK()));
         return Result.ok(page);
     }
     
