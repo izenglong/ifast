@@ -6,7 +6,7 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.baomidou.mybatisplus.service.IService;
+import com.ifast.common.base.CoreService;
 import com.ifast.common.domain.Tree;
 import com.ifast.sys.domain.DeptDO;
 import com.ifast.sys.domain.UserDO;
@@ -19,7 +19,7 @@ import com.ifast.sys.vo.UserVO;
  * <small> 2018年3月23日 | Aron</small>
  */
 @Service("sysUserService")
-public interface UserService extends IService<UserDO> {
+public interface UserService extends CoreService<UserDO> {
 
     boolean exit(Map<String, Object> params);
 

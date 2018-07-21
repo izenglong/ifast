@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.baomidou.mybatisplus.service.IService;
+import com.ifast.common.base.CoreService;
 import com.ifast.sys.domain.RoleDO;
 
 /**
@@ -14,7 +14,7 @@ import com.ifast.sys.domain.RoleDO;
  * <small> 2018年3月23日 | Aron</small>
  */
 @Service
-public interface RoleService extends IService<RoleDO> {
+public interface RoleService extends CoreService<RoleDO> {
     List<RoleDO> findAll();
     List<RoleDO> findListByUserId(Serializable id);
 }

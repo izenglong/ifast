@@ -11,7 +11,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.ifast.common.base.CoreServiceImpl;
 import com.ifast.sys.dao.RoleDao;
 import com.ifast.sys.dao.RoleMenuDao;
 import com.ifast.sys.dao.UserDao;
@@ -26,7 +26,7 @@ import com.ifast.sys.service.RoleService;
  * <small> 2018年3月23日 | Aron</small>
  */
 @Service
-public class RoleServiceImpl extends ServiceImpl<RoleDao, RoleDO> implements RoleService {
+public class RoleServiceImpl extends CoreServiceImpl<RoleDao, RoleDO> implements RoleService {
 
     public static final String ROLE_ALL_KEY = "\"role_all\"";
 

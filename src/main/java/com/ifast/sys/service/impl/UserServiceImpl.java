@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.ifast.common.base.CoreServiceImpl;
 import com.ifast.common.domain.Tree;
 import com.ifast.common.exception.IFastException;
 import com.ifast.common.type.EnumErrorCode;
@@ -47,7 +47,7 @@ import com.ifast.sys.vo.UserVO;
  */
 @Transactional
 @Service("sysUserServiceImpl")
-public class UserServiceImpl extends ServiceImpl<UserDao, UserDO> implements UserService {
+public class UserServiceImpl extends CoreServiceImpl<UserDao, UserDO> implements UserService {
     @Autowired
     UserRoleDao userRoleMapper;
     @Autowired

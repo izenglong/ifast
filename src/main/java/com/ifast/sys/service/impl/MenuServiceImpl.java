@@ -14,7 +14,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.ifast.common.base.CoreServiceImpl;
 import com.ifast.common.domain.Tree;
 import com.ifast.common.utils.BuildTree;
 import com.ifast.sys.dao.MenuDao;
@@ -29,7 +29,7 @@ import com.ifast.sys.service.MenuService;
  */
 @Service
 @Transactional(readOnly = true, rollbackFor = Exception.class)
-public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuDO> implements MenuService {
+public class MenuServiceImpl extends CoreServiceImpl<MenuDao, MenuDO> implements MenuService {
 
     @Autowired
     RoleMenuDao roleMenuMapper;

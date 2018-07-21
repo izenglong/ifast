@@ -5,7 +5,7 @@ import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
-import com.baomidou.mybatisplus.service.IService;
+import com.ifast.common.base.CoreService;
 import com.ifast.common.domain.Tree;
 import com.ifast.sys.domain.MenuDO;
 
@@ -15,7 +15,7 @@ import com.ifast.sys.domain.MenuDO;
  * <small> 2018年3月23日 | Aron</small>
  */
 @Service
-public interface MenuService extends IService<MenuDO> {
+public interface MenuService extends CoreService<MenuDO> {
     Tree<MenuDO> getSysMenuTree(Long id);
 
     List<Tree<MenuDO>> listMenuTree(Long id);

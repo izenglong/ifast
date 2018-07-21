@@ -1,6 +1,6 @@
 package com.ifast.sys.service;
 
-import com.baomidou.mybatisplus.service.IService;
+import com.ifast.common.base.CoreService;
 import com.ifast.common.domain.Tree;
 import com.ifast.sys.domain.DeptDO;
 
@@ -10,7 +10,7 @@ import com.ifast.sys.domain.DeptDO;
  * </pre>
  * <small> 2018年3月23日 | Aron</small>
  */
-public interface DeptService extends IService<DeptDO> {
+public interface DeptService extends CoreService<DeptDO> {
     
 	Tree<DeptDO> getTree();
 	

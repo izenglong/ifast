@@ -1,18 +1,17 @@
 package com.ifast.sys.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.stereotype.Service;
-
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.ifast.common.base.CoreServiceImpl;
 import com.ifast.common.domain.Tree;
 import com.ifast.common.utils.BuildTree;
 import com.ifast.sys.dao.DeptDao;
 import com.ifast.sys.domain.DeptDO;
 import com.ifast.sys.service.DeptService;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <pre>
@@ -20,7 +19,7 @@ import com.ifast.sys.service.DeptService;
  * <small> 2018年3月23日 | Aron</small>
  */
 @Service
-public class DeptServiceImpl extends ServiceImpl<DeptDao, DeptDO> implements DeptService {
+public class DeptServiceImpl extends CoreServiceImpl<DeptDao, DeptDO> implements DeptService {
 
     @Override
     public Tree<DeptDO> getTree() {
