@@ -3,11 +3,6 @@ $(function() {
 	load();
 
 });
-$('#exampleTable').on('load-success.bs.table', function (e, data) {
-		    if (data.total && !data.rows.length) {
-		    	$('#exampleTable').bootstrapTable('selectPage').bootstrapTable('refresh');
-		    }
-		});
 
 function load() {
 	$('#exampleTable')
@@ -39,7 +34,7 @@ function load() {
 								pageNumber : params.pageNumber,
 								pageSize : params.pageSize,
 								name : $('#searchName').val(),
-								sort : 'gmt_create',
+								sort : 'gmtCreate',
 								order : 'desc',
 								operation : $("#searchOperation").val(),
 								username : $("#searchUsername").val()

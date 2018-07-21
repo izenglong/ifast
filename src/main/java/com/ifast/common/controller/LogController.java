@@ -1,7 +1,5 @@
 package com.ifast.common.controller;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.ifast.common.annotation.Log;
 import com.ifast.common.base.AdminBaseController;
@@ -39,10 +37,7 @@ public class LogController extends AdminBaseController {
     @GetMapping("/list")
     public Result<Page<LogDO>> list(LogDO logDTO) {
         // 查询列表数据
-        Page<LogDO> page = getPage(LogDO.class);
-
-        Wrapper<LogDO> wrapper = new EntityWrapper<LogDO>(logDTO);
-        page = logService.selectPage(page, wrapper);
+        Page<LogDO> page = logService.selectPage(getPage(LogDO.class), logService.convertToEntityWrapper("username", logDTO.getUsername(), "operation", logDTO.getOperation()));
         return Result.ok(page);
     }
     
