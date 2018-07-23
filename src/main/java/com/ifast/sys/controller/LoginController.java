@@ -66,6 +66,7 @@ public class LoginController extends AdminBaseController {
     Result<String> ajaxLogin(String username, String password) {
         password = MD5Utils.encrypt(username, password);
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+        token.setRememberMe(true);//记住我是可选项，但只有会话缓存到redis等持久存储才能真正记住
         Subject subject = SecurityUtils.getSubject();
         try {
             subject.login(token);
