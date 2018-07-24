@@ -29,7 +29,7 @@ public class UserServiceImpl extends CoreServiceImpl<AppUserDao, AppUserDO> impl
 	/** Holder for lazy-init */
 	private static class Holder {
 		static final JWTConfig jwt = SpringContextHolder.getBean(IFastConfig.class).getJwt();
-		static final Cache logoutTokens = CacheConfiguration.dynaConfigCache("tokenExpires", 0, jwt.getRefreshTokenExpire(), 1000);
+		static final Cache logoutTokens = CacheConfiguration.dynaConfigCache("tokenExpires", jwt.getRefreshTokenExpire());
 		static {
 			JWTUtil.mykey = jwt.getUserPrimaryKey();
 		}

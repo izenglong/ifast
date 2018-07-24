@@ -1,5 +1,6 @@
 package com.ifast.sys.domain;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -12,7 +13,8 @@ import com.baomidou.mybatisplus.annotations.TableName;
  * <small> 2018年3月23日 | Aron</small>
  */
 @TableName("sys_role")
-public class RoleDO {
+public class RoleDO implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private Long id;
     private String roleName;

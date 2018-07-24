@@ -3,6 +3,7 @@ package com.ifast.shiro.config;
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import com.ifast.api.shiro.JWTAuthenticationFilter;
 import com.ifast.api.shiro.JWTAuthorizingRealm;
+import com.ifast.common.utils.SpringContextHolder;
 import com.ifast.shiro.realm.IFastModularRealm;
 import com.ifast.sys.config.BDSessionListener;
 import com.ifast.sys.shiro.SysUserAuthorizingRealm;
@@ -10,12 +11,11 @@ import org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy;
 import org.apache.shiro.authz.Authorizer;
 import org.apache.shiro.authz.ModularRealmAuthorizer;
 import org.apache.shiro.cache.CacheManager;
-import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.session.SessionListener;
 import org.apache.shiro.session.mgt.SessionManager;
-import org.apache.shiro.session.mgt.eis.MemorySessionDAO;
+import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
@@ -25,6 +25,7 @@ import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 
 import javax.servlet.Filter;
 import java.util.*;
@@ -44,7 +45,8 @@ public class ShiroConfig {
     
     @Bean
     SessionDAO sessionDAO() {
-        MemorySessionDAO sessionDAO = new MemorySessionDAO();
+//        MemorySessionDAO sessionDAO = new MemorySessionDAO();
+    	EnterpriseCacheSessionDAO sessionDAO = new EnterpriseCacheSessionDAO();
         return sessionDAO;
     }
 
@@ -58,24 +60,31 @@ public class ShiroConfig {
         return sessionManager;
     }
     
-    @Bean
+    @Bean(name="shiroCacheManager")
+    @DependsOn({"springContextHolder","cacheConfiguration"})
     public CacheManager getCacheManager() {
-        EhCacheManager cacheManager = new EhCacheManager();
-        cacheManager.setCacheManagerConfigFile("classpath:config/ehcache.xml");
+//        EhCacheManager cacheManager = new EhCacheManager();
+//        cacheManager.setCacheManagerConfigFile("classpath:config/ehcache.xml");
 //        CacheManager cacheManager = new MemoryConstrainedCacheManager();
-        return cacheManager;
+    	SpringCacheManagerWrapper springCacheManager = new SpringCacheManagerWrapper();
+    	org.springframework.cache.CacheManager cacheManager = SpringContextHolder.getBean(org.springframework.cache.CacheManager.class);
+    	springCacheManager.setCacheManager(cacheManager);
+        return springCacheManager;
     }
     
     @Bean
     SysUserAuthorizingRealm userRealm() {
         SysUserAuthorizingRealm userRealm = new SysUserAuthorizingRealm();
         userRealm.setCacheManager(getCacheManager());
+        userRealm.setAuthenticationCachingEnabled(true);
         return userRealm;
     }
     
     @Bean
     JWTAuthorizingRealm jwtAuthorizingRealm() {
         JWTAuthorizingRealm jwtAuthorizingRealm = new JWTAuthorizingRealm();
+        jwtAuthorizingRealm.setCacheManager(getCacheManager());
+        jwtAuthorizingRealm.setAuthenticationCachingEnabled(true);
         return jwtAuthorizingRealm;
     }
 

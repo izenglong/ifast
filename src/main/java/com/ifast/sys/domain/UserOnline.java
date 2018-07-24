@@ -1,5 +1,6 @@
 package com.ifast.sys.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -7,7 +8,8 @@ import java.util.Date;
  * </pre>
  * <small> 2018年3月23日 | Aron</small>
  */
-public class UserOnline {
+public class UserOnline implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     /**
      */
