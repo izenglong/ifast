@@ -3,6 +3,9 @@ package com.ifast.job.config;
 import java.io.IOException;
 import java.util.Properties;
 
+import javax.sql.DataSource;
+
+import org.apache.commons.lang3.StringUtils;
 import org.quartz.Scheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
@@ -18,13 +21,21 @@ public class QuartzConfigration {
 
     @Autowired
     JobFactory jobFactory;
+    @Autowired
+    DataSource dataSource;
 
     @Bean
     public SchedulerFactoryBean schedulerFactoryBean() {
         SchedulerFactoryBean schedulerFactoryBean = new SchedulerFactoryBean();
         try {
             schedulerFactoryBean.setOverwriteExistingJobs(true);
-            schedulerFactoryBean.setQuartzProperties(quartzProperties());
+            Properties quartzProperties = quartzProperties();
+            schedulerFactoryBean.setQuartzProperties(quartzProperties);
+            //如果开启了cluster特性，又没有自定义dataSource，则使用ifast定义好的DataSource，需要先导入quartz.sql
+            if("true".equalsIgnoreCase(quartzProperties.getProperty("org.quartz.jobStore.isClustered"))
+            		&& StringUtils.isBlank(quartzProperties.getProperty("org.quartz.jobStore.dataSource"))) {
+            	schedulerFactoryBean.setDataSource(dataSource);
+            }
             schedulerFactoryBean.setJobFactory(jobFactory);
         } catch (IOException e) {
             e.printStackTrace();
