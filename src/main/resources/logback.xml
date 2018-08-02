@@ -31,6 +31,8 @@
     </appender>
     -->
     
+    <logger name="com.baomidou.mybatisplus.plugins.pagination.optimize.JsqlParserCountOptimize" level="debug"></logger>
+    
     <root level="INFO">
     	<appender-ref ref="CONSOLE"/>
     </root>

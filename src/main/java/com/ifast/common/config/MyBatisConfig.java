@@ -3,6 +3,7 @@ package com.ifast.common.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.baomidou.mybatisplus.plugins.OptimisticLockerInterceptor;
 import com.baomidou.mybatisplus.plugins.PaginationInterceptor;
 
 @Configuration
@@ -72,4 +73,8 @@ public class MyBatisConfig {
         return paginationInterceptor;
     }
 
+    @Bean
+    public OptimisticLockerInterceptor optimisticLockerInterceptor() {
+    	return new OptimisticLockerInterceptor();
+    }
 }
