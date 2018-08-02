@@ -4,7 +4,7 @@
     
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%cn ${HOSTNAME} %date %-5level [%thread] %logger.%M:%L %msg%n %ex{short}</pattern>
+            <pattern>%cn ${HOSTNAME} %date %level [%thread] %logger{18}.%M:%L %.-512msg %ex{short} %n</pattern>
         </encoder>
     </appender>
     

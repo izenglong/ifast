@@ -1,6 +1,7 @@
 package com.ifast.common.aspect;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,9 +11,15 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.alibaba.fastjson.JSON;
 import com.ifast.common.annotation.Log;
 import com.ifast.common.dao.LogDao;
 import com.ifast.common.domain.LogDO;
@@ -29,10 +36,12 @@ import com.ifast.sys.domain.UserDO;
  * <small> 2018年3月22日 | Aron</small>
  */
 @Aspect
+@EnableAspectJAutoProxy(proxyTargetClass=true)
 @Component
 public class LogAspect {
     @Autowired
     private LogDao logMapper;
+    private Logger log = LoggerFactory.getLogger(getClass());
 
     @Pointcut("@annotation(com.ifast.common.annotation.Log)")
     public void logPointCut() {
@@ -48,6 +57,38 @@ public class LogAspect {
         // 保存日志
         saveLog(point, time);
         return result;
+    }
+    
+    @Pointcut("execution(public * com.ifast.*.controller.*.*(..))")
+    public void logController(){}
+    
+    @Around("logController()")
+    public Object controller(ProceedingJoinPoint point) throws Throwable {
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = attributes.getRequest();
+        log.info("{} {} {} {}.{}{}", request.getMethod(), request.getRequestURI(), IPUtils.getIpAddr(request), point.getTarget().getClass().getSimpleName(), point.getSignature().getName(), Arrays.toString(point.getArgs()));
+        
+        long beginTime = System.currentTimeMillis();
+        Object result = point.proceed();
+        long time = System.currentTimeMillis() - beginTime;
+        
+        log.info("result({}) {}", time, JSON.toJSONString(result));
+        return result;
+    }
+    
+    @Pointcut("execution(public * com.ifast.*.service.impl.*.*(..))")
+    public void logService(){}
+    
+    @Around("logService()")
+    public Object service(ProceedingJoinPoint point) throws Throwable {
+    	log.info("call {}.{}{}", point.getTarget().getClass().getSimpleName(), point.getSignature().getName(), Arrays.toString(point.getArgs()));
+    	
+    	long beginTime = System.currentTimeMillis();
+    	Object result = point.proceed();
+    	long time = System.currentTimeMillis() - beginTime;
+    	
+    	log.info("result({}) {}", time, JSON.toJSONString(result));
+    	return result;
     }
 
     /**
