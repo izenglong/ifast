@@ -27,6 +27,8 @@ spring:
     multipart:
       max-file-size: 30Mb
       max-request-size: 30Mb
+  redis:
+#    host: 127.0.0.1
   devtools:
     restart:
       enabled: true
@@ -38,6 +40,9 @@ mybatis-plus:
     field-strategy: 1
     db-column-underline: false
     capital-mode: false
+    sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
+    logic-not-delete-value: 0
+    logic-delete-value: 1
   configuration:
     map-underscore-to-camel-case: false
     cache-enabled: false

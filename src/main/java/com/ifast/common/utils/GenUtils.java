@@ -4,11 +4,14 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -74,7 +77,12 @@ public class GenUtils {
 
         // 列信息
         List<ColumnDO> columsList = new ArrayList<>();
+        Set<String> dataTypes = new HashSet<>(), columnNames = new HashSet<>();
+        List<String> baseColumnNames = Arrays.asList("deleted", "version", "createAt", "createBy", "updateAt", "updateBy");
         for (Map<String, String> column : columns) {
+        	columnNames.add(column.get("columnName"));
+        	if(baseColumnNames.contains(column.get("columnName"))) continue;
+        	
             ColumnDO columnDO = new ColumnDO();
             columnDO.setColumnName(column.get("columnName"));
             columnDO.setDataType(column.get("dataType"));
@@ -96,6 +104,7 @@ public class GenUtils {
             }
 
             columsList.add(columnDO);
+            dataTypes.add(column.get("dataType"));
         }
         tableDO.setColumns(columsList);
 
@@ -123,6 +132,15 @@ public class GenUtils {
         map.put("author", config.get("author"));
         map.put("email", config.get("email"));
         map.put("datetime", DateUtils.format(new Date(), DateUtils.DATE_TIME_PATTERN_19));
+        // 字段特性
+        map.put("hasBigDecimal", dataTypes.contains("decimal"));
+        map.put("hasDatetime", dataTypes.contains("datetime"));
+        map.put("hasDeleted", columnNames.contains("deleted"));
+        map.put("hasVersion", columnNames.contains("version"));
+        map.put("hasCreateAt", columnNames.contains("createAt"));
+        map.put("hasCreateBy", columnNames.contains("createBy"));
+        map.put("hasUpdateAt", columnNames.contains("updateAt"));
+        map.put("hasUpdateBy", columnNames.contains("updateBy"));
         VelocityContext context = new VelocityContext(map);
 
         // 获取模板列表

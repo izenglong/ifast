@@ -1,5 +1,5 @@
 
-var prefix = "/${pathName}/${classname}"
+var prefix = "/demo/demoBase"
 $(function() {
 	load();
 });
@@ -54,31 +54,55 @@ function load() {
 								{
 									checkbox : true
 								},
-								#foreach($column in $columns)
-								{
-									field : '${column.attrname}', 
-									title : '${column.comments}' 
+																{
+									field : 'id', 
+									title : '编号' 
 								},
-								#end
-								#if(${hasCreateAt})
-								{
+																{
+									field : 'title', 
+									title : '标题' 
+								},
+																{
+									field : 'content', 
+									title : '正文' 
+								},
+																{
+									field : 'publish', 
+									title : '发布时间' 
+								},
+																{
+									field : 'version', 
+									title : '版本' 
+								},
+																{
 									field : 'createAt', 
-									title : '创建时间'
+									title : '创建时间' 
 								},
-								#end
-								{
+																{
+									field : 'createBy', 
+									title : '创建者' 
+								},
+																{
+									field : 'updateAt', 
+									title : '更新时间' 
+								},
+																{
+									field : 'updateBy', 
+									title : '更新者' 
+								},
+																{
 									title : '操作',
 									field : 'id',
 									align : 'center',
 									formatter : function(value, row, index) {
 										var e = '<a class="btn btn-primary btn-sm '+s_edit_h+'" href="#" mce_href="#" title="编辑" onclick="edit(\''
-												+ row.${pk.attrname}
+												+ row.id
 												+ '\')"><i class="fa fa-edit"></i></a> ';
 										var d = '<a class="btn btn-warning btn-sm '+s_remove_h+'" href="#" title="删除"  mce_href="#" onclick="remove(\''
-												+ row.${pk.attrname}
+												+ row.id
 												+ '\')"><i class="fa fa-remove"></i></a> ';
 										var f = '<a class="btn btn-success btn-sm" href="#" title="备用"  mce_href="#" onclick="resetPwd(\''
-												+ row.${pk.attrname}
+												+ row.id
 												+ '\')"><i class="fa fa-key"></i></a> ';
 										return e + d ;
 									}
@@ -116,7 +140,7 @@ function remove(id) {
 			url : prefix+"/remove",
 			type : "post",
 			data : {
-				'${pk.attrname}' : id
+				'id' : id
 			},
 			success : function(r) {
 				if (r.code==0) {
@@ -145,7 +169,7 @@ function batchRemove() {
 		var ids = new Array();
 		// 遍历所有选择的行数据，取每条数据对应的ID
 		$.each(rows, function(i, row) {
-			ids[i] = row['${pk.attrname}'];
+			ids[i] = row['id'];
 		});
 		$.ajax({
 			type : 'POST',

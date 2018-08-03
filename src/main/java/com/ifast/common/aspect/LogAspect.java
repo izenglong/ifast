@@ -1,20 +1,29 @@
 package com.ifast.common.aspect;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.alibaba.fastjson.JSON;
 import com.ifast.common.annotation.Log;
 import com.ifast.common.dao.LogDao;
+import com.ifast.common.domain.BaseDO;
 import com.ifast.common.domain.LogDO;
 import com.ifast.common.utils.HttpContextUtils;
 import com.ifast.common.utils.IPUtils;
@@ -33,6 +42,7 @@ import com.ifast.sys.domain.UserDO;
 public class LogAspect {
     @Autowired
     private LogDao logMapper;
+    private Logger log = LoggerFactory.getLogger(getClass());
 
     @Pointcut("@annotation(com.ifast.common.annotation.Log)")
     public void logPointCut() {
@@ -48,6 +58,79 @@ public class LogAspect {
         // 保存日志
         saveLog(point, time);
         return result;
+    }
+    
+    @Pointcut("execution(public * com.ifast.*.controller.*.*(..))")
+    public void logController(){}
+    
+    /** 记录controller日志，包括请求、ip、参数、响应结果 */
+    @Around("logController()")
+    public Object controller(ProceedingJoinPoint point) throws Throwable {
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = attributes.getRequest();
+        log.info("{} {} {} {}.{}{}", request.getMethod(), request.getRequestURI(), IPUtils.getIpAddr(request), point.getTarget().getClass().getSimpleName(), point.getSignature().getName(), Arrays.toString(point.getArgs()));
+        
+        long beginTime = System.currentTimeMillis();
+        Object result = point.proceed();
+        long time = System.currentTimeMillis() - beginTime;
+        
+        log.info("result({}) {}", time, JSON.toJSONString(result));
+        return result;
+    }
+    
+    @Pointcut("execution(public * com.ifast.*.service.*.*(..))")
+    public void logService(){}
+    
+    /** 记录自定义service接口日志，如果要记录CoreService所有接口日志请仿照logMapper切面 */
+    @Around("logService()")
+    public Object service(ProceedingJoinPoint point) throws Throwable {
+    	log.info("call {}.{}{}", point.getTarget().getClass().getSimpleName(), point.getSignature().getName(), Arrays.toString(point.getArgs()));
+    	
+    	long beginTime = System.currentTimeMillis();
+    	Object result = point.proceed();
+    	long time = System.currentTimeMillis() - beginTime;
+    	
+    	log.info("result({}) {}", time, JSON.toJSONString(result));
+    	return result;
+    }
+    
+    @Pointcut("within(com.baomidou.mybatisplus.mapper.BaseMapper+)")
+    public void logMapper(){}
+    
+    /** 记录mapper所有接口日志，设置createBy和updateBy基础字段，logback会记录sql，这里记录查库返回对象 */
+    @Around("logMapper()")
+    public Object mapper(ProceedingJoinPoint point) throws Throwable {
+    	String methodName = point.getSignature().getName();
+    	try {
+	    	Subject subject = SecurityUtils.getSubject();
+	    	if(subject.isAuthenticated()) {
+	    		switch(methodName) {
+	    		case "insert":
+	    		case "insertAllColumn":
+	    			Object insert = point.getArgs()[0];
+	    			if(insert instanceof BaseDO) {
+	    				((BaseDO)insert).setCreateBy(ShiroUtils.getUserId());
+	    			}
+	    			break;
+	    		case "update":
+	    		case "updateById":
+	    		case "updateAllColumnById":
+	    			Object update = point.getArgs()[0];
+	    			if(update instanceof BaseDO) {
+	    				((BaseDO)update).setUpdateBy(ShiroUtils.getUserId());
+	    			}
+	    			break;
+	    		}
+	    	}
+    	}catch(Exception ignore) {}
+    	log.info("call {}.{}{}", point.getTarget().getClass().getSimpleName(), methodName, Arrays.toString(point.getArgs()));
+    	
+    	long beginTime = System.currentTimeMillis();
+    	Object result = point.proceed();
+    	long time = System.currentTimeMillis() - beginTime;
+    	
+    	log.info("result({}) {}", time, JSON.toJSONString(result));
+    	return result;
     }
 
     /**
