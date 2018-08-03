@@ -14,7 +14,13 @@
                                 <div class="form-group">	
 								<label class="col-sm-3 control-label">${column.comments}：</label>
 								<div class="col-sm-8">
+	                                #if($column.dataType == 'datetime')
+									<input id="${column.attrname}" name="${column.attrname}" class="form-control" type="text" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+									#elseif($column.dataType.contains('text'))
+									<textarea id="${column.attrname}" name="${column.attrname}" class="form-control" rows="5"></textarea>
+									#else
 									<input id="${column.attrname}" name="${column.attrname}" class="form-control" type="text">
+									#end
 								</div>
 							</div>
 							#end
@@ -31,6 +37,9 @@
 	</div>
 	</div>
 	<div th:include="include::footer"></div>
+#if(${hasDatetime})	
+	<script src="//s.xlongwei.com/res/js/My97DatePicker/WdatePicker.js"></script>
+#end
 	<script type="text/javascript" src="/js/appjs/${pathName}/${classname}/add.js">
 	</script>
 </body>

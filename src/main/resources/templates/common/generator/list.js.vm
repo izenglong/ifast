@@ -60,6 +60,12 @@ function load() {
 									title : '${column.comments}' 
 								},
 								#end
+								#if(${hasCreateAt})
+								{
+									field : 'createAt', 
+									title : '创建时间'
+								},
+								#end
 								{
 									title : '操作',
 									field : 'id',

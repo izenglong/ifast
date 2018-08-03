@@ -28,8 +28,8 @@ CREATE TABLE `app_demo_base` (
   `content` mediumtext COMMENT '正文',
   `deleted` bit(1) DEFAULT b'0' COMMENT '删除',
   `version` smallint(6) DEFAULT '0' COMMENT '版本',
-  `createTime` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `updateTime` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `createAt` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updateAt` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   `createBy` bigint(20) DEFAULT NULL COMMENT '创建者',
   `updateBy` bigint(20) DEFAULT NULL COMMENT '更新者',
   PRIMARY KEY (`id`)

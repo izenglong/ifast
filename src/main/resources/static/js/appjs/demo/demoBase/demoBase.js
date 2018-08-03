@@ -75,7 +75,7 @@ function load() {
 									title : '版本' 
 								},
 																{
-									field : 'createTime', 
+									field : 'createAt', 
 									title : '创建时间' 
 								},
 																{
@@ -83,7 +83,7 @@ function load() {
 									title : '创建者' 
 								},
 																{
-									field : 'updateTime', 
+									field : 'updateAt', 
 									title : '更新时间' 
 								},
 																{

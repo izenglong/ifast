@@ -10,16 +10,26 @@
 					<div class="ibox-content">
 						<form class="form-horizontal m-t" id="signupForm">
 						<input id="${pk.columnName}" name="${pk.columnName}" th:value="${${classname}.${pk.columnName}}"  type="hidden">
-#foreach($column in $columns)
-#if($column.columnName != $pk.columnName)
-<div class="form-group">	
+						#if(${hasVersion})
+						<input id="version" name="version" th:value="${${classname}.version}"  type="hidden">
+						#end
+						
+						#foreach($column in $columns)
+							#if($column.columnName != $pk.columnName)
+							<div class="form-group">	
 								<label class="col-sm-3 control-label">${column.comments}：</label>
 								<div class="col-sm-8">
+									#if($column.dataType == 'datetime')
+									<input id="${column.attrname}" name="${column.attrname}" th:value="${${classname}.${column.attrname}} eq null ? '' : ${#dates.format(${classname}.${column.attrname}, 'yyyy-MM-dd HH:mm:ss')}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" class="form-control" type="text">
+									#elseif($column.dataType.contains('text'))
+									<textarea id="${column.attrname}" name="${column.attrname}" th:text="${${classname}.${column.attrname}}" class="form-control" rows="5"></textarea>
+									#else
 									<input id="${column.attrname}" name="${column.attrname}" th:value="${${classname}.${column.attrname}}" class="form-control" type="text">
+									#end
 								</div>
 							</div>
 							#end
-							#end
+						#end
 							<div class="form-group">
 								<div class="col-sm-8 col-sm-offset-3">
 									<button type="submit" class="btn btn-primary">提交</button>
@@ -32,6 +42,9 @@
 	</div>
 	</div>
 	<div th:include="include::footer"></div>
+#if(${hasDatetime})	
+	<script src="//s.xlongwei.com/res/js/My97DatePicker/WdatePicker.js"></script>
+#end	
 	<script type="text/javascript" src="/js/appjs/${pathName}/${classname}/edit.js">
 	</script>
 </body>

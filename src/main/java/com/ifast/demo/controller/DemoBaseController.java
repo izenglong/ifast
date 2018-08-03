@@ -21,7 +21,6 @@ import com.ifast.common.base.AdminBaseController;
 import com.ifast.demo.domain.DemoBaseDO;
 import com.ifast.demo.service.DemoBaseService;
 import com.ifast.common.utils.Result;
-import com.ifast.common.utils.ShiroUtils;
 
 /**
  * 
@@ -74,7 +73,6 @@ public class DemoBaseController extends AdminBaseController {
 	@PostMapping("/save")
 	@RequiresPermissions("demo:demoBase:add")
 	public Result<String> save( DemoBaseDO demoBase){
-		demoBase.setCreateBy(ShiroUtils.getUserId());
 		boolean insert = demoBaseService.insert(demoBase);
         return insert ? Result.ok() : Result.fail();
 	}
@@ -85,7 +83,6 @@ public class DemoBaseController extends AdminBaseController {
 	@RequestMapping("/update")
 	@RequiresPermissions("demo:demoBase:edit")
 	public Result<String>  update( DemoBaseDO demoBase){
-		demoBase.setUpdateBy(ShiroUtils.getUserId());
 		boolean updateById = demoBaseService.updateById(demoBase);
 		return updateById ? Result.ok() : Result.fail();
 	}

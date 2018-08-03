@@ -45,7 +45,7 @@ public class ${className}Controller extends AdminBaseController {
 	@GetMapping("/list")
 	@RequiresPermissions("${pathName}:${classname}:${classname}")
 	public Result<Page<${className}DO>> list(${className}DO ${classname}DTO){
-        Wrapper<${className}DO> wrapper = new EntityWrapper<${className}DO>(${classname}DTO);
+        Wrapper<${className}DO> wrapper = new EntityWrapper<${className}DO>().orderBy("id", false);
         Page<${className}DO> page = ${classname}Service.selectPage(getPage(${className}DO.class), wrapper);
         return Result.ok(page);
 	}
@@ -81,8 +81,8 @@ public class ${className}Controller extends AdminBaseController {
 	@RequestMapping("/update")
 	@RequiresPermissions("${pathName}:${classname}:edit")
 	public Result<String>  update( ${className}DO ${classname}){
-		${classname}Service.updateById(${classname});
-		return Result.ok();
+		boolean update = ${classname}Service.updateById(${classname});
+		return update ? Result.ok() : Result.fail();
 	}
 	
 	/**
