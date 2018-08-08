@@ -1,10 +1,11 @@
 package com.ifast.job.domain;
 
-import java.io.Serializable;
-
+import lombok.Data;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+
+import java.io.Serializable;
 
 /**
  * <pre>
@@ -12,6 +13,7 @@ import org.quartz.JobExecutionException;
  * <small> 2018年3月23日 | Aron</small>
  */
 @SuppressWarnings("serial")
+@Data
 public class ScheduleJob implements Serializable, Job {
 
     public static final String STATUS_RUNNING = "1";
@@ -57,78 +59,6 @@ public class ScheduleJob implements Serializable, Job {
      * 任务调用的方法名
      */
     private String methodName;
-
-    public String getJobName() {
-        return jobName;
-    }
-
-    public void setJobName(String jobName) {
-        this.jobName = jobName;
-    }
-
-    public String getJobGroup() {
-        return jobGroup;
-    }
-
-    public void setJobGroup(String jobGroup) {
-        this.jobGroup = jobGroup;
-    }
-
-    public String getJobStatus() {
-        return jobStatus;
-    }
-
-    public void setJobStatus(String jobStatus) {
-        this.jobStatus = jobStatus;
-    }
-
-    public String getCronExpression() {
-        return cronExpression;
-    }
-
-    public void setCronExpression(String cronExpression) {
-        this.cronExpression = cronExpression;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getBeanClass() {
-        return beanClass;
-    }
-
-    public void setBeanClass(String beanClass) {
-        this.beanClass = beanClass;
-    }
-
-    public String getIsConcurrent() {
-        return isConcurrent;
-    }
-
-    public void setIsConcurrent(String isConcurrent) {
-        this.isConcurrent = isConcurrent;
-    }
-
-    public String getMethodName() {
-        return methodName;
-    }
-
-    public void setMethodName(String methodName) {
-        this.methodName = methodName;
-    }
-
-    public String getSpringBean() {
-        return springBean;
-    }
-
-    public void setSpringBean(String springBean) {
-        this.springBean = springBean;
-    }
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {

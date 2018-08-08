@@ -1,5 +1,7 @@
 package com.ifast.oss.sdk;
 
+import lombok.Data;
+
 /**
  * <pre>
  * 七牛对象存储配置
@@ -7,50 +9,11 @@ package com.ifast.oss.sdk;
  * 
  * <small> 2018年4月6日 | Aron</small>
  */
+@Data
 public class OSSConfig {
     private String qiNiuAccessKey;
     private String qiNiuSecretKey;
     private String qiNiuBucket;
     private String qiNiuAccessURL;
-
-    // toString
-    @Override
-    public String toString() {
-        return "OSSConfig [qiNiuAccessKey=" + qiNiuAccessKey + ", qiNiuSecretKey=" + qiNiuSecretKey + ", qiNiuBucket="
-                + qiNiuBucket + ", qiNiuAccessURL=" + qiNiuAccessURL + "]";
-    }
-
-    // get set
-    public String getQiNiuAccessKey() {
-        return qiNiuAccessKey;
-    }
-
-    public void setQiNiuAccessKey(String qiNiuAccessKey) {
-        this.qiNiuAccessKey = qiNiuAccessKey;
-    }
-
-    public String getQiNiuSecretKey() {
-        return qiNiuSecretKey;
-    }
-
-    public void setQiNiuSecretKey(String qiNiuSecretKey) {
-        this.qiNiuSecretKey = qiNiuSecretKey;
-    }
-
-    public String getQiNiuBucket() {
-        return qiNiuBucket;
-    }
-
-    public void setQiNiuBucket(String qiNiuBucket) {
-        this.qiNiuBucket = qiNiuBucket;
-    }
-
-    public String getQiNiuAccessURL() {
-        return qiNiuAccessURL;
-    }
-
-    public void setQiNiuAccessURL(String qiNiuAccessURL) {
-        this.qiNiuAccessURL = qiNiuAccessURL;
-    }
 
 }

@@ -1,11 +1,14 @@
 package com.ifast.api.config;
 
+import lombok.Data;
+
 /**
  * <pre>
  * </pre>
  * 
  * <small> 2018年4月28日 | Aron</small>
  */
+@Data
 public class JWTConfig {
     private String userPrimaryKey;
     /**
@@ -16,34 +19,5 @@ public class JWTConfig {
      *  refresh_token过期时间，默认7天，单位为毫秒
      */
     private Long refreshTokenExpire = 604800000L;
-
-    public String getUserPrimaryKey() {
-        return userPrimaryKey;
-    }
-
-    public void setUserPrimaryKey(String userPrimaryKey) {
-        this.userPrimaryKey = userPrimaryKey;
-    }
-
-    public Long getExpireTime() {
-        return expireTime;
-    }
-
-    public void setExpireTime(Long expireTime) {
-        this.expireTime = expireTime;
-    }
-
-    public Long getRefreshTokenExpire() {
-		return refreshTokenExpire;
-	}
-
-	public void setRefreshTokenExpire(Long refreshTokenExpire) {
-		this.refreshTokenExpire = refreshTokenExpire;
-	}
-
-	@Override
-    public String toString() {
-        return "JWTConfig [userPrimaryKey=" + userPrimaryKey + ", expireTime=" + expireTime + ", refreshTokenExpre=" + refreshTokenExpire + "]";
-    }
 
 }
