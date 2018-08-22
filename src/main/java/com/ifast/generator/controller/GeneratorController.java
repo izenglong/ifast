@@ -65,14 +65,15 @@ public class GeneratorController {
     
     @Log("根据数据表批量生成代码")
     @RequestMapping("/batchCode")
-    public void batchCode(HttpServletRequest request, HttpServletResponse response, String[] tableNames) throws IOException {
-        byte[] data = generatorService.generatorCode(tableNames);
+    public void batchCode(HttpServletRequest request, HttpServletResponse response, String tables) throws IOException {
+        byte[] data = generatorService.generatorCode(tables.split(","));
         response.reset();
         response.setHeader("Content-Disposition", "attachment; filename=\"code.zip\"");
         response.addHeader("Content-Length", "" + data.length);
         response.setContentType("application/octet-stream; charset=UTF-8");
 
         IOUtils.write(data, response.getOutputStream());
+        IOUtils.closeQuietly(response.getOutputStream());
     }
     
     @Log("进入代码生成配置编辑页面")

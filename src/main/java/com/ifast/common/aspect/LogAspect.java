@@ -4,10 +4,7 @@ import com.ifast.common.annotation.Log;
 import com.ifast.common.base.BaseDO;
 import com.ifast.common.dao.LogDao;
 import com.ifast.common.domain.LogDO;
-import com.ifast.common.utils.HttpContextUtils;
-import com.ifast.common.utils.IPUtils;
-import com.ifast.common.utils.JSONUtils;
-import com.ifast.common.utils.ShiroUtils;
+import com.ifast.common.utils.*;
 import com.ifast.sys.domain.UserDO;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -27,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * <pre>
@@ -153,11 +151,16 @@ public class LogAspect {
         sysLog.setMethod(className + "." + methodName + "()");
         // 请求的参数
         Object[] args = joinPoint.getArgs();
+        Map<String, String[]> parameterMap = HttpContextUtils.getHttpServletRequest().getParameterMap();
         try {
-            String params = JSONUtils.beanToJson(args[0]).substring(0, 4999);
+            String params = JSONUtils.beanToJson(parameterMap);
+            int maxLength = 4999;
+            if(params.length() > maxLength){
+                params = params.substring(0, maxLength);
+            }
             sysLog.setParams(params);
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
         // 获取request
         HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
