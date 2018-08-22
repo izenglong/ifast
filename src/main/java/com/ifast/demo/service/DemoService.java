@@ -1,6 +1,6 @@
 package com.ifast.demo.service;
 
-import com.ifast.demo.domain.DemoBaseDO;
+import com.ifast.demo.domain.DemoDO;
 import com.ifast.common.base.CoreService;
 
 /**
@@ -10,6 +10,6 @@ import com.ifast.common.base.CoreService;
  * </pre>
  * <small> 2018-07-27 23:38:24 | Aron</small>
  */
-public interface DemoBaseService extends CoreService<DemoBaseDO> {
+public interface DemoService extends CoreService<DemoDO> {
     
 }

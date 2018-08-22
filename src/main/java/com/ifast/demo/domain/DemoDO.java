@@ -7,6 +7,7 @@ import com.ifast.common.base.BaseDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 
@@ -21,7 +22,7 @@ import java.util.Date;
 @SuppressWarnings("serial")
 @TableName("app_demo_base")
 @EqualsAndHashCode(callSuper=true) 
-public class DemoBaseDO extends BaseDO {
+public class DemoDO extends BaseDO {
 	/** 默认ID_WORKER，mybatis-plus.global-config.id-type:2，应用可以自定义 */
 	@TableId
 	private Long id;
@@ -34,5 +35,8 @@ public class DemoBaseDO extends BaseDO {
 
     /** 正文 */
     private String content;
+
+    /** 价格 */
+    private BigDecimal price;
 
 }

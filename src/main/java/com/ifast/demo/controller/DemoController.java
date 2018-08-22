@@ -1,54 +1,106 @@
 package com.ifast.demo.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.plugins.Page;
+import com.ifast.common.base.AdminBaseController;
+import com.ifast.common.utils.Result;
+import com.ifast.demo.domain.DemoDO;
+import com.ifast.demo.service.DemoService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
 
 /**
- * <pre>
- * 测试专用
- * </pre>
  * 
- * <small> 2018年1月16日 | Aron</small>
+ * <pre>
+ * 基础表
+ * </pre>
+ * <small> 2018-07-27 23:38:24 | Aron</small>
  */
-@RestController
-@RequestMapping("/test")
-public class DemoController {
+@Controller
+@RequestMapping("/demo/demoBase")
+public class DemoController extends AdminBaseController {
+	@Autowired
+	private DemoService demoBaseService;
+	
+	@GetMapping()
+	@RequiresPermissions("demo:demoBase:demoBase")
+	String DemoBase(){
+	    return "demo/demoBase/demoBase";
+	}
+	
+	@ResponseBody
+	@GetMapping("/list")
+	@RequiresPermissions("demo:demoBase:demoBase")
+	public Result<Page<DemoDO>> list(DemoDO demoBaseDTO){
+        Wrapper<DemoDO> wrapper = new EntityWrapper<DemoDO>().orderBy("id", false);
+        wrapper.like("title", demoBaseDTO.getTitle());
+        wrapper.like("content", demoBaseDTO.getContent());
+        Page<DemoDO> page = demoBaseService.selectPage(getPage(DemoDO.class), wrapper);
+        return Result.ok(page);
+	}
+	
+	@GetMapping("/add")
+	@RequiresPermissions("demo:demoBase:add")
+	String add(){
+	    return "demo/demoBase/add";
+	}
 
-    @Autowired
-    private StringRedisTemplate stringRedisTemplate;
-
-    @RequestMapping("/session")
-    public void session(HttpServletRequest request) {
-        System.out.println("request class : " + request.getClass());
-        System.out.println("request session : " + request.getSession());
-
-    }
-
-    @RequestMapping("/redis")
-    public void redis() {
-        Set<String> keys = stringRedisTemplate.keys("*");
-        System.out.println(keys);
-        ValueOperations<String, String> stringStringValueOperations = stringRedisTemplate.opsForValue();
-        stringStringValueOperations.set("Aron", "hello Aron.");
-        String aron = stringStringValueOperations.get("Aron");
-        System.out.println(aron);
-
-        Long expire = stringRedisTemplate.getExpire("Aron");
-        Long expire2 = stringRedisTemplate.getExpire("Aron", TimeUnit.MICROSECONDS);
-        Long expire3 = stringRedisTemplate.getExpire("Aron", TimeUnit.SECONDS);
-        System.out.println(expire);
-        System.out.println(expire2);
-        System.out.println(expire3);
-
-    }
-
-
-
+	@GetMapping("/edit/{id}")
+	@RequiresPermissions("demo:demoBase:edit")
+	String edit(@PathVariable("id") Long id,Model model){
+		DemoDO demoBase = demoBaseService.selectById(id);
+		model.addAttribute("demoBase", demoBase);
+	    return "demo/demoBase/edit";
+	}
+	
+	/**
+	 * 保存
+	 */
+	@ResponseBody
+	@PostMapping("/save")
+	@RequiresPermissions("demo:demoBase:add")
+	public Result<String> save( DemoDO demoBase){
+		boolean insert = demoBaseService.insert(demoBase);
+        return insert ? Result.ok() : Result.fail();
+	}
+	/**
+	 * 修改
+	 */
+	@ResponseBody
+	@RequestMapping("/update")
+	@RequiresPermissions("demo:demoBase:edit")
+	public Result<String>  update( DemoDO demoBase){
+		boolean updateById = demoBaseService.updateById(demoBase);
+		return updateById ? Result.ok() : Result.fail();
+	}
+	
+	/**
+	 * 删除
+	 */
+	@PostMapping( "/remove")
+	@ResponseBody
+	@RequiresPermissions("demo:demoBase:remove")
+	public Result<String>  remove( Long id){
+		demoBaseService.deleteById(id);
+        return Result.ok();
+	}
+	
+	/**
+	 * 删除
+	 */
+	@PostMapping( "/batchRemove")
+	@ResponseBody
+	@RequiresPermissions("demo:demoBase:batchRemove")
+	public Result<String>  remove(@RequestParam("ids[]") Long[] ids){
+		demoBaseService.deleteBatchIds(Arrays.asList(ids));
+		return Result.ok();
+	}
+	
 }

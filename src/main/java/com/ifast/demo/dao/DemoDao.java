@@ -1,6 +1,6 @@
 package com.ifast.demo.dao;
 
-import com.ifast.demo.domain.DemoBaseDO;
+import com.ifast.demo.domain.DemoDO;
 import com.ifast.common.base.BaseDao;
 
 /**
@@ -10,6 +10,6 @@ import com.ifast.common.base.BaseDao;
  * </pre>
  * <small> 2018-07-27 23:38:24 | Aron</small>
  */
-public interface DemoBaseDao extends BaseDao<DemoBaseDO> {
+public interface DemoDao extends BaseDao<DemoDO> {
 
 }
