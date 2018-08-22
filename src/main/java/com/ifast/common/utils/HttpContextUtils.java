@@ -1,10 +1,10 @@
 package com.ifast.common.utils;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 
@@ -18,5 +18,11 @@ public class HttpContextUtils {
 	}
 	public static HttpServletResponse getHttpServletResponse() {
         return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+	}
+
+	public static boolean isAjax(){
+		HttpServletRequest httpRequest = HttpContextUtils.getHttpServletRequest();
+		String requestHeader = httpRequest.getHeader("X-Requested-With");
+		return  requestHeader != null && "XMLHttpRequest".equals(requestHeader);
 	}
 }
