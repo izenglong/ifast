@@ -246,12 +246,6 @@
 			<artifactId>thymeleaf-extras-shiro</artifactId>
 			<version>1.2.1</version>
 		</dependency>
-		<!-- utils -->
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>fastjson</artifactId>
-			<version>1.2.31</version>
-		</dependency>
 		<!--velocity代码生成使用模板 -->
 		<dependency>
 			<groupId>org.apache.velocity</groupId>
@@ -306,16 +300,10 @@
 			<version>2.6.1</version>
 		</dependency>
 
-		<!-- xss过滤组件 -->
 		<dependency>
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>
 			<version>1.9.2</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.session</groupId>
-			<artifactId>spring-session</artifactId>
 		</dependency>
 
 		<!-- data-redis S -->

@@ -1,11 +1,14 @@
 package com.ifast.common.aspect;
 
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Date;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.ifast.common.annotation.Log;
+import com.ifast.common.base.BaseDO;
+import com.ifast.common.dao.LogDao;
+import com.ifast.common.domain.LogDO;
+import com.ifast.common.utils.HttpContextUtils;
+import com.ifast.common.utils.IPUtils;
+import com.ifast.common.utils.JSONUtils;
+import com.ifast.common.utils.ShiroUtils;
+import com.ifast.sys.domain.UserDO;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -20,16 +23,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.alibaba.fastjson.JSON;
-import com.ifast.common.annotation.Log;
-import com.ifast.common.dao.LogDao;
-import com.ifast.common.domain.BaseDO;
-import com.ifast.common.domain.LogDO;
-import com.ifast.common.utils.HttpContextUtils;
-import com.ifast.common.utils.IPUtils;
-import com.ifast.common.utils.JSONUtils;
-import com.ifast.common.utils.ShiroUtils;
-import com.ifast.sys.domain.UserDO;
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Date;
 
 /**
  * <pre>
@@ -74,7 +71,7 @@ public class LogAspect {
         Object result = point.proceed();
         long time = System.currentTimeMillis() - beginTime;
         
-        log.info("result({}) {}", time, JSON.toJSONString(result));
+        log.info("result({}) {}", time, JSONUtils.beanToJson(result));
         return result;
     }
     
@@ -90,7 +87,7 @@ public class LogAspect {
     	Object result = point.proceed();
     	long time = System.currentTimeMillis() - beginTime;
     	
-    	log.info("result({}) {}", time, JSON.toJSONString(result));
+    	log.info("result({}) {}", time, JSONUtils.beanToJson(result));
     	return result;
     }
     
@@ -129,7 +126,7 @@ public class LogAspect {
     	Object result = point.proceed();
     	long time = System.currentTimeMillis() - beginTime;
     	
-    	log.info("result({}) {}", time, JSON.toJSONString(result));
+    	log.info("result({}) {}", time, JSONUtils.beanToJson(result));
     	return result;
     }
 
