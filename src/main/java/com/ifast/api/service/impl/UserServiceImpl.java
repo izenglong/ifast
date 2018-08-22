@@ -21,7 +21,7 @@ import com.ifast.common.utils.SpringContextHolder;
 /**
  * <pre>
  * </pre>
- * 
+ *
  * <small> 2018年4月27日 | Aron</small>
  */
 @Service
@@ -70,7 +70,9 @@ public class UserServiceImpl extends CoreServiceImpl<AppUserDao, AppUserDO> impl
 
 	@Override
 	public Boolean logoutToken(String token, String refreshToken) {
-		Boolean expire = Boolean.FALSE; String userId = null, uname = null; AppUserDO user = null;
+		Boolean expire = Boolean.FALSE;
+		String userId = null, uname = null;
+		AppUserDO user = null;
 		if(StringUtils.isNotBlank(token)
 				&& (userId=JWTUtil.getUserId(token))!=null
 				&& Holder.logoutTokens.get(token)==null
@@ -98,9 +100,9 @@ public class UserServiceImpl extends CoreServiceImpl<AppUserDao, AppUserDO> impl
         vo.setRefreshTokenExpire(Holder.jwt.getRefreshTokenExpire());
         return vo;
 	}
-	
+
 	private boolean notLogout(String token) {
-		if(Holder.logoutTokens.get(token)!=null)
+		if(Holder.logoutTokens.get(token) != null)
 			throw new IFastApiException(EnumErrorCode.apiAuthorizationLoggedout.getMsg());
 		return true;
 	}

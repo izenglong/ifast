@@ -1,10 +1,10 @@
 package com.ifast.common.domain;
 
+import com.ifast.common.utils.JSONUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import com.alibaba.fastjson.JSON;
 
 /**
  * <pre>
@@ -144,8 +144,7 @@ public class Tree<T> {
 
     @Override
     public String toString() {
-
-        return JSON.toJSONString(this);
+        return JSONUtils.beanToJson(this);
     }
 
 }

@@ -1,12 +1,11 @@
-package com.ifast.common.domain;
-
-import java.io.Serializable;
-import java.util.Date;
+package com.ifast.common.base;
 
 import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.annotations.Version;
-
 import lombok.Data;
+
+import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @SuppressWarnings("serial")

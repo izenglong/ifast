@@ -9,6 +9,9 @@ ifast:
 logging:
   level:
     com.ifast: info
+    springfox.documentation: error
+    org.springframework.web.servlet.mvc.method.annotation: error
+    org.springframework.context.support: error
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource

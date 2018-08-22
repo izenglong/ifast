@@ -1,13 +1,11 @@
 package com.ifast.generator.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.ifast.common.annotation.Log;
 import com.ifast.common.domain.ConfigDO;
 import com.ifast.common.service.ConfigService;
 import com.ifast.common.utils.Result;
 import com.ifast.generator.service.GeneratorService;
 import com.ifast.generator.type.EnumGen;
-
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -67,9 +65,7 @@ public class GeneratorController {
     
     @Log("根据数据表批量生成代码")
     @RequestMapping("/batchCode")
-    public void batchCode(HttpServletRequest request, HttpServletResponse response, String tables) throws IOException {
-        String[] tableNames = new String[] {};
-        tableNames = JSON.parseArray(tables).toArray(tableNames);
+    public void batchCode(HttpServletRequest request, HttpServletResponse response, String[] tableNames) throws IOException {
         byte[] data = generatorService.generatorCode(tableNames);
         response.reset();
         response.setHeader("Content-Disposition", "attachment; filename=\"code.zip\"");

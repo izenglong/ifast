@@ -33,7 +33,7 @@ public class SysUserAuthorizingRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         Object next = principals.getPrimaryPrincipal();
-        log.debug("next class:" + next.getClass());
+        log.debug("auth class:" + next.getClass());
         SimpleAuthorizationInfo info = null;
         if(next instanceof UserDO) { // 避免授权报错
             Long userId = ShiroUtils.getUserId();

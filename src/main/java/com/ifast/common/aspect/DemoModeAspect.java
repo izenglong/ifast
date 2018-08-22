@@ -13,6 +13,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import com.ifast.common.config.IFastConfig;
@@ -29,6 +30,7 @@ import com.ifast.common.utils.HttpContextUtils;
  */
 @Aspect
 @Component
+@ConditionalOnProperty(prefix = "ifast", name = "demoModel", havingValue = "true")
 public class DemoModeAspect {
 
     private static final Logger log = LoggerFactory.getLogger(DemoModeAspect.class);

@@ -1,7 +1,6 @@
 package com.ifast.shiro.realm;
 
-import java.util.Collection;
-
+import com.ifast.api.shiro.JWTAuthenticationTokenToken;
 import org.apache.shiro.ShiroException;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -14,7 +13,7 @@ import org.apache.shiro.realm.Realm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ifast.api.shiro.JWTAuthenticationTokenToken;
+import java.util.Collection;
 
 /**
  * <pre>
@@ -64,17 +63,19 @@ public class IFastModularRealm extends ModularRealmAuthenticator {
                 try {
                     info = realm.getAuthenticationInfo(token);
                 } catch (AuthenticationException e) {
+                    e.printStackTrace();
                     ex = e;
                 }
-    
+
                 aggregate = strategy.afterAttempt(realm, token, info, aggregate, ex);
-    
+
             }else if (realm.supports(token) && token instanceof UsernamePasswordToken) {
                 log.debug("-ADMIN doMultiRealmAuthentication");
                 AuthenticationInfo info = null;
                 try {
                     info = realm.getAuthenticationInfo(token);
                 } catch (AuthenticationException e) {
+                    e.printStackTrace();
                     ex = e;
                 }
 
