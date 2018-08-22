@@ -28,7 +28,7 @@ spring:
       max-file-size: 30Mb
       max-request-size: 30Mb
   redis:
-#    host: 127.0.0.1
+    host: 127.0.0.1
   devtools:
     restart:
       enabled: true

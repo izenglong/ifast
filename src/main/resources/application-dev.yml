@@ -16,7 +16,7 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/ifast?useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://127.0.0.1:3306/ifast-new2?useUnicode=true&characterEncoding=utf8
     username: root
     password: aron
     initialSize: 1

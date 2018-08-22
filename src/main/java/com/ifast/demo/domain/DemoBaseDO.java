@@ -1,15 +1,13 @@
 package com.ifast.demo.domain;
 
 
-import java.math.BigDecimal;
-import java.util.Date;
-
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
-import com.ifast.common.domain.BaseDO;
-
+import com.ifast.common.base.BaseDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.Date;
 
 
 /**
@@ -36,8 +34,5 @@ public class DemoBaseDO extends BaseDO {
 
     /** 正文 */
     private String content;
-
-    /** 价格 */
-    private BigDecimal price;
 
 }
