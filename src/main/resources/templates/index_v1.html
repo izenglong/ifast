@@ -32,7 +32,7 @@
 							<span><img alt="image" class="img-circle" height="60"
 								width="60" th:src="${picUrl}" /></span>
 							<h3 class="" style="color: #ffffff">
-								</i>IFast 快速开发框架
+								</i>Ifast 快速开发框架
 							</h3>
 						</div>
 						<div class="dropdown profile-element hidden">
@@ -54,22 +54,29 @@
 							<div class="logo-element">IFast</div>
 						</div>
 					</li>
-					<li><a href="#"> <i class="fa fa-home"></i> <span
-							class="nav-label">主页</span> <span class="fa arrow"></span></a>
+					<li>
+                        <a href="#">
+                            <i class="fa fa-home"></i>
+                            <span class="nav-label">主页</span> <span class="fa arrow"></span>
+                        </a>
 						<ul class="nav nav-second-level">
-							<li><a id="index001" class="J_menuItem" href="index_v1.html"
-								data-index="0" th:href="@{/main}">关于 IFast</a></li>
-						</ul></li>
-					<li th:each="menu : ${menus}"><a href="#"> <i
-							class="fa fa fa-bar-chart-o" th:class="${menu.attributes.icon}"></i>
-							<span class="nav-label" th:text="${menu.text}">基础信息</span> <span
-							class="fa arrow"></span>
-					</a>
+							<li>
+                                <a id="index001" class="J_menuItem" href="index_v1.html"  data-index="0" th:href="@{/main}">关于 IFast</a>
+                            </li>
+						</ul>
+                    </li>
+					<li th:each="menu : ${menus}">
+                        <a href="#">
+                            <i class="fa fa fa-bar-chart-o" th:class="${menu.attributes.icon}"></i>
+                            <span class="nav-label" th:text="${menu.text}">基础信息</span>
+                            <span class="fa arrow"></span>
+                        </a>
 						<ul class="nav nav-second-level">
-							<li th:each="cmenu : ${menu.children}"><a class="J_menuItem"
-								href="graph_echarts.html" th:text="${cmenu.text}"
-								th:href="${cmenu.attributes.url}">系统管理</a></li>
-						</ul></li>
+							<li th:each="cmenu : ${menu.children}">
+                                <a class="J_menuItem" href="graph_echarts.html" th:href="${cmenu.attributes.url}"><i class="fa fa fa-bar-chart-o" th:class="${cmenu.attributes.icon}"></i><span th:text="${cmenu.text}"></span></a>
+							</li>
+						</ul>
+					</li>
 				</ul>
 			</div>
 		</nav>
@@ -254,7 +261,7 @@
 	<script src="/js/plugins/pace/pace.min.js"></script>
 	<!-- vue -->
 	<script type="text/javascript" src="/js/vue.min.js">
-		
+
 	</script>
 	<!-- Toastr script -->
 	<script src="/js/plugins/toastr/toastr.min.js"></script>
