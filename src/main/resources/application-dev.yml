@@ -6,6 +6,12 @@ ifast:
     userPrimaryKey: userId
     expireTime: 3000000
     refreshTokenExpire: 86400000
+  swagger:
+    title: 功能测试
+    description: ifast接口文档
+    contactName: Aron
+    contactEmail: izenglong@163.com
+    contactUrl: http://ifast.site/swagger-ui.html
 logging:
   level:
     com.ifast: info

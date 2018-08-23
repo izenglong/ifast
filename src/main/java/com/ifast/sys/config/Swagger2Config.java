@@ -19,6 +19,8 @@ public class Swagger2Config {
 
     @Autowired
     IFastConfig ifastConfig;
+    @Autowired
+    SwaggerProperties swaggerProperties;
 
     @Bean
     public Docket createRestApi() {
@@ -31,16 +33,11 @@ public class Swagger2Config {
                 .apis(RequestHandlerSelectors.any()).paths(PathSelectors.any()).build();
     }
 
-    // 构建 api文档的详细信息函数
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                // 页面标题
-                .title("功能测试")
-                // 创建人
-                .contact(new Contact("Aron", "izenglong@163.com", "izenglong@163.com"))
-                // 版本号
-                .version("1.0")
-                // 描述
-                .description("API 描述").build();
+                .title(swaggerProperties.getTitle())
+                .contact(new Contact(swaggerProperties.getContactName(), swaggerProperties.getContactUrl(), swaggerProperties.getContactEmail()))
+                .version(swaggerProperties.getVersion())
+                .description(swaggerProperties.getDescription()).build();
     }
 }
