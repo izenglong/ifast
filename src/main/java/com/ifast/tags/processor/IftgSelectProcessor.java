@@ -24,25 +24,32 @@ import java.util.Objects;
  * <iftg:select dicType = "dic_of_sex"></iftg:select>
  * 属性1 dicType 指定数据字典key
  * --情况1：当dicType = 字典中的type 时select下拉数值渲染的value
- *  为字典中的name字段，name 为字典中的name字段
- *
+ * 为字典中的name字段，name 为字典中的name字段
+ * <p>
  * --情况2：当dicType = all时候表示select下拉数值渲染的value
- *  为字典中的type字段，name 为字典中的description字段）
- *
+ * 为字典中的type字段，name 为字典中的description字段）
+ * <p>
  * --情况3：当optionValue 属性不为空是，则dicType 属性失效
- *  下拉option数据为当optionValue属性的值
- *
- *
+ * 下拉option数据为当optionValue属性的值
+ * <p>
+ * <p>
  * 属性2 optionValue 控件下拉数据对象
  * --情况1：当optionValue 属性不为空是，则dicType 属性失效
- *   下拉option数据为当optionValue属性的值
- *   注：optionValue 对象的数值必须为 List<ValueVo> 类型
- *
+ * 下拉option数据为当optionValue属性的值
+ * 注：optionValue 对象的数值必须为 List<ValueVo> 类型
+ * <p>
  * 属性3 dataValue 控件回显示数据对象
- *   注：dataValue 对象的数值必须为 List<String> 类型
+ * 注：dataValue 对象的数值必须为 List<String> 类型
+ * <p>
+ *
+ * 属性3 defaultValue 控件默认显示数据对象
+ *  注：defaultValue 对象的数值必须为 List<String> 类型
+ *
+ *
  * 注：
- *   控件的其他属性，用户可根据需求完全自定义，如需要加上name属性和Id属性则
- *   <iftg:select dicType = "dic_of_sex" name="mySelect" id="selectId"></iftg:select>
+ * 控件的其他属性，用户可根据需求完全自定义，如需要加上name属性和Id属性则
+ * <iftg:select dicType = "dic_of_sex" name="mySelect" id="selectId"></iftg:select>
+ *
  * @author: zet
  * @date:2018/8/22
  */
@@ -76,13 +83,13 @@ public class IftgSelectProcessor extends AbstractMarkupSubstitutionElementProces
 
         if (Objects.nonNull(dataValues)) {
             selectedValues = dataValues;
-        }else {
+        } else {
             selectedValues = defaultValues;
         }
 
         if (Objects.nonNull(optionValues)) {
             valueVos = optionValues;
-        }else {
+        } else {
             valueVos = IftgUtil.getValues(dictService, dicType, selectedValues);
         }
 

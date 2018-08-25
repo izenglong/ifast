@@ -24,7 +24,7 @@ spring:
     driverClassName: com.mysql.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/ifast-new2?useUnicode=true&characterEncoding=utf8
     username: root
-    password: aron
+    password: 123456
     initialSize: 1
     minIdle: 3
     maxActive: 20
