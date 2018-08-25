@@ -3,6 +3,7 @@ package com.ifast.tags.util;
 import com.ifast.common.domain.DictDO;
 import com.ifast.common.service.DictService;
 import com.ifast.tags.vo.ValueVo;
+import org.apache.commons.lang3.StringUtils;
 import org.thymeleaf.Arguments;
 import org.thymeleaf.Configuration;
 import org.thymeleaf.dom.Element;
@@ -10,6 +11,7 @@ import org.thymeleaf.standard.expression.IStandardExpression;
 import org.thymeleaf.standard.expression.IStandardExpressionParser;
 import org.thymeleaf.standard.expression.StandardExpressions;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 /**
@@ -40,7 +42,7 @@ public class IftgUtil {
      * @param selectedValue 默认选中的值
      * @return
      */
-    public static List<ValueVo> getValues(DictService dictService, String dicType, String[] selectedValue) {
+    public static List<ValueVo> getValues(DictService dictService, String dicType, List<String> selectedValue) {
         if (KEY_ALL.equals(dicType)) {
             return getListType(dictService, dicType, selectedValue);
         }
@@ -52,20 +54,20 @@ public class IftgUtil {
         return options;
     }
 
-    public static List<ValueVo> getListType(DictService dictService, String dicType, String[] selectedValue) {
+    public static List<ValueVo> getListType(DictService dictService, String dicType, List<String> selectedValue) {
         List<DictDO> dictDOS = dictService.listType();
         return parseListTypeToValues(dictDOS, selectedValue);
     }
 
     /**
-     * 获取标签对应值
+     * 获取回显的值
      *
      * @param arguments     thymeleaf 上下文对象
      * @param element       当前节点对象
      * @param attributeName 属性名
-     * @return 标签对象值
+     * @return 回显对象值
      */
-    public static String getTargetAttributeValue(Arguments arguments, Element element, String attributeName) {
+    public static List<String> getDataValues(Arguments arguments, Element element, String attributeName) {
         String attributeValue = element.getAttributeValue(attributeName);
         Configuration configuration = arguments.getConfiguration();
         IStandardExpressionParser expressionParser = StandardExpressions.getExpressionParser(configuration);
@@ -75,8 +77,66 @@ public class IftgUtil {
         } catch (Exception e) {
             return null;
         }
+        List<String> resp = new ArrayList<>();
         Object result = expression.execute(configuration, arguments);
-        return result == null ? "" : result.toString();
+        if (Objects.nonNull(result)
+                && !(result instanceof String)) {
+            resp = (List<String>) (result);
+            return resp;
+        } else {
+            if(Objects.nonNull(result)){
+                resp.add(result.toString());
+            }
+            return resp;
+        }
+
+
+    }
+
+    /**
+     * 获取option 的值
+     *
+     * @param arguments     thymeleaf 上下文对象
+     * @param element       当前节点对象
+     * @param attributeName 属性名
+     * @return 标签对象值
+     */
+    public static List<ValueVo> getOptionValues(Arguments arguments, Element element, String attributeName) {
+        String attributeValue = element.getAttributeValue(attributeName);
+        Configuration configuration = arguments.getConfiguration();
+        IStandardExpressionParser expressionParser = StandardExpressions.getExpressionParser(configuration);
+        IStandardExpression expression = null;
+        try {
+            expression = expressionParser.parseExpression(configuration, arguments, attributeValue);
+        } catch (Exception e) {
+            return null;
+        }
+        List<ValueVo> resp = new ArrayList<>();
+        Object result = expression.execute(configuration, arguments);
+        if (Objects.nonNull(result)) {
+            return (List<ValueVo>)result;
+        }
+
+        return null;
+
+    }
+
+    /**
+     * 根据属性名获取属性值
+     *
+     * @param fieldName 字段名
+     * @param object    对象
+     * @return
+     */
+    private static String getFieldValueByFieldName(String fieldName, Object object) {
+        try {
+            Field field = object.getClass().getDeclaredField(fieldName);
+            //设置对象的访问权限，保证对private的属性的访问
+            field.setAccessible(true);
+            return (String) field.get(object);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     /**
@@ -85,10 +145,10 @@ public class IftgUtil {
      * @param dictDOS 待转换的字典数据
      * @return 转换后的格式
      */
-    private static List<ValueVo> parseToValues(List<DictDO> dictDOS, String[] selectedValue) {
+    private static List<ValueVo> parseToValues(List<DictDO> dictDOS, List<String> selectedValue) {
         List<ValueVo> valueVos = new ArrayList<>();
         ValueVo valueVo = null;
-        List<String> selecteds = Objects.nonNull(selectedValue) ? Arrays.asList(selectedValue) : null;
+        List<String> selecteds = Objects.nonNull(selectedValue) ? selectedValue : null;
 
         for (DictDO dictDO : dictDOS) {
             valueVo = new ValueVo();
@@ -109,10 +169,10 @@ public class IftgUtil {
      * @param dictDOS 待转换的字典数据
      * @return 转换后的格式
      */
-    private static List<ValueVo> parseListTypeToValues(List<DictDO> dictDOS, String[] selectedValue) {
+    private static List<ValueVo> parseListTypeToValues(List<DictDO> dictDOS, List<String> selectedValue) {
         List<ValueVo> valueVos = new ArrayList<>();
         ValueVo valueVo = null;
-        List<String> selecteds = Objects.nonNull(selectedValue) ? Arrays.asList(selectedValue) : null;
+        List<String> selecteds = Objects.nonNull(selectedValue) ? selectedValue : null;
 
         for (DictDO dictDO : dictDOS) {
             valueVo = new ValueVo();

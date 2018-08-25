@@ -22,14 +22,24 @@ import java.util.Objects;
  * select 注解
  * 用法
  * <iftg:select dicType = "dic_of_sex"></iftg:select>
- * 属性 dicType是必填项
+ * 属性1 dicType 指定数据字典key
  * --情况1：当dicType = 字典中的type 时select下拉数值渲染的value
  *  为字典中的name字段，name 为字典中的name字段
- *
  *
  * --情况2：当dicType = all时候表示select下拉数值渲染的value
  *  为字典中的type字段，name 为字典中的description字段）
  *
+ * --情况3：当optionValue 属性不为空是，则dicType 属性失效
+ *  下拉option数据为当optionValue属性的值
+ *
+ *
+ * 属性2 optionValue 控件下拉数据对象
+ * --情况1：当optionValue 属性不为空是，则dicType 属性失效
+ *   下拉option数据为当optionValue属性的值
+ *   注：optionValue 对象的数值必须为 List<ValueVo> 类型
+ *
+ * 属性3 dataValue 控件回显示数据对象
+ *   注：dataValue 对象的数值必须为 List<String> 类型
  * 注：
  *   控件的其他属性，用户可根据需求完全自定义，如需要加上name属性和Id属性则
  *   <iftg:select dicType = "dic_of_sex" name="mySelect" id="selectId"></iftg:select>
@@ -58,11 +68,23 @@ public class IftgSelectProcessor extends AbstractMarkupSubstitutionElementProces
 
         //获取值
         String dicType = element.getAttributeValue("dicType");//字典类型
-        String defaultValue = element.getAttributeValue("defaultValue");//默认选中
+        List<ValueVo> optionValues = IftgUtil.getOptionValues(arguments, element, "optionValue");//控件值
+        List<String> dataValues = IftgUtil.getDataValues(arguments, element, "dataValue");//回显值
+        List<String> defaultValues = IftgUtil.getDataValues(arguments, element, "defaultValue");//默认选中
+        List<String> selectedValues = new ArrayList<>();
+        List<ValueVo> valueVos = new ArrayList<>();
 
-        String thValue = IftgUtil.getTargetAttributeValue(arguments, element, "th:value");//回显值
-        String defaultSelect = StringUtils.isNoneBlank(thValue) ? thValue : defaultValue;
-        List<ValueVo> valueVos = IftgUtil.getValues(dictService, dicType, new String[]{defaultSelect});
+        if (Objects.nonNull(dataValues)) {
+            selectedValues = dataValues;
+        }else {
+            selectedValues = defaultValues;
+        }
+
+        if (Objects.nonNull(optionValues)) {
+            valueVos = optionValues;
+        }else {
+            valueVos = IftgUtil.getValues(dictService, dicType, selectedValues);
+        }
 
         //set 值
         List<Node> nodes = null;

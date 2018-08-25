@@ -5,6 +5,7 @@ $(function() {
 });
 
 function load() {
+    selectLoad();
 	$('#exampleTable')
 			.bootstrapTable(
 					{
@@ -111,6 +112,22 @@ function load() {
 }
 function reLoad() {
 	$('#exampleTable').bootstrapTable('refresh');
+}
+
+function selectLoad() {
+    $(".chosen-select").chosen({
+        maxHeight : 200
+    });
+    //点击事件
+    $('.chosen-select').on('change', function(e, params) {
+        var opt = {
+            query : {
+                type : params.selected,
+                name : $('#searchName').val()
+            }
+        }
+        reLoad();
+    });
 }
 function add() {
 	layer.open({

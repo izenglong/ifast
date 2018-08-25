@@ -5,16 +5,20 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.ifast.common.base.AdminBaseController;
+import com.ifast.common.service.DictService;
 import com.ifast.common.utils.Result;
 import com.ifast.demo.domain.DemoDO;
 import com.ifast.demo.service.DemoService;
+import com.ifast.tags.vo.ValueVo;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * 
@@ -28,10 +32,29 @@ import java.util.Arrays;
 public class DemoController extends AdminBaseController {
 	@Autowired
 	private DemoService demoBaseService;
+	@Autowired
+	private DictService dictService;
 	
 	@GetMapping()
 	@RequiresPermissions("demo:demoBase:demoBase")
-	String DemoBase(){
+	String DemoBase(Model model){
+		List<ValueVo> valueVos = new ArrayList<>();
+		ValueVo valueVo = new ValueVo();
+		valueVo.setVlaue("111");
+		valueVo.setName("wo");
+		valueVos.add(valueVo);
+
+		valueVo = new ValueVo();
+		valueVo.setVlaue("222");
+		valueVo.setName("我是额");
+		valueVo.setSelected(true);
+		valueVos.add(valueVo);
+
+		List<String> types = new ArrayList<>();
+		types.add("sex");
+		types.add("theme");
+		model.addAttribute("types", types);
+		model.addAttribute("options", valueVos);
 	    return "demo/demoBase/demoBase";
 	}
 	

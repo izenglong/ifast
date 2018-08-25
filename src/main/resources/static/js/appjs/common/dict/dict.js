@@ -28,7 +28,6 @@ function selectLoad() {
     });
     //点击事件
     $('.chosen-select').on('change', function(e, params) {
-        console.log(params.selected);
         var opt = {
             query : {
                 type : params.selected,

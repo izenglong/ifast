@@ -26,6 +26,14 @@
 							<input id="searchName" type="text" class="form-control"
 								placeholder="">
 						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<iftg:select id="searchType" dicType="all"
+										 dataValue="${types}"
+										 optionValue="${options}"
+										 data-placeholder="多选测试"  multiple="multiple"  class="form-control chosen-select"
+										 tabindex="2" style="width: 100%">
+							</iftg:select>
+						</div>
 					</div>
 					<table id="exampleTable" data-mobile-responsive="true">
 					</table>
