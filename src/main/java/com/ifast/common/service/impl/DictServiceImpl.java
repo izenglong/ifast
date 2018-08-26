@@ -1,17 +1,15 @@
 package com.ifast.common.service.impl;
 
-import java.util.List;
-import java.util.Objects;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.ifast.common.base.CoreServiceImpl;
 import com.ifast.common.dao.DictDao;
 import com.ifast.common.domain.DictDO;
 import com.ifast.common.service.DictService;
 import com.ifast.sys.domain.UserDO;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Objects;
 
 /**
  * <pre>
@@ -20,12 +18,10 @@ import com.ifast.sys.domain.UserDO;
  */
 @Service
 public class DictServiceImpl extends CoreServiceImpl<DictDao, DictDO> implements DictService {
-    @Autowired
-    private DictDao dictDao;
 
     @Override
     public List<DictDO> listType() {
-        return dictDao.listType();
+        return baseMapper.listType();
     }
 
     @Override
