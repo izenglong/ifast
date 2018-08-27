@@ -10,8 +10,8 @@ import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
@@ -19,7 +19,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
  * 异常处理器
  * 
  */
-@ControllerAdvice
+@RestController
 public class ApplicationExceptionHandler {
 
     private Logger log = LoggerFactory.getLogger(getClass());
