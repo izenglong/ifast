@@ -16,7 +16,7 @@ import java.util.*;
  * </pre>
  */
 public class SpringCacheWrapper implements Cache {
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
+    private final static Logger log = LoggerFactory.getLogger(SpringCacheWrapper.class);
     private org.springframework.cache.Cache springCache;
     private boolean isEhcache;
     private Set<Object> keys;
