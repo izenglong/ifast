@@ -1,5 +1,6 @@
 package com.ifast.api.shiro;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationToken;
 
 /**
@@ -19,12 +20,17 @@ public class JWTAuthenticationTokenToken implements AuthenticationToken {
     }
 
     @Override
-    public Object getPrincipal() {
+    public String getPrincipal() {
+        if(StringUtils.isBlank(token)){
+            return "";
+        }
+
+
         return token;
     }
 
     @Override
-    public Object getCredentials() {
+    public String getCredentials() {
         return token;
     }
 }
