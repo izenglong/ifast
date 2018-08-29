@@ -81,7 +81,7 @@ public class SpringCacheWrapper implements Cache {
     public Set keys() {
         if(isEhcache) {
             Ehcache ehcache = (Ehcache) springCache.getNativeCache();
-            return new HashSet(ehcache.getKeys());
+            return new HashSet<Object>(ehcache.getKeys());
         }else {
             return keys;
         }
@@ -93,7 +93,7 @@ public class SpringCacheWrapper implements Cache {
             Ehcache ehcache = (Ehcache) springCache.getNativeCache();
             List keys = ehcache.getKeys();
             if (!CollectionUtils.isEmpty(keys)) {
-                List values = new ArrayList(keys.size());
+                List<Object> values = new ArrayList<>(keys.size());
                 for (Object key : keys) {
                     Object value = get(key);
                     if (value != null) {
@@ -105,7 +105,7 @@ public class SpringCacheWrapper implements Cache {
                 return Collections.emptyList();
             }
         } else {
-            List values = new ArrayList(keys.size());
+            List<Object> values = new ArrayList<>(keys.size());
             for (Object key : keys) {
                 Object value = get(key);
                 values.add(value);

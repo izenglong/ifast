@@ -4,8 +4,6 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-import com.ifast.api.config.JWTConfig;
-
 /**
  * <pre>
  * </pre>
@@ -33,7 +31,5 @@ public class IFastConfig {
      * 调试模式
      */
     private boolean devMode;
-
-    private JWTConfig jwt;
 
 }

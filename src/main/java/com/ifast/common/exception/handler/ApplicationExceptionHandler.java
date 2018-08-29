@@ -1,5 +1,6 @@
 package com.ifast.common.exception.handler;
 
+import com.ifast.api.exception.IFastApiException;
 import com.ifast.common.exception.IFastException;
 import com.ifast.common.type.EnumErrorCode;
 import com.ifast.common.utils.HttpContextUtils;
@@ -11,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
@@ -19,12 +20,20 @@ import org.springframework.web.servlet.NoHandlerFoundException;
  * 异常处理器
  * 
  */
-@RestController
+@RestControllerAdvice()
 public class ApplicationExceptionHandler {
 
     private Logger log = LoggerFactory.getLogger(getClass());
 
     public final static String ERROR_DEFAULT_PAGE = "error/error";
+
+    /**
+     * API异常
+     */
+    @ExceptionHandler(IFastApiException.class)
+    public Result<String> handleIFastAPIException(IFastApiException e) {
+        return getStringResult(e.getMessage());
+    }
 
     /**
      * 自定义异常
@@ -37,15 +46,21 @@ public class ApplicationExceptionHandler {
             mv.setViewName(ERROR_DEFAULT_PAGE);
             return mv;
         }else{
-            try {
-                int code = Integer.parseInt(e.getMessage());
-                return Result.build(code, EnumErrorCode.getMsgByCode(code));
-            } catch (NumberFormatException e1) {
-                log.info("错误码使用错误，异常内容请抛出EnumErrorCode类的枚举值");
-                return Result.build(EnumErrorCode.unknowFail.getCode(), EnumErrorCode.unknowFail.getMsg());
-            }
+            return getStringResult(e.getMessage());
         }
     }
+
+    private Result<String> getStringResult(String message) {
+        try {
+            int code = Integer.parseInt(message);
+            return Result.build(code, EnumErrorCode.getMsgByCode(code));
+        } catch (NumberFormatException e1) {
+            log.warn("错误码使用错误，异常内容请抛出EnumErrorCode类的枚举值");
+            e1.printStackTrace();
+            return Result.build(EnumErrorCode.unknowFail.getCode(), EnumErrorCode.unknowFail.getMsg());
+        }
+    }
+
 
     @ExceptionHandler(DuplicateKeyException.class)
     public Result<String> handleDuplicateKeyException(DuplicateKeyException e) {

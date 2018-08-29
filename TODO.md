@@ -1,0 +1,6 @@
+- ~~异常处理兼容 pc 和 ajax~~ 
+- 用户api 和 pc 登录区分问题
+    - api 登录 pc
+    - pc 登录 api
+- 新token刷新与老token过期问题
+- 权限的角色支持

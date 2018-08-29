@@ -4,7 +4,8 @@ ifast:
   demoMode: false
   jwt:
     userPrimaryKey: userId
-    expireTime: 3000000
+    expireTokenKeyPrefix: ifast:expireToken
+    expireTime: 7200000
     refreshTokenExpire: 86400000
   swagger:
     title: 功能测试
@@ -12,9 +13,12 @@ ifast:
     contactName: Aron
     contactEmail: izenglong@163.com
     contactUrl: http://ifast.site/swagger-ui.html
+  shiro:
+    jsessionidKey: SESSION
+    sessionKeyPrefix: ifast:session
 logging:
   level:
-    com.ifast: info
+    com.ifast: debug
     springfox.documentation: error
     org.springframework.web.servlet.mvc.method.annotation: error
     org.springframework.context.support: error

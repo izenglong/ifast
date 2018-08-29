@@ -3,7 +3,6 @@ package com.ifast.shiro.config;
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import com.ifast.api.shiro.JWTAuthenticationFilter;
 import com.ifast.api.shiro.JWTAuthorizingRealm;
-import com.ifast.common.config.IFastConfig;
 import com.ifast.common.utils.SpringContextHolder;
 import com.ifast.shiro.cache.SpringCacheManagerWrapper;
 import com.ifast.shiro.realm.IFastModularRealm;
@@ -51,20 +50,20 @@ import java.util.*;
 public class ShiroConfig {
     
     @Bean
-    SessionDAO sessionDAO(IFastConfig config) {
+    SessionDAO sessionDAO(ShiroConfigProperties config) {
 //        EnterpriseCacheSessionDAO sessionDAO = new EnterpriseCacheSessionDAO();
 //        CacheManager cacheManager = enterpriseCacheSessionDAO.getCacheManager();
 //        return enterpriseCacheSessionDAO;
 
-        RedisSessionDAO sessionDAO = new RedisSessionDAO("ifast:session");
+        RedisSessionDAO sessionDAO = new RedisSessionDAO(config.getSessionKeyPrefix());
 
 //        SessionDAO sessionDAO = new MemorySessionDAO();
         return sessionDAO;
     }
 
     @Bean
-    public SimpleCookie sessionIdCookie() {
-        return new SimpleCookie("SESSION");
+    public SimpleCookie sessionIdCookie(ShiroConfigProperties shiroConfigProperties) {
+        return new SimpleCookie(shiroConfigProperties.getJsessionidKey());
     }
 
     @Bean
@@ -82,9 +81,9 @@ public class ShiroConfig {
     }
 
     @Bean
-    public SessionManager sessionManager(SessionDAO sessionDAO) {
+    public SessionManager sessionManager(SessionDAO sessionDAO, SimpleCookie simpleCookie) {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
-        sessionManager.setSessionIdCookie(sessionIdCookie());
+        sessionManager.setSessionIdCookie(simpleCookie);
 
         Collection<SessionListener> sessionListeners = new ArrayList<SessionListener>();
         sessionListeners.add(new BDSessionListener());
