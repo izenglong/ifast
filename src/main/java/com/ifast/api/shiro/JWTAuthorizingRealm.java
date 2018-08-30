@@ -52,11 +52,14 @@ public class JWTAuthorizingRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+        SimpleAuthorizationInfo authz = new SimpleAuthorizationInfo();
+        if(!(principals.getPrimaryPrincipal() instanceof  String)){
+            return authz;
+        }
         String jwt = (String) principals.getPrimaryPrincipal();
         if(log.isDebugEnabled()){
             log.debug("jwt:" + jwt);
         }
-        SimpleAuthorizationInfo authz = new SimpleAuthorizationInfo();
         String userId = JWTUtil.getUserId(jwt);
         if(StringUtils.isBlank(userId)){
             throw new IFastException(EnumErrorCode.apiAuthorizationFailed.getCodeStr());
