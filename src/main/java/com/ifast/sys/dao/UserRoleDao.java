@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.ifast.common.base.BaseDao;
+import com.ifast.sys.domain.RoleDO;
 import com.ifast.sys.domain.UserRoleDO;
 
 /**
@@ -21,4 +22,6 @@ public interface UserRoleDao extends BaseDao<UserRoleDO> {
 	int batchSave(List<UserRoleDO> list);
 
 	int batchRemoveByUserId(Long[] ids);
+
+    List<RoleDO> findListByUserId(Serializable id);
 }

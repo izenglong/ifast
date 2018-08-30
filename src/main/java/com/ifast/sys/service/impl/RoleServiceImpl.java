@@ -47,7 +47,7 @@ public class RoleServiceImpl extends CoreServiceImpl<RoleDao, RoleDO> implements
     }
 
     @Override
-    public List<RoleDO> findListByUserId(Serializable userId) {
+    public List<RoleDO> findListStatusByUserId(Serializable userId) {
         List<Long> rolesIds = userRoleMapper.listRoleId(userId);
         List<RoleDO> roles = selectList(null);
         for (RoleDO roleDO : roles) {
@@ -60,6 +60,11 @@ public class RoleServiceImpl extends CoreServiceImpl<RoleDao, RoleDO> implements
             }
         }
         return roles;
+    }
+
+    @Override
+    public List<RoleDO> findListByUserId(Serializable id) {
+        return userRoleMapper.findListByUserId(id);
     }
 
     @CacheEvict(value = DEMO_CACHE_NAME, key = ROLE_ALL_KEY)

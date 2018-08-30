@@ -4,6 +4,7 @@ import com.ifast.api.util.JWTUtil;
 import com.ifast.common.exception.IFastException;
 import com.ifast.common.type.EnumErrorCode;
 import com.ifast.sys.service.MenuService;
+import com.ifast.sys.service.RoleService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -16,7 +17,9 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
+
+import java.util.HashSet;
 
 
 /**
@@ -24,13 +27,15 @@ import org.springframework.stereotype.Service;
  * </pre>
  * <small> 2018年4月22日 | Aron</small>
  */
-@Service
+@Component
 public class JWTAuthorizingRealm extends AuthorizingRealm {
 
     private  Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private MenuService menuService;
+    @Autowired
+    private RoleService roleService;
 
     @Override
     public String getName() {
@@ -57,6 +62,10 @@ public class JWTAuthorizingRealm extends AuthorizingRealm {
             throw new IFastException(EnumErrorCode.apiAuthorizationFailed.getCodeStr());
         }
         authz.setStringPermissions(menuService.listPerms(Long.parseLong(userId)));
+
+        HashSet<String> roles = new HashSet<>();
+        roleService.findListByUserId(userId).stream().forEach(bean -> roles.add(bean.getRoleSign()));
+        authz.setRoles(roles);
         return authz;
     }
 

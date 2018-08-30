@@ -8,8 +8,8 @@ ifast:
     expireTime: 7200000
     refreshTokenExpire: 86400000
   swagger:
-    title: 功能测试
-    description: ifast接口文档
+    title: ifast接口文档
+    description: 开发人员太懒，没有写描述
     contactName: Aron
     contactEmail: izenglong@163.com
     contactUrl: http://ifast.site/swagger-ui.html

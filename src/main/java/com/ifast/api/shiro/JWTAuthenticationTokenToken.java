@@ -24,8 +24,6 @@ public class JWTAuthenticationTokenToken implements AuthenticationToken {
         if(StringUtils.isBlank(token)){
             return "";
         }
-
-
         return token;
     }
 

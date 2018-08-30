@@ -82,7 +82,7 @@ public class UserController extends AdminBaseController {
     String edit(Model model, @PathVariable("id") Long id) {
         UserDO userDO = userService.selectById(id);
         model.addAttribute("user", userDO);
-        List<RoleDO> roles = roleService.findListByUserId(id);
+        List<RoleDO> roles = roleService.findListStatusByUserId(id);
         model.addAttribute("roles", roles);
         return prefix + "/edit";
     }

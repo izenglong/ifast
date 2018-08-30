@@ -1,16 +1,15 @@
 package com.ifast.sys.service;
 
-import java.util.Map;
-import java.util.Set;
-
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.ifast.common.base.CoreService;
 import com.ifast.common.domain.Tree;
 import com.ifast.sys.domain.DeptDO;
 import com.ifast.sys.domain.UserDO;
 import com.ifast.sys.vo.UserVO;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Map;
+import java.util.Set;
 
 /**
  * <pre>
@@ -18,7 +17,7 @@ import com.ifast.sys.vo.UserVO;
  * 
  * <small> 2018年3月23日 | Aron</small>
  */
-@Service("sysUserService")
+@Service
 public interface UserService extends CoreService<UserDO> {
 
     boolean exit(Map<String, Object> params);

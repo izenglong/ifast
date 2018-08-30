@@ -102,47 +102,31 @@ public class ShiroConfig {
     }
     
     @Bean
-    SysUserAuthorizingRealm sysUserRealm() {
-        SysUserAuthorizingRealm userRealm = new SysUserAuthorizingRealm();
-        return userRealm;
-    }
-    
-    @Bean
-    JWTAuthorizingRealm jwtAuthorizingRealm() {
-        JWTAuthorizingRealm jwtAuthorizingRealm = new JWTAuthorizingRealm();
-        return jwtAuthorizingRealm;
-    }
-
-    @Bean
-    Authenticator authenticator() {
+    Authenticator authenticator(SysUserAuthorizingRealm sysUserAuthorizingRealm, JWTAuthorizingRealm jwtAuthorizingRealm) {
         IFastModularRealm authenticator = new IFastModularRealm();
         authenticator.setAuthenticationStrategy(new AtLeastOneSuccessfulStrategy());
         List<Realm> realms = new ArrayList<>();
-        realms.add(sysUserRealm());
-        realms.add(jwtAuthorizingRealm());
+        realms.add(jwtAuthorizingRealm);
+        realms.add(sysUserAuthorizingRealm);
         authenticator.setRealms(realms);
         return authenticator;
     }
     
     @Bean
-    Authorizer authorizer() {
+    Authorizer authorizer(SysUserAuthorizingRealm sysUserAuthorizingRealm, JWTAuthorizingRealm jwtAuthorizingRealm) {
         ModularRealmAuthorizer authorizer = new ModularRealmAuthorizer();
         List<Realm> realms = new ArrayList<>();
-        realms.add(sysUserRealm());
-        realms.add(jwtAuthorizingRealm());
+        realms.add(jwtAuthorizingRealm);
+        realms.add(sysUserAuthorizingRealm);
         authorizer.setRealms(realms);
         return authorizer;
     }
     
     @Bean
-    SecurityManager securityManager(SessionManager sessionManager) {
+    SecurityManager securityManager(SessionManager sessionManager,Authorizer authorizer, Authenticator authenticator ) {
         DefaultWebSecurityManager manager = new DefaultWebSecurityManager();
-        List<Realm> realms = new ArrayList<>();
-        realms.add(sysUserRealm());
-        realms.add(jwtAuthorizingRealm());
-        manager.setRealms(realms);
-        manager.setAuthenticator(authenticator());
-        manager.setAuthorizer(authorizer());
+        manager.setAuthenticator(authenticator);
+        manager.setAuthorizer(authorizer);
         manager.setCacheManager(cacheManager());
         manager.setSessionManager(sessionManager);
         return manager;

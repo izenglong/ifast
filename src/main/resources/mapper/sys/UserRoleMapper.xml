@@ -3,6 +3,14 @@
 
 <mapper namespace="com.ifast.sys.dao.UserRoleDao">
 
+	<select id="findListByUserId" resultType="com.ifast.sys.domain.RoleDO">
+		select * from sys_role r
+		left join sys_user_role ur on r.id = ur.roleId
+		left join sys_user u on ur.userId = u.id
+		where
+		u.id = #{userId}
+	</select>
+
 	<select id="listRoleId" resultType="long">
 		select roleId from
 		sys_user_role where
