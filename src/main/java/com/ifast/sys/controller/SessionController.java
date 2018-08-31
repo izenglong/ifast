@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -36,8 +37,8 @@ public class SessionController {
 	@Log("查询在线用户列表数据")
 	@ResponseBody
 	@RequestMapping("/list")
-	public List<UserOnline> list() {
-		return sessionService.list();
+	public List<UserOnline> list(@RequestParam(required=false) String name) {
+		return sessionService.list(name);
 	}
 	
 	@Log("根据sessionId强踢用户下线")

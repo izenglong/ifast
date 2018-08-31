@@ -15,7 +15,7 @@ import com.ifast.sys.domain.UserOnline;
  */
 @Service
 public interface SessionService {
-	List<UserOnline> list();
+	List<UserOnline> list(String name);
 
 	Collection<Session> sessionList();
 	

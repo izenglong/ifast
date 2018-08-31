@@ -9,7 +9,7 @@ function load() {
 					{
 						method : 'get', // 服务器数据的请求方式 get or post
 						url : prefix + "/list", // 服务器数据的加载地址
-						// showRefresh : true,
+						showRefresh : true,
 						// showToggle : true,
 						// showColumns : true,
 						iconSize : 'outline',
@@ -31,8 +31,8 @@ function load() {
 						queryParams : function(params) {
 							return {
 								// 说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
-								limit : params.limit,
-								offset : params.offset,
+								//limit : params.limit,
+								//offset : params.offset,
 								name : $('#searchName').val()
 							};
 						},

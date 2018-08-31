@@ -1,5 +1,6 @@
 package com.ifast.common.aspect;
 
+import com.ifast.api.util.JWTUtil;
 import com.ifast.common.annotation.Log;
 import com.ifast.common.base.BaseDO;
 import com.ifast.common.dao.LogDao;
@@ -96,29 +97,43 @@ public class LogAspect {
     @Around("logMapper()")
     public Object mapper(ProceedingJoinPoint point) throws Throwable {
     	String methodName = point.getSignature().getName();
-    	try {
-	    	Subject subject = SecurityUtils.getSubject();
-	    	if(subject.isAuthenticated()) {
-	    		switch(methodName) {
-	    		case "insert":
-	    		case "insertAllColumn":
-	    			Object insert = point.getArgs()[0];
-	    			if(insert instanceof BaseDO) {
-	    				((BaseDO)insert).setCreateBy(ShiroUtils.getUserId());
-	    			}
-	    			break;
-	    		case "update":
-	    		case "updateById":
-	    		case "updateAllColumnById":
-	    			Object update = point.getArgs()[0];
-	    			if(update instanceof BaseDO) {
-	    				((BaseDO)update).setUpdateBy(ShiroUtils.getUserId());
-	    			}
-	    			break;
-	    		}
-	    	}
-    	}catch(Exception ignore) {}
-    	log.info("call {}.{}{}", point.getTarget().getClass().getSimpleName(), methodName, Arrays.toString(point.getArgs()));
+    	boolean insertBy = false, updateBy = false;
+    	switch(methodName) {
+    	case "insert":
+    	case "insertAllColumn":
+    		insertBy = true;
+    		break;
+    	case "update":
+    	case "updateById":
+    	case "updateAllColumnById":
+    		updateBy = true;
+    		break;
+    	}
+    	if(insertBy || updateBy) {
+    		Object arg0 = point.getArgs()[0];
+    		if(arg0 instanceof BaseDO) {
+    			try {
+    				Subject subject = SecurityUtils.getSubject();
+    				if(subject.isAuthenticated()) {
+    					Object principal = subject.getPrincipal();
+    					Long userId = null;
+    					if(principal instanceof String) {
+    						userId = Long.valueOf(JWTUtil.getUserId((String)principal));
+    					}else if(principal instanceof UserDO) {
+    						userId = ((UserDO)principal).getId();
+    					}
+    					BaseDO baseDO = (BaseDO)arg0;
+    					if(insertBy) {
+    						baseDO.setCreateBy(userId);
+    					}
+    					else if(updateBy) {
+    						baseDO.setUpdateBy(userId);
+    					}
+    				}
+    			}catch(Exception ignore) {}
+    			log.info("call {}.{}{}", point.getTarget().getClass().getSimpleName(), methodName, Arrays.toString(point.getArgs()));
+    		}
+    	}
     	
     	long beginTime = System.currentTimeMillis();
     	Object result = point.proceed();
@@ -150,7 +165,7 @@ public class LogAspect {
         String methodName = signature.getName();
         sysLog.setMethod(className + "." + methodName + "()");
         // 请求的参数
-        Object[] args = joinPoint.getArgs();
+        // Object[] args = joinPoint.getArgs();
         Map<String, String[]> parameterMap = HttpContextUtils.getHttpServletRequest().getParameterMap();
         try {
             String params = JSONUtils.beanToJson(parameterMap);
