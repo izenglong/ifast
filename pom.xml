@@ -33,6 +33,7 @@
 		<qiniu.version>[7.0.0, 7.2.99]</qiniu.version>
 		<oltu.version>1.0.2</oltu.version>
 		<jwt.version>0.6.0</jwt.version>
+		<lombok.version>1.16.14</lombok.version>
 		<docker.registry>127.0.0.1:5000</docker.registry>
 		<spotify.version>0.4.10</spotify.version>
 	</properties>
@@ -134,6 +135,7 @@
 			</build>
 		</profile>
 	</profiles>
+
 	<repositories>
 		<repository>
 			<id>public</id>
@@ -144,6 +146,7 @@
 			</releases>
 		</repository>
 	</repositories>
+
 	<pluginRepositories>
 		<pluginRepository>
 			<id>public</id>
@@ -157,6 +160,7 @@
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.qiniu</groupId>
