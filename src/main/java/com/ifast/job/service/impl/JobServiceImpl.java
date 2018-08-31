@@ -99,4 +99,13 @@ public class JobServiceImpl extends CoreServiceImpl<TaskDao, TaskDO> implements 
         updateById(scheduleJob);
     }
 
+    @Override
+    public void runNowOnce(Long jobId) throws SchedulerException {
+        TaskDO scheduleJob = selectById(jobId);
+        if (scheduleJob == null) {
+            return;
+        }
+        quartzManager.runAJobNow(ScheduleJobUtils.entityToData(scheduleJob));
+    }
+
 }
