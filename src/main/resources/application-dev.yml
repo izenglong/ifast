@@ -16,6 +16,17 @@ ifast:
   shiro:
     jsessionidKey: SESSION
     sessionKeyPrefix: ifast:session
+  sms:
+    cacheKey: ifast:cache
+    cacheKeyPrefix: sms
+    codeExpireTime: 900000
+    zt:
+      url: http://www.ztsms.cn/sendNSms.do
+      uname:
+      passwd:
+      productId:
+      scenes:
+        validCode: 验证码{code}，您正在进行身份验证，打死也不要告诉别人哦！
 logging:
   level:
     com.ifast: debug

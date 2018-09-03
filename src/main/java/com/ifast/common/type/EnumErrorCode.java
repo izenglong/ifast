@@ -38,6 +38,11 @@ public enum EnumErrorCode {
     , apiAuthorizationLoggedout(44002, "token已注销")
     , apiAuthorizationExpired(44003, "token已过期")
     , apiAuthorizationFailed(44004, "token认证失败")
+
+    , apiSmsSendFailed(44100, "短信发送失败")
+    , apiSmsSendFailed4ContentNull(44101, "短信发送失败")
+    , apiSmsCodeInvalid(44110, "短信验证码错误")
+
     ;
 
     private int code;
