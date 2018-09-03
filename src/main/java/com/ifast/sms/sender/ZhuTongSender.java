@@ -36,21 +36,21 @@ public class ZhuTongSender implements SmsSender {
 
         String url = buildURL(mobile, code, scene);
 
-//        String res = restTemplate.getForObject(url, String.class);
-//        if(log.isDebugEnabled()){
-//            log.debug("【SMS】请求结果:{}", res);
-//        }
-//        String[] split = null;
-//        if (res != null) {
-//            split = res.split(",");
-//        }
-//        if (split != null && split.length == 2) {
-//            res = split[0];
-//        }
-//        if(!"1".equals(res)){
-//            log.warn("【SMS】发送失败,手机号码：{}, 请求结果：{}", mobile, res);
-//            throw new IFastApiException(EnumErrorCode.apiSmsSendFailed.getCodeStr());
-//        }
+        String res = restTemplate.getForObject(url, String.class);
+        if(log.isDebugEnabled()){
+            log.debug("【SMS】请求结果:{}", res);
+        }
+        String[] split = null;
+        if (res != null) {
+            split = res.split(",");
+        }
+        if (split != null && split.length == 2) {
+            res = split[0];
+        }
+        if(!"1".equals(res)){
+            log.warn("【SMS】发送失败,手机号码：{}, 请求结果：{}", mobile, res);
+            throw new IFastApiException(EnumErrorCode.apiSmsSendFailed.getCodeStr());
+        }
         log.info("【SMS】发送短信成功， mobile:{},code:{}", mobile, code);
     }
 
