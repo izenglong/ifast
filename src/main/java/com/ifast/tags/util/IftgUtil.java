@@ -59,7 +59,39 @@ public class IftgUtil {
 
     /**
      * 获取标签对应值
-     *
+     * @param arguments     thymeleaf 上下文对象
+     * @param element       当前节点对象
+     * @param attributeName 属性名
+     * @return 回显对象值
+     */
+    public static List<String> getDataValues(Arguments arguments, Element element, String attributeName) {
+        String attributeValue = element.getAttributeValue(attributeName);
+        Configuration configuration = arguments.getConfiguration();
+        IStandardExpressionParser expressionParser = StandardExpressions.getExpressionParser(configuration);
+        IStandardExpression expression = null;
+        try {
+            expression = expressionParser.parseExpression(configuration, arguments, attributeValue);
+        } catch (Exception e) {
+            return null;
+        }
+        List<String> resp = new ArrayList<>();
+        Object result = expression.execute(configuration, arguments);
+        if (Objects.nonNull(result)
+                && !(result instanceof String)) {
+            resp = (List<String>) (result);
+            return resp;
+        } else {
+            if(Objects.nonNull(result)){
+                resp.add(result.toString());
+            }
+            return resp;
+        }
+
+
+    }
+
+    /**
+     * 获取option 的值
      * @param arguments     thymeleaf 上下文对象
      * @param element       当前节点对象
      * @param attributeName 属性名
@@ -77,7 +109,9 @@ public class IftgUtil {
         }
         Object result = expression.execute(configuration, arguments);
         return result == null ? "" : result.toString();
+
     }
+
 
     /**
      * 转换格式

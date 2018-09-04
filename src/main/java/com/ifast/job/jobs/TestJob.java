@@ -1,13 +1,11 @@
 package com.ifast.job.jobs;
 
-import java.util.Date;
-
+import com.ifast.common.utils.DateUtils;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 import org.springframework.stereotype.Component;
 
-import com.ifast.common.utils.DateUtils;
+import java.util.Date;
 
 /**
  * <pre>
@@ -19,7 +17,7 @@ import com.ifast.common.utils.DateUtils;
 public class TestJob implements Job {
 
     @Override
-    public void execute(JobExecutionContext context) throws JobExecutionException {
+    public void execute(JobExecutionContext context){
         System.err.println("测试任务执 | " + DateUtils.format(new Date(), DateUtils.DATE_TIME_PATTERN_19)
                 + " | 定时统计人数：\" + userService.selectCount(null)");
     }
