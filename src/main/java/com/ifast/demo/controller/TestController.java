@@ -1,10 +1,10 @@
 package com.ifast.demo.controller;
 
+import com.ifast.demo.dto.TestValidDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Set;
@@ -24,14 +24,14 @@ public class TestController {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
-    @RequestMapping("/session")
+    @GetMapping("/session")
     public void session(HttpServletRequest request) {
         System.out.println("request class : " + request.getClass());
         System.out.println("request session : " + request.getSession());
 
     }
 
-    @RequestMapping("/redis")
+    @GetMapping("/redis")
     public void redis() {
         Set<String> keys = stringRedisTemplate.keys("*");
         System.out.println(keys);
@@ -47,6 +47,11 @@ public class TestController {
         System.out.println(expire2);
         System.out.println(expire3);
 
+    }
+
+    @PostMapping("/valid")
+    public void valid(@RequestBody TestValidDTO dto) {
+        System.out.println(dto);
     }
 
 

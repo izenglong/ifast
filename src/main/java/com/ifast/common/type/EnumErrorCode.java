@@ -11,6 +11,7 @@ public enum EnumErrorCode {
 
     ok(200, "请求成功")
     , unknowFail(500, "未知错误")
+    , illegalArgument(400, "参数校验异常")
     , pageNotFound(404, "页面不存在")
     , notAuthorization(405, "未授权")
     

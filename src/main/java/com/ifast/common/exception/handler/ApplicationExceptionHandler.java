@@ -28,6 +28,14 @@ public class ApplicationExceptionHandler {
     public final static String ERROR_DEFAULT_PAGE = "error/error";
 
     /**
+     * 参数校验异常
+     */
+    @ExceptionHandler(IllegalArgumentException.class)
+    public Result<String> illegalArgumentException(IllegalArgumentException e) {
+        return Result.build(EnumErrorCode.illegalArgument.getCode(), e.getMessage());
+    }
+
+    /**
      * API异常
      */
     @ExceptionHandler(IFastApiException.class)
