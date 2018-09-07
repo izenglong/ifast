@@ -1,13 +1,16 @@
 
-# 简介
+# 简介 | Intro
 ifast是一款基于Spring Boot + Mybatis + Mybatis Plus搭建的快速开发平台。ifast集成了代码生成器，具有高效的开发效率。以Spring Boot为基础框架，Mybatis plus为数据访问层， Apache Shiro为权限授权层，Ehcahe对常用数据进行缓存，基于Bootstrap构建的Admin LTE作为前端框架。
 
-# 定位
+# 定位 | Goal
  * 中小型企业项目开发脚手架，以基础建设和实用性为主 
  * 接私活利器 
  * 个人学习
 
-# 内置功能
+# 文档 | Document
+查看文档可以快速上手, 请点击 -----> [开车指南](https://gitee.com/icron/ifast/wikis/%E6%9E%81%E7%AE%80%E6%95%99%E7%A8%8B?sort_id=276903)
+
+# 内置功能 | Features
 ifast以基础建设和实用性为切入点，内置了众多很多优秀的基础功能和工具。包括：
  * 系统权限  
     基于shiro实现的rbac的权限管理，能够基于不同的角色控制到按钮权限级别
