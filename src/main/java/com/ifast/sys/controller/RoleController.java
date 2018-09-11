@@ -27,14 +27,12 @@ public class RoleController extends AdminBaseController {
     @Autowired
     RoleService roleService;
     
-    @Log("进入系统角色页面")
     @RequiresPermissions("sys:role:role")
     @GetMapping()
     String role() {
         return prefix + "/role";
     }
     
-    @Log("查询系统角色菜单")
     @RequiresPermissions("sys:role:role")
     @GetMapping("/list")
     @ResponseBody()
@@ -43,14 +41,12 @@ public class RoleController extends AdminBaseController {
         return roles;
     }
 
-    @Log("添加角色")
     @RequiresPermissions("sys:role:add")
     @GetMapping("/add")
     String add() {
         return prefix + "/add";
     }
 
-    @Log("编辑角色")
     @RequiresPermissions("sys:role:edit")
     @GetMapping("/edit/{id}")
     String edit(@PathVariable("id") Long id, Model model) {

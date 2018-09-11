@@ -10,7 +10,7 @@ function load() {
 					{
 						method : 'get', // 服务器数据的请求方式 get or post
 						url : prefix + "/list", // 服务器数据的加载地址
-						// showRefresh : true,
+						showRefresh : true,
 						// showToggle : true,
 						// showColumns : true,
 						iconSize : 'outline',
@@ -33,11 +33,11 @@ function load() {
 							return {
 								pageNumber : params.pageNumber,
 								pageSize : params.pageSize,
-								name : $('#searchName').val(),
-								sort : 'gmtCreate',
+								sort : 'id',
 								order : 'desc',
 								operation : $("#searchOperation").val(),
-								username : $("#searchUsername").val()
+								username : $("#searchUsername").val(),
+								userId : $("#searchUserId").val()
 							};
 						},
 						// //请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数，例如 toolbar 中的参数 如果
@@ -71,15 +71,26 @@ function load() {
 								},
 								{
 									field : 'operation',
-									title : '操作'
+									title : '操作',
+									formatter : function(value, row, index) {
+										return '<span title="'+row.method+'">'+value+'</span>';
+									}
 								},
 								{
 									field : 'time',
 									title : '用时'
 								},
 								{
-									field : 'method',
-									title : '方法'
+									field : 'params',
+									title : '参数',
+									formatter : function(value, row, index){
+										var txt = !value ? "" : value, size = 100;
+										if(txt.length<=size){
+											return txt;
+										}else{
+											return "<textarea rows=\""+Math.min(5,Math.ceil(lengthCN(txt)/size))+"\" cols=\""+size+"\" style=\"width:100%;background:transparent;border-style:none;resize:none\" readonly>"+txt+"</textarea>";
+										}
+									}
 								},
 								{
 									field : 'ip',

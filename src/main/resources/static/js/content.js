@@ -98,3 +98,35 @@ function sendFile(files, editor, $editable) {
         }
     });
 }
+
+//计算带中文的字符串显示宽度
+function lengthCN(message) {
+    var strlenght = 0;
+    var txtval = $.trim(message);
+    for (var i = 0; i < txtval.length; i++) {
+        if (isCN(txtval.charAt(i)) == true) {
+            strlenght = strlenght + 1.8;
+        } else {
+            strlenght = strlenght + 1;
+        }
+    }
+    return strlenght;
+}
+function isCN(str) {
+	var regexCh = /[u00-uff]/;
+	return !regexCh .test(str);
+}
+
+//预览图片
+function preview(url) {
+    layer.open({
+        type: 1,
+        title: '预览',
+        closeBtn: 1,
+        area: [ '800px', '800px' ],
+        skin: 'layui-layer-nobg', //没有背景色
+        shadeClose: true,
+        offset: 't',
+        content: '<img width="90%" src="'+url+'"/>'
+    });
+}

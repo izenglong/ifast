@@ -20,7 +20,7 @@ import java.util.Set;
 @Service
 public interface UserService extends CoreService<UserDO> {
 
-    boolean exit(Map<String, Object> params);
+    boolean exist(Map<String, Object> params);
 
     Set<String> listRoles(Long userId);
 

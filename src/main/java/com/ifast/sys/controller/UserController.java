@@ -50,14 +50,12 @@ public class UserController extends AdminBaseController {
     @Autowired
     DictService dictService;
     
-    @Log("进入系统用户列表页面")
     @RequiresPermissions("sys:user:user")
     @GetMapping("")
     String user(Model model) {
         return prefix + "/user";
     }
     
-    @Log("查询系统用户列表")
     @GetMapping("/list")
     @ResponseBody
     public Result<Page<UserDO>> list(UserDO userDTO) {
@@ -68,7 +66,6 @@ public class UserController extends AdminBaseController {
 
     
     @RequiresPermissions("sys:user:add")
-    @Log("添加用户")
     @GetMapping("/add")
     String add(Model model) {
         List<RoleDO> roles = roleService.selectList(null);
@@ -77,7 +74,6 @@ public class UserController extends AdminBaseController {
     }
 
     @RequiresPermissions("sys:user:edit")
-    @Log("编辑用户")
     @GetMapping("/edit/{id}")
     String edit(Model model, @PathVariable("id") Long id) {
         UserDO userDO = userService.selectById(id);
@@ -133,19 +129,16 @@ public class UserController extends AdminBaseController {
         return Result.ok();
     }
     
-    @Log("退出")
-    @PostMapping("/exit")
+    @PostMapping("/exist")
     @ResponseBody
-    boolean exit(@RequestParam Map<String, Object> params) {
+    boolean exist(@RequestParam Map<String, Object> params) {
         // 存在，不通过，false
-        return !userService.exit(params);
+        return !userService.exist(params);
     }
 
     @RequiresPermissions("sys:user:resetPwd")
-    @Log("请求更改用户密码")
     @GetMapping("/resetPwd/{id}")
     String resetPwd(@PathVariable("id") Long userId, Model model) {
-
         UserDO userDO = new UserDO();
         userDO.setId(userId);
         model.addAttribute("user", userDO);
@@ -170,7 +163,6 @@ public class UserController extends AdminBaseController {
 
     }
     
-    @Log("查询系统用户属性树形数据")
     @GetMapping("/tree")
     @ResponseBody
     public Tree<DeptDO> tree() {
@@ -179,13 +171,11 @@ public class UserController extends AdminBaseController {
         return tree;
     }
     
-    @Log("进入系统用户树形显示页面")
     @GetMapping("/treeView")
     String treeView() {
         return prefix + "/userTree";
     }
     
-    @Log("进入个人中心")
     @GetMapping("/personal")
     String personal(Model model) {
         UserDO userDO = userService.selectById(getUserId());

@@ -110,7 +110,7 @@ public class UserServiceImpl extends CoreServiceImpl<UserDao, UserDO> implements
     }
 
     @Override
-    public boolean exit(Map<String, Object> params) {
+    public boolean exist(Map<String, Object> params) {
         return retBool(baseMapper.selectByMap(params).size());
     }
 

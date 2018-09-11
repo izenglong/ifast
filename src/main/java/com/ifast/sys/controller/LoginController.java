@@ -6,7 +6,6 @@ import com.ifast.common.domain.Tree;
 import com.ifast.common.type.EnumErrorCode;
 import com.ifast.common.utils.MD5Utils;
 import com.ifast.common.utils.Result;
-import com.ifast.common.utils.ShiroUtils;
 import com.ifast.oss.domain.FileDO;
 import com.ifast.oss.service.FileService;
 import com.ifast.sys.domain.MenuDO;
@@ -38,12 +37,10 @@ public class LoginController extends AdminBaseController {
     FileService fileService;
 
     @GetMapping({ "/", "" })
-    @Log("重定向到登录")
     String welcome(Model model) {
         return "redirect:/login";
     }
 
-    @Log("请求访问主页")
     @GetMapping({ "/index" })
     String index(Model model) {
         List<Tree<MenuDO>> menus = menuService.listMenuTree(getUserId());
@@ -75,21 +72,12 @@ public class LoginController extends AdminBaseController {
             return Result.build(EnumErrorCode.userLoginFail.getCode(), EnumErrorCode.userLoginFail.getMsg());
         }
     }
-
-    @GetMapping("/logout")
-    @Log("退出")
-    String logout() {
-        ShiroUtils.logout();
-        return "redirect:/login";
-    }
     
-    @Log("主页")
     @GetMapping("/main")
     String main() {
         return "main";
     }
 
-    @Log("错误403")
     @GetMapping("/403")
     String error403() {
         return "403";

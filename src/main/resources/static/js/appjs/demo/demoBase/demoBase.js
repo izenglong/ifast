@@ -10,7 +10,7 @@ function load() {
 					{
 						method : 'get', // 服务器数据的请求方式 get or post
 						url : prefix + "/list", // 服务器数据的加载地址
-					//	showRefresh : true,
+						showRefresh : true,
 					//	showToggle : true,
 					//	showColumns : true,
 						iconSize : 'outline',
@@ -32,9 +32,9 @@ function load() {
 							return {
 								//说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
 							     pageNumber : params.pageNumber,
-                                  pageSize : params.pageSize  
-					           // name:$('#searchName').val(),
-					           // username:$('#searchName').val()
+                                  pageSize : params.pageSize,
+					            title:$('#title').val(),
+					            content:$('#content').val()
 							};
 						},
 						// //请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数，例如 toolbar 中的参数 如果
@@ -64,31 +64,36 @@ function load() {
 								},
 																{
 									field : 'content', 
-									title : '正文' 
+									title : '正文',
+									formatter : function(value, row, index){
+										var txt = !value ? "" : value, size = 100;
+										if(txt.length<=size){
+											return txt;
+										}else{
+											return "<textarea rows=\""+Math.ceil(lengthCN(txt)/size)+"\" cols=\""+size+"\" style=\"width:100%;background:transparent;border-style:none;resize:none\" readonly>"+txt+"</textarea>";
+										}
+									}									
 								},
 																{
 									field : 'publish', 
-									title : '发布时间' 
-								},
-																{
-									field : 'version', 
-									title : '版本' 
-								},
-																{
-									field : 'createAt', 
-									title : '创建时间' 
+									title : '发布时间',
+									formatter : function(value, row, index) {
+										return '<span title="版本：'+row.version+'">'+value+'</span>';
+									}
 								},
 																{
 									field : 'createBy', 
-									title : '创建者' 
+									title : '创建者',
+									formatter : function(value, row, index) {
+										return '<span title="创建时间：'+row.createAt+'">'+value+'</span>';
+									}									
 								},
 																{
 									field : 'updateAt', 
-									title : '更新时间' 
-								},
-																{
-									field : 'updateBy', 
-									title : '更新者' 
+									title : '更新时间',
+									formatter : function(value, row, index) {
+										return '<span title="更新者：'+row.updateBy+'">'+value+'</span>';
+									}									
 								},
 																{
 									title : '操作',

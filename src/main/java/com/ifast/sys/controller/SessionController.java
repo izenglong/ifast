@@ -28,20 +28,18 @@ public class SessionController {
 	@Autowired
 	SessionService sessionService;
 	
-	@Log("进入在线用户列表页面")
 	@GetMapping()
 	public String online() {
 		return "sys/online/online";
 	}
 	
-	@Log("查询在线用户列表数据")
 	@ResponseBody
 	@RequestMapping("/list")
 	public List<UserOnline> list(@RequestParam(required=false) String name) {
 		return sessionService.list(name);
 	}
 	
-	@Log("根据sessionId强踢用户下线")
+	@Log("强踢用户下线")
 	@ResponseBody
 	@RequestMapping("/forceLogout/{sessionId}")
 	public Result<String> forceLogout(@PathVariable("sessionId") String sessionId, RedirectAttributes redirectAttributes) {
@@ -54,7 +52,6 @@ public class SessionController {
 		}
 	}
 	
-	@Log("查询在线用户数据列表")
 	@ResponseBody
 	@RequestMapping("/sessionList")
 	public Collection<Session> sessionList() {

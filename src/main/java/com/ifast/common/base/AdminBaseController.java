@@ -51,7 +51,15 @@ public abstract class AdminBaseController {
     public <E> Page<E> getPage(Class<E> e) {
         int pageNumber = getParaToInt("pageNumber", 1);
         int pageSize = getParaToInt("pageSize", 10);
-        return new Page<>(pageNumber, pageSize);
+        Page<E> page = new Page<>(pageNumber, pageSize);
+        //支持sort、order参数
+        String sort = HttpContextUtils.getHttpServletRequest().getParameter("sort");
+        if(StringUtils.isNotBlank(sort)) {
+        	page.setOrderByField(sort);
+        	String order = HttpContextUtils.getHttpServletRequest().getParameter("order");
+        	if(StringUtils.isNotBlank(order)) page.setAsc("asc".equalsIgnoreCase(order));
+        }
+        return page;
     }
 
     private int getParaToInt(String key, int defalut) {

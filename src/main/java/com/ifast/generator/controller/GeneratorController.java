@@ -35,13 +35,11 @@ public class GeneratorController {
     ConfigService configService;
     
     
-    @Log("进入代码生成页面")
     @GetMapping()
     String generator() {
         return prefix + "/list";
     }
     
-    @Log("查询数据表列表")
     @ResponseBody
     @GetMapping("/list")
     List<Map<String, Object>> list() {
@@ -76,7 +74,6 @@ public class GeneratorController {
         IOUtils.closeQuietly(response.getOutputStream());
     }
     
-    @Log("进入代码生成配置编辑页面")
     @GetMapping("/edit")
     public String edit(Model model) {
         List<ConfigDO> list = configService.findListByKvType(EnumGen.KvType.mapping.getValue());
