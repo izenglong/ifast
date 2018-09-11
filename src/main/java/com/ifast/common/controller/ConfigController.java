@@ -28,31 +28,26 @@ public class ConfigController extends AdminBaseController {
     @Autowired
     private ConfigService configService;
     
-    @Log("进入系统配置页面")
     @GetMapping()
     @RequiresPermissions("common:config:config")
     String Config() {
         return "common/config/config";
     }
     
-    @Log("查询系统配置列表")
     @ResponseBody
     @GetMapping("/list")
     @RequiresPermissions("common:config:config")
     public Result<Page<ConfigDO>> list(ConfigDO configDTO) {
-        // 查询列表数据
         Page<ConfigDO> page = configService.selectPage(getPage(ConfigDO.class), configService.convertToEntityWrapper("k", configDTO.getK()));
         return Result.ok(page);
     }
     
-    @Log("进入系统配置添加页面")
     @GetMapping("/add")
     @RequiresPermissions("common:config:add")
     String add() {
         return "common/config/add";
     }
     
-    @Log("进入配置编辑页面")
     @GetMapping("/edit/{id}")
     @RequiresPermissions("common:config:edit")
     String edit(@PathVariable("id") Long id, Model model) {

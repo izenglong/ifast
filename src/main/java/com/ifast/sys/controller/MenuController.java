@@ -27,14 +27,12 @@ public class MenuController extends AdminBaseController {
     @Autowired
     MenuService menuService;
     
-    @Log("进入系统菜单页面")
     @RequiresPermissions("sys:menu:menu")
     @GetMapping()
     String menu(Model model) {
         return prefix + "/menu";
     }
     
-    @Log("查询菜单列表")
     @RequiresPermissions("sys:menu:menu")
     @RequestMapping("/list")
     @ResponseBody
@@ -43,7 +41,6 @@ public class MenuController extends AdminBaseController {
         return menus;
     }
 
-    @Log("添加菜单")
     @RequiresPermissions("sys:menu:add")
     @GetMapping("/add/{pId}")
     String add(Model model, @PathVariable("pId") Long pId) {
@@ -56,7 +53,6 @@ public class MenuController extends AdminBaseController {
         return prefix + "/add";
     }
 
-    @Log("编辑菜单")
     @RequiresPermissions("sys:menu:edit")
     @GetMapping("/edit/{id}")
     String edit(Model model, @PathVariable("id") Long id) {
@@ -108,7 +104,6 @@ public class MenuController extends AdminBaseController {
         return tree;
     }
     
-    @Log("根据角色ID查询菜单树形数据")
     @GetMapping("/tree/{roleId}")
     @ResponseBody
     Tree<MenuDO> tree(@PathVariable("roleId") Long roleId) {

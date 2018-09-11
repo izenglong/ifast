@@ -30,24 +30,20 @@ public class DictController extends AdminBaseController {
     @Autowired
     private DictService sysDictService;
     
-    @Log("进入数据字典列表页面")
     @GetMapping()
     @RequiresPermissions("common:sysDict:sysDict")
     String sysDict() {
         return "common/sysDict/sysDict";
     }
     
-    @Log("查询数据字典列表")
     @ResponseBody
     @GetMapping("/list")
     @RequiresPermissions("common:sysDict:sysDict")
     public Result<Page<DictDO>> list(DictDO dictDTO) {
-        // 查询列表数据
         Page<DictDO> page = sysDictService.selectPage(getPage(DictDO.class), sysDictService.convertToEntityWrapper("name", dictDTO.getName(), "type", dictDTO.getType()));
         return Result.ok(page);
     }
     
-    @Log("进入数据字典添加页面")
     @GetMapping("/add")
     @RequiresPermissions("common:sysDict:add")
     String add() {
@@ -110,7 +106,6 @@ public class DictController extends AdminBaseController {
         return Result.ok();
     }
     
-    @Log("查询数据字典key列表")
     @GetMapping("/type")
     @ResponseBody
     public List<DictDO> listType() {
@@ -118,7 +113,6 @@ public class DictController extends AdminBaseController {
     };
 
     // 类别已经指定增加
-    @Log("进入数据字典添加页面")
     @GetMapping("/add/{type}/{description}")
     @RequiresPermissions("common:sysDict:add")
     String addD(Model model, @PathVariable("type") String type, @PathVariable("description") String description) {
@@ -127,7 +121,6 @@ public class DictController extends AdminBaseController {
         return "common/sysDict/add";
     }
     
-    @Log("根据key查询数据字典信息")
     @ResponseBody
     @GetMapping("/list/{type}")
     public List<DictDO> listByType(@PathVariable("type") String type) {

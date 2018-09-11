@@ -33,34 +33,28 @@ public class FileController extends AdminBaseController {
     @Autowired
     private FileService sysFileService;
     
-    @Log("进入文件管理页面")
     @GetMapping()
     @RequiresPermissions("oss:file:file")
     String sysFile(Model model) {
         return "common/file/file";
     }
     
-    @Log("查询文件列表")
     @ResponseBody
     @GetMapping("/list")
     @RequiresPermissions("oss:file:list")
     public Result<Page<FileDO>> list(Integer pageNumber, Integer pageSize, FileDO fileDTO) {
-        // 查询列表数据
         Page<FileDO> page = new Page<>(pageNumber, pageSize);
-        
         Wrapper<FileDO> wrapper = new EntityWrapper<FileDO>(fileDTO);
         page = sysFileService.selectPage(page, wrapper);
         return Result.ok(page);
     }
     
-    @Log("进入添加文件页面")
     @GetMapping("/add")
     @RequiresPermissions("oss:file:add")
     String add() {
         return "common/sysFile/add";
     }
     
-    @Log("进入更新文件页面")
     @GetMapping("/edit")
     @RequiresPermissions("oss:file:update")
     String edit(Long id, Model model) {
@@ -72,7 +66,6 @@ public class FileController extends AdminBaseController {
     /**
      * 信息
      */
-    @Log("根据id查询文件信息")
     @RequestMapping("/info/{id}")
     @RequiresPermissions("oss:file:info")
     public Result<FileDO> info(@PathVariable("id") Long id) {
@@ -100,7 +93,6 @@ public class FileController extends AdminBaseController {
     @RequiresPermissions("oss:file:update")
     public Result<String> update(@RequestBody FileDO sysFile) {
         sysFileService.updateById(sysFile);
-        
         return Result.ok();
     }
     

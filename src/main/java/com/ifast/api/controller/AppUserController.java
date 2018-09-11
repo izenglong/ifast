@@ -45,7 +45,7 @@ public class AppUserController {
     }
     
     @PostMapping("logout")
-    @Log("api测试-刷新token")
+    @Log("api测试-注销token")
     @ApiOperation("api测试-注销token")
     public Result<?> logout(@RequestBody UserLogoutDTO dto) {
     	userService.logoutToken(dto.getToken(), dto.getRefreshToken());

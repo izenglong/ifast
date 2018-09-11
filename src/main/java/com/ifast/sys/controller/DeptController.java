@@ -35,7 +35,6 @@ public class DeptController extends AdminBaseController {
     private DeptService sysDeptService;
 
     @GetMapping()
-    @Log("进入部分页面")
     @RequiresPermissions("system:sysDept:sysDept")
     String dept() {
         return prefix + "/dept";
@@ -44,14 +43,12 @@ public class DeptController extends AdminBaseController {
     @ApiOperation(value = "获取部门列表", notes = "")
     @ResponseBody
     @GetMapping("/list")
-    @Log("获取部门列表")
     @RequiresPermissions("system:sysDept:sysDept")
     public List<DeptDO> list(DeptDO deptDTO) {
         return sysDeptService.findByKv("name", deptDTO.getName());
     }
 
     @GetMapping("/add/{pId}")
-    @Log("进入添加部门页面")
     @RequiresPermissions("system:sysDept:add")
     String add(@PathVariable("pId") Long pId, Model model) {
         model.addAttribute("pId", pId);
@@ -65,7 +62,6 @@ public class DeptController extends AdminBaseController {
 
     @GetMapping("/edit/{deptId}")
     @RequiresPermissions("system:sysDept:edit")
-    @Log("编辑部门")
     String edit(@PathVariable("deptId") Long deptId, Model model) {
         DeptDO sysDept = sysDeptService.selectById(deptId);
         model.addAttribute("sysDept", sysDept);
@@ -84,7 +80,7 @@ public class DeptController extends AdminBaseController {
     @ResponseBody
     @PostMapping("/save")
     @RequiresPermissions("system:sysDept:add")
-    @Log("保存部门")
+    @Log("添加部门")
     public Result<String> save(DeptDO sysDept) {
         sysDeptService.insert(sysDept);
         return Result.ok();
@@ -93,6 +89,7 @@ public class DeptController extends AdminBaseController {
     /**
      * 修改
      */
+    @Log("更新部门")
     @ResponseBody
     @RequestMapping("/update")
     @RequiresPermissions("system:sysDept:edit")
@@ -139,7 +136,6 @@ public class DeptController extends AdminBaseController {
 
     @GetMapping("/tree")
     @ResponseBody
-    @Log("查询部门树形数据")
     public Tree<DeptDO> tree() {
         Tree<DeptDO> tree = new Tree<DeptDO>();
         tree = sysDeptService.getTree();
@@ -147,7 +143,6 @@ public class DeptController extends AdminBaseController {
     }
 
     @GetMapping("/treeView")
-    @Log("进入部门树形显示页面")
     String treeView() {
         return prefix + "/deptTree";
     }

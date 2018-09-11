@@ -4,6 +4,7 @@ package com.ifast.demo.controller;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.ifast.common.annotation.Log;
 import com.ifast.common.base.AdminBaseController;
 import com.ifast.common.utils.Result;
 import com.ifast.demo.domain.DemoDO;
@@ -63,6 +64,7 @@ public class DemoController extends AdminBaseController {
 	/**
 	 * 保存
 	 */
+	@Log("添加基础表数据")
 	@ResponseBody
 	@PostMapping("/save")
 	@RequiresPermissions("demo:demoBase:add")
@@ -73,6 +75,7 @@ public class DemoController extends AdminBaseController {
 	/**
 	 * 修改
 	 */
+	@Log("更新基础表数据")
 	@ResponseBody
 	@RequestMapping("/update")
 	@RequiresPermissions("demo:demoBase:edit")
@@ -84,6 +87,7 @@ public class DemoController extends AdminBaseController {
 	/**
 	 * 删除
 	 */
+	@Log("删除基础表数据")
 	@PostMapping( "/remove")
 	@ResponseBody
 	@RequiresPermissions("demo:demoBase:remove")
@@ -95,6 +99,7 @@ public class DemoController extends AdminBaseController {
 	/**
 	 * 删除
 	 */
+	@Log("批量删除基础表数据")
 	@PostMapping( "/batchRemove")
 	@ResponseBody
 	@RequiresPermissions("demo:demoBase:batchRemove")
