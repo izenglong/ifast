@@ -1,4 +1,4 @@
-package com.ifast.oss.sdk;
+package com.ifast.oss.support.qiniu;
 
 import lombok.Data;
 
@@ -10,7 +10,7 @@ import lombok.Data;
  * <small> 2018年4月6日 | Aron</small>
  */
 @Data
-public class OSSConfig {
+public class QiNiuProperties {
     private String qiNiuAccessKey;
     private String qiNiuSecretKey;
     private String qiNiuBucket;

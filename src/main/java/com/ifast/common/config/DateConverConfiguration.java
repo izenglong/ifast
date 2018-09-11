@@ -1,19 +1,19 @@
 package com.ifast.common.config;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author gaoyuzhe
  * @date 2017/12/14.
  */
 @Configuration
-public class DateConverConfig {
+public class DateConverConfiguration {
     @Bean
     public Converter<String, Date> stringDateConvert() {
         return new Converter<String, Date>() {

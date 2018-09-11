@@ -1,9 +1,9 @@
 package com.ifast.common.aspect;
 
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
-
+import com.ifast.common.config.IFastProperties;
+import com.ifast.common.exception.IFastException;
+import com.ifast.common.type.EnumErrorCode;
+import com.ifast.common.utils.HttpContextUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -16,10 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
-import com.ifast.common.config.IFastConfig;
-import com.ifast.common.exception.IFastException;
-import com.ifast.common.type.EnumErrorCode;
-import com.ifast.common.utils.HttpContextUtils;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * <pre>
@@ -36,9 +35,9 @@ public class DemoModeAspect {
     private static final Logger log = LoggerFactory.getLogger(DemoModeAspect.class);
 
     @Autowired
-    private IFastConfig config;
+    private IFastProperties config;
 
-    @Pointcut("execution(* com.ifast.**.controller.*.*(..))")
+    @Pointcut("execution(* com.ifast.*.controller.*.*(..))")
     public void testUserPointCut() {
     }
 

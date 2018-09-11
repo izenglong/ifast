@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "ifast.sms")
 @Data
-public class SmsBasicConfigProperties {
+public class SmsBasicProperties {
 
     private String cacheKey = "ifast:cache";
     private String cacheKeyPrefix = "sms";

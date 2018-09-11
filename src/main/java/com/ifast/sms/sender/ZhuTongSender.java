@@ -6,11 +6,10 @@ import com.ifast.common.utils.CodecUtils;
 import com.ifast.common.utils.DateUtils;
 import com.ifast.sms.config.ZhuTongProperties;
 import com.ifast.sms.support.SmsSender;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
@@ -22,14 +21,20 @@ import java.util.Date;
  * </pre>
  * <small> 2018/8/31 19:02 | Aron</small>
  */
-@Component
 public class ZhuTongSender implements SmsSender {
 
     private Logger log = LoggerFactory.getLogger(this.getClass());
     private RestTemplate restTemplate = new RestTemplate();
 
-    @Autowired
+    public ZhuTongSender() {}
+
+    public ZhuTongSender(ZhuTongProperties properties) {
+        this.properties = properties;
+    }
+
+    @Setter
     private ZhuTongProperties properties;
+
 
     @Override
     public void send(String mobile, String code, String scene) {

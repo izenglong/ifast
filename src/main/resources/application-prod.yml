@@ -16,6 +16,21 @@ ifast:
   shiro:
     jsessionidKey: SESSION
     sessionKeyPrefix: ifast:session
+  oss:
+    local:
+      localPath: /Users/Aron/dev_projects/idea/ifast/src/main/resources/static/upload
+      rootURL: http://localhost:8088/upload
+  sms:
+    cacheKey: ifast:cache
+    cacheKeyPrefix: sms
+    codeExpireTime: 900000
+    zt:
+      url: http://www.ztsms.cn/sendNSms.do
+      uname: UNAME
+      passwd: PASSWD
+      productId: PRODUCT_ID
+      scenes:
+        validCode: 验证码{code}，您正在进行身份验证，打死也不要告诉别人哦！
 logging:
   level:
     com.ifast: info

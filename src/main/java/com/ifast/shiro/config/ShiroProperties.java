@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "ifast.shiro")
 @Data
-public class ShiroConfigProperties {
+public class ShiroProperties {
     private String sessionKeyPrefix = "ifast:session";
     private String jsessionidKey = "SESSION";
 }

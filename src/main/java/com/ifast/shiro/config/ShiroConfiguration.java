@@ -47,10 +47,10 @@ import java.util.*;
  * <small> 2018年4月18日 | Aron</small>
  */
 @Configuration
-public class ShiroConfig {
+public class ShiroConfiguration {
     
     @Bean
-    SessionDAO sessionDAO(ShiroConfigProperties config) {
+    SessionDAO sessionDAO(ShiroProperties config) {
 //        EnterpriseCacheSessionDAO sessionDAO = new EnterpriseCacheSessionDAO();
 //        CacheManager cacheManager = enterpriseCacheSessionDAO.getCacheManager();
 //        return enterpriseCacheSessionDAO;
@@ -62,7 +62,7 @@ public class ShiroConfig {
     }
 
     @Bean
-    public SimpleCookie sessionIdCookie(ShiroConfigProperties shiroConfigProperties) {
+    public SimpleCookie sessionIdCookie(ShiroProperties shiroConfigProperties) {
         return new SimpleCookie(shiroConfigProperties.getJsessionidKey());
     }
 

@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.plugins.OptimisticLockerInterceptor;
 import com.baomidou.mybatisplus.plugins.PaginationInterceptor;
 
 @Configuration
-public class MyBatisConfig {
+public class MyBatisConfiguration {
 
 //    /**
 //     * mybatis-plus SQL执行效率插件【生产环境可以关闭】

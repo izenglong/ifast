@@ -2,6 +2,8 @@ package com.ifast.common.service;
 
 import com.ifast.common.base.CoreService;
 import com.ifast.common.domain.ConfigDO;
+import com.ifast.common.utils.JSONUtils;
+import com.ifast.oss.support.qiniu.QiNiuProperties;
 
 import java.util.List;
 import java.util.Map;
@@ -20,4 +22,24 @@ public interface ConfigService extends CoreService<ConfigDO> {
     void updateKV(Map<String, String> kv);
     
     List<ConfigDO> findListByKvType(int kvType);
+
+    /**
+     * 七牛OSS
+     */
+    default QiNiuProperties getOssConfigProperties() {
+        ConfigDO configDO = getByKey("oss_qiniu");
+        String v = configDO.getV();
+        Map<String, Object> json = JSONUtils.jsonToMap(v);
+        String ak = (String) json.get("AccessKey");
+        String sk = (String) json.get("SecretKey");
+        String bucket = (String) json.get("bucket");
+        String accessUrl = (String) json.get("AccessUrl");
+
+        QiNiuProperties ossConfig = new QiNiuProperties();
+        ossConfig.setQiNiuAccessKey(ak);
+        ossConfig.setQiNiuSecretKey(sk);
+        ossConfig.setQiNiuBucket(bucket);
+        ossConfig.setQiNiuAccessURL(accessUrl);
+        return ossConfig;
+    }
 }

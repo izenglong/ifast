@@ -1,8 +1,11 @@
 package com.ifast.sms.config;
 
 import com.ifast.common.config.CacheConfiguration;
+import com.ifast.sms.sender.ZhuTongSender;
 import com.ifast.sms.support.SmsManager;
 import com.ifast.sms.support.SmsSender;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,12 +17,23 @@ import org.springframework.context.annotation.Configuration;
  * <small> 2018/8/31 19:37 | Aron</small>
  */
 @Configuration
-public class SmsConfig {
+public class SmsConfiguration {
+
+    private Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Bean
-    SmsManager smsManager(SmsSender sender, SmsBasicConfigProperties properties) {
+    SmsManager smsManager(SmsSender sender, SmsBasicProperties properties) {
         Cache cache = CacheConfiguration.dynaConfigCache(properties.getCacheKey(), properties.getCodeExpireTime());
         return new SmsManager(sender, properties, cache);
+    }
+
+    @Bean
+    SmsSender zhuTongSender(ZhuTongProperties properties){
+        if(log.isDebugEnabled()){
+            log.debug("启用上海助通短信服务");
+        }
+        SmsSender sender = new ZhuTongSender(properties);
+        return sender;
     }
 
 }

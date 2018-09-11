@@ -2,7 +2,7 @@ package com.ifast.sms.support;
 
 import com.ifast.api.exception.IFastApiException;
 import com.ifast.common.type.EnumErrorCode;
-import com.ifast.sms.config.SmsBasicConfigProperties;
+import com.ifast.sms.config.SmsBasicProperties;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,12 +20,12 @@ public class SmsManager implements SmsVerify {
 
     private Logger log = LoggerFactory.getLogger(this.getClass());
     private SmsSender smsSender;
-    private SmsBasicConfigProperties properties;
+    private SmsBasicProperties properties;
     private Cache cache;
 
     public SmsManager(){}
 
-    public SmsManager(SmsSender sender, SmsBasicConfigProperties properties, Cache cache){
+    public SmsManager(SmsSender sender, SmsBasicProperties properties, Cache cache){
         this.smsSender = sender;
         this.properties = properties;
         this.cache = cache;

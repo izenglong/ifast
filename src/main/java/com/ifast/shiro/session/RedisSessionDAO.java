@@ -12,11 +12,12 @@ public class RedisSessionDAO extends EnterpriseCacheSessionDAO {
 
     private String activeSessionsCacheName;
 
-    public RedisSessionDAO(String activeSessionsCacheName){
+    public RedisSessionDAO(String activeSessionsCacheName) {
         this.activeSessionsCacheName = activeSessionsCacheName;
     }
 
-    @Override public String getActiveSessionsCacheName() {
+    @Override
+    public String getActiveSessionsCacheName() {
         return this.activeSessionsCacheName;
     }
 }
