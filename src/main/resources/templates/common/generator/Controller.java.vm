@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.ifast.common.annotation.Log;
 import com.ifast.common.base.AdminBaseController;
 import ${package}.domain.${className}DO;
 import ${package}.service.${className}Service;
@@ -64,9 +65,7 @@ public class ${className}Controller extends AdminBaseController {
 	    return "${pathName}/${classname}/edit";
 	}
 	
-	/**
-	 * 保存
-	 */
+	@Log("添加${comments}")
 	@ResponseBody
 	@PostMapping("/save")
 	@RequiresPermissions("${pathName}:${classname}:add")
@@ -74,9 +73,8 @@ public class ${className}Controller extends AdminBaseController {
 		${classname}Service.insert(${classname});
         return Result.ok();
 	}
-	/**
-	 * 修改
-	 */
+	
+	@Log("修改${comments}")
 	@ResponseBody
 	@RequestMapping("/update")
 	@RequiresPermissions("${pathName}:${classname}:edit")
@@ -85,9 +83,7 @@ public class ${className}Controller extends AdminBaseController {
 		return update ? Result.ok() : Result.fail();
 	}
 	
-	/**
-	 * 删除
-	 */
+	@Log("删除${comments}")
 	@PostMapping( "/remove")
 	@ResponseBody
 	@RequiresPermissions("${pathName}:${classname}:remove")
@@ -96,9 +92,7 @@ public class ${className}Controller extends AdminBaseController {
         return Result.ok();
 	}
 	
-	/**
-	 * 删除
-	 */
+	@Log("批量删除${comments}")
 	@PostMapping( "/batchRemove")
 	@ResponseBody
 	@RequiresPermissions("${pathName}:${classname}:batchRemove")
