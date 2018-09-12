@@ -26,7 +26,7 @@ public class ConfigServiceImpl extends CoreServiceImpl<ConfigDao, ConfigDO> impl
     }
     
     @Override
-    public String getValuByKey(String k) {
+    public String getValueByKey(String k) {
         ConfigDO bean = this.getByKey(k);
         return bean == null ? "" : bean.getV();
     }

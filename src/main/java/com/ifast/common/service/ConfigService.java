@@ -17,7 +17,7 @@ import java.util.Map;
 public interface ConfigService extends CoreService<ConfigDO> {
     ConfigDO getByKey(String k);
 
-    String getValuByKey(String k);
+    String getValueByKey(String k);
     
     void updateKV(Map<String, String> kv);
     

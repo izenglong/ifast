@@ -31,6 +31,13 @@ ifast:
       productId: PRODUCT_ID
       scenes:
         validCode: 验证码{code}，您正在进行身份验证，打死也不要告诉别人哦！
+    # 使用aliyun发送短信时请注释zt.passwd，配置accessKeyId和accessKeySecret，添加配置表项sys_config.sms_aliyun_validCode
+    aliyun:
+      accessKeyId: 
+      #accessKeySecret: 
+      scenes:
+        # 配置格式为包含SignName和TemplateCode的json字符串：sys_config.sms_aliyun_validCode = {SignName, TemplateCode}
+        validCode: sms_aliyun_validCode
 logging:
   level:
     com.ifast: debug
