@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
  * 
  * <small> 2018年4月6日 | Aron</small>
  */
-public class QiNiuUploaderServer implements UploadServer {
+public class QiNiuUploadServer implements UploadServer {
 
     private Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -27,7 +27,7 @@ public class QiNiuUploaderServer implements UploadServer {
     private QiNiuProperties config;
 
 
-    public QiNiuUploaderServer(QiNiuProperties config, Zone zone) {
+    public QiNiuUploadServer(QiNiuProperties config, Zone zone) {
         cfg = new Configuration(zone);
         uploadManager = new UploadManager(cfg);
         this.config = config;

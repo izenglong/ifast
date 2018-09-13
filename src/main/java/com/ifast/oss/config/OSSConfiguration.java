@@ -14,9 +14,9 @@ import com.ifast.oss.support.UploadServer;
 import com.ifast.oss.support.aliyun.AliyunOSSProperties;
 import com.ifast.oss.support.aliyun.AliyunUploadServer;
 import com.ifast.oss.support.local.LocalUploadProperties;
-import com.ifast.oss.support.local.LocalUploaderServer;
+import com.ifast.oss.support.local.LocalUploadServer;
 import com.ifast.oss.support.qiniu.QiNiuProperties;
-import com.ifast.oss.support.qiniu.QiNiuUploaderServer;
+import com.ifast.oss.support.qiniu.QiNiuUploadServer;
 import com.qiniu.common.Zone;
 
 @Configuration
@@ -37,7 +37,7 @@ public class OSSConfiguration {
     	if(log.isDebugEnabled()){
     		log.debug("启用本地上传服务");
     	}
-        return new LocalUploaderServer(properties);
+        return new LocalUploadServer(properties);
     }
     
     /**
@@ -62,6 +62,6 @@ public class OSSConfiguration {
     		log.debug("启用七牛云上传服务");
     	}
         QiNiuProperties ossConfig = configService.getOssConfigProperties();
-        return new QiNiuUploaderServer(ossConfig, Zone.zone2());
+        return new QiNiuUploadServer(ossConfig, Zone.zone2());
     }
 }

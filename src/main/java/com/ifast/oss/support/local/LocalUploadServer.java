@@ -15,12 +15,12 @@ import java.util.Date;
  * </pre>
  * <small> 2018/9/11 15:50 | Aron</small>
  */
-public class LocalUploaderServer implements UploadServer {
+public class LocalUploadServer implements UploadServer {
 
     @Setter
     private LocalUploadProperties uploadProperties;
 
-    public LocalUploaderServer(LocalUploadProperties uploadProperties) {
+    public LocalUploadServer(LocalUploadProperties uploadProperties) {
         this.uploadProperties = uploadProperties;
     }
 
