@@ -142,7 +142,7 @@ CREATE TABLE `sys_log` (
   `ip` varchar(64) DEFAULT NULL COMMENT 'IP地址',
   `gmtCreate` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1035116168353091587 DEFAULT CHARSET=utf8 COMMENT='系统日志';
+) ENGINE=InnoDB AUTO_INCREMENT=1035116168353091587 DEFAULT CHARSET=utf8mb4 COMMENT='系统日志';
 
 -- ----------------------------
 --  Table structure for `sys_menu`
