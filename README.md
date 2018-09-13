@@ -10,6 +10,12 @@ ifast是一款基于Spring Boot + Mybatis + Mybatis Plus搭建的快速开发平
 # 文档 | Document
 查看文档可以快速上手, 请点击 -----> [开车指南](https://gitee.com/icron/ifast/wikis/%E6%9E%81%E7%AE%80%E6%95%99%E7%A8%8B?sort_id=276903)
 
+# 参与开发(贡献时间顺序) | Developer
+- [Aron](https://gitee.com/icron/ifast) 
+- Lety
+- [xiahongwei](https://xlongwei.com)
+- Zetting
+
 # 内置功能 | Features
 ifast以基础建设和实用性为切入点，内置了众多很多优秀的基础功能和工具。包括：
  * 系统权限  
