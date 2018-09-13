@@ -17,9 +17,16 @@ ifast:
     jsessionidKey: SESSION
     sessionKeyPrefix: ifast:session
   oss:
+    # local.localPath本地上传（建议使用相对路径），aliyun.accessKeySecret阿里云上传，两个都注释则使用七牛云上传（sys_config.oss_qiniu）
     local:
-      localPath: /Users/Aron/dev_projects/idea/ifast/src/main/resources/static/upload
+      localPath: upload
       rootURL: http://localhost:8088/upload
+    aliyun:
+      accessKeyId: 
+      #accessKeySecret:
+      bucketName: 
+      # endpoint以深圳为例，其它region请按实际情况填写
+      endpoint: http://oss-cn-shenzhen.aliyuncs.com
   sms:
     cacheKey: ifast:cache
     cacheKeyPrefix: sms
@@ -48,7 +55,9 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/ifast-new2?useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://127.0.0.1:3306/ifast-new2?useUnicode=true&useSSL=false
+    # 推荐utf8mb4编码以便支持表情字符，sys_log记录系统数据变动需要支持utf8mb4
+    connectionInitSqls: SET NAMES utf8mb4;
     username: root
     password: aron
     initialSize: 1
