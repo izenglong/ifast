@@ -42,7 +42,7 @@ public class AliyunSender implements SmsSender {
 	
 	private static final String product = "Dysmsapi";// 短信API产品名称（短信产品名固定，无需修改）
 	private static final String domain = "dysmsapi.aliyuncs.com";// 短信API产品域名（接口地址固定，无需修改）
-	private static String accessKeyId;
+	private static String accessKeyId;// 你的accessKeyId,参考本文档步骤2
 	private static String accessKeySecret;
 	
 	public AliyunSender(AliyunProperties properties) {
@@ -72,8 +72,8 @@ public class AliyunSender implements SmsSender {
 		
 		String signName = config.get("SignName").toString(), TemplateCode = config.get("TemplateCode").toString();
 		String templateParam = "{\"code\":\"" + code + "\"}";
-		boolean send = send(mobile, signName, TemplateCode, templateParam);
-		log.info("【SMS】发送短信结果：{},mobile:{},code:{},scene:{}", send, mobile, code, scene);
+		send(mobile, signName, TemplateCode, templateParam);
+		log.info("【SMS】发送短信成功，mobile:{},code:{},scene:{}", mobile, code, scene);
 	}
 
 	/**
@@ -81,11 +81,11 @@ public class AliyunSender implements SmsSender {
 	 * @param signName 短信签名-可在短信控制台中找到
 	 * @param templateCode 短信模板-可在短信控制台中找到，发送国际/港澳台消息时，请使用国际/港澳台短信模版
 	 * @param templateParam 模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的验证码为${code}"时,此处的值为"{\"name\":\"Tom\", \"code\":\"123\"}"
-	 * @return true or false
 	 * @throws IFastApiException
 	 */
-	public static boolean send(String phoneNumbers, String signName, String templateCode, String templateParam) {
-		if(StringUtils.isBlank(accessKeyId) || StringUtils.isBlank(accessKeySecret) || StringUtils.isBlank(phoneNumbers) || StringUtils.isBlank(signName) || StringUtils.isBlank(templateCode) || StringUtils.isBlank(templateParam)) {
+	public static void send(String phoneNumbers, String signName, String templateCode, String templateParam) {
+		if(StringUtils.isBlank(accessKeyId) || StringUtils.isBlank(accessKeySecret) 
+				|| StringUtils.isBlank(phoneNumbers) || StringUtils.isBlank(signName) || StringUtils.isBlank(templateCode) || StringUtils.isBlank(templateParam)) {
 			throw new IFastApiException(EnumErrorCode.apiSmsSendFailed.getCodeStr());
 		}
 		
@@ -93,12 +93,6 @@ public class AliyunSender implements SmsSender {
 			// 设置超时时间-可自行调整
 			System.setProperty("sun.net.client.defaultConnectTimeout", "10000");
 			System.setProperty("sun.net.client.defaultReadTimeout", "10000");
-			// 初始化ascClient需要的几个参数
-//			final String product = "Dysmsapi";// 短信API产品名称（短信产品名固定，无需修改）
-//			final String domain = "dysmsapi.aliyuncs.com";// 短信API产品域名（接口地址固定，无需修改）
-			// 替换成你的AK
-//			final String accessKeyId = "yourAccessKeyId";// 你的accessKeyId,参考本文档步骤2
-//			final String accessKeySecret = "yourAccessKeySecret";// 你的accessKeySecret，参考本文档步骤2
 			// 初始化ascClient,暂时不支持多region（请勿修改）
 			IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId, accessKeySecret);
 			DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", product, domain);
@@ -124,10 +118,9 @@ public class AliyunSender implements SmsSender {
 			SendSmsResponse sendSmsResponse = acsClient.getAcsResponse(request);
 			if (sendSmsResponse.getCode() != null && sendSmsResponse.getCode().equals("OK")) {
 				log.info("【SMS】阿里云发送短信成功，code:{},message:{},requestId:{},bizId:{}", sendSmsResponse.getCode(), sendSmsResponse.getMessage(), sendSmsResponse.getRequestId(), sendSmsResponse.getBizId());
-				return true;
 			}else {
-				log.warn("【SMS】阿里云发送短信失败，code:{},message:{},requestId:{},bizId:{}", sendSmsResponse.getCode(), sendSmsResponse.getMessage(), sendSmsResponse.getRequestId(), sendSmsResponse.getBizId());
-				return false;
+				log.warn("【SMS】阿里云发送失败，code:{},message:{},requestId:{},bizId:{},mobile:{},signName:{},templateCode:{},templateParam:{}", sendSmsResponse.getCode(), sendSmsResponse.getMessage(), sendSmsResponse.getRequestId(), sendSmsResponse.getBizId(), phoneNumbers, signName, templateCode, templateParam);
+				throw new IFastApiException(EnumErrorCode.apiSmsSendFailed.getCodeStr());
 			}
 		}catch (Exception e) {
 			log.warn("【SMS】阿里云发送短信失败:{},mobile:{},signName:{},templateCode:{},templateParam:{}", e.getMessage(), phoneNumbers, signName, templateCode, templateParam);
@@ -137,7 +130,7 @@ public class AliyunSender implements SmsSender {
 	
 	/**
 	 * 国家区号可以考虑存入字典表
-	 * @return [(963,SY,叙利亚), (886,TW,中国台湾), (992,TJ,塔吉克斯坦), ...]
+	 * @return [(isoCode,countryCode,countryName), (963,SY,叙利亚), (886,TW,中国台湾), ...]
 	 */
 	public static List<Triple<String, String, String>> countryCode(){
 		if(StringUtils.isBlank(accessKeyId) || StringUtils.isBlank(accessKeySecret)) {
@@ -175,6 +168,6 @@ public class AliyunSender implements SmsSender {
 		accessKeySecret = "";
 		String phoneNumbers = "", signName = "", templateCode = "", templateParam = "{\"code\":\"3572\"}";
 		log.info("countryCode: {}", countryCode());
-		log.info("send sms: {}", send(phoneNumbers, signName, templateCode, templateParam));
+		send(phoneNumbers, signName, templateCode, templateParam);
 	}
 }
