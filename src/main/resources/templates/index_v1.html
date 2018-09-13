@@ -28,20 +28,13 @@
 			<div class="sidebar-collapse">
 				<ul class="nav" id="side-menu">
 					<li class="nav-header">
-						<div>
-							<span><img alt="image" class="img-circle" height="60"
-								width="60" th:src="${picUrl}" /></span>
-							<h3 class="" style="color: #ffffff">
-								</i>Ifast 快速开发框架
-							</h3>
-						</div>
-						<div class="dropdown profile-element hidden">
-
-							<a data-toggle="dropdown" class="dropdown-toggle" href="#"> <span
-								class="clear"> <span class="block m-t-xs"><strong
-										class="font-bold" th:text="${username}">admin</strong></span> <span
-									class="text-muted text-xs block">超级管理员<b class="caret"></b></span>
-							</span>
+						<div class="dropdown profile-element">
+							<span><img alt="image" class="img-circle" id="headImg" th:src="${picUrl}" width="64px" height="64px"/></span>
+							<a data-toggle="dropdown" class="dropdown-toggle" href="javascript:;">
+								<span class="clear">
+									<span class="block m-t-xs"><strong class="font-bold" th:text="${username}" >admin</strong></span>
+								 	<span class="text-muted text-xs block" th:text="${name}" >系统管理员<b class="caret"></b></span>
+								</span>
 							</a>
 							<ul class="dropdown-menu animated fadeInRight m-t-xs">
 								<li><a @click="personal" href="#">修改头像</a></li>
@@ -84,30 +77,22 @@
 		<!--右侧部分开始-->
 		<div id="page-wrapper" class="gray-bg dashbard-1">
 			<div class="row border-bottom">
-				<nav class="navbar navbar-static-top" role="navigation"
-					style="margin-bottom: 0">
+				<nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
 					<div class="navbar-header">
-
-						<a class="navbar-minimalize minimalize-styl-2 btn btn-default "
-							href="#" title="收起菜单"><i class="fa fa-bars"></i> </a>
-						<form role="search" class="navbar-form-custom" method="post"
-							action="">
-							<div class="form-group">
-								<input type="text" placeholder="请输入您需要查找的内容 …"
-									class="form-control" name="top-search" id="top-search">
-							</div>
-						</form>
+						<a class="navbar-minimalize minimalize-styl-2 btn btn-primary" href="javascript:;"><i class="fa fa-bars"></i> </a>
+						<h2 style="font-weight: bold;display: inline-block;margin-left: 10px;">IFast 快速开发框架</h2>
 					</div>
 					<ul class="nav navbar-top-links navbar-right">
 						<li class="hidden-xs"><a @click="personal" href="#"><i
 								class="fa fa-id-card"></i> 个人</a></li>
 						<li class="dropdown hidden-xs"><a
-							class="right-sidebar-toggle" aria-expanded="false"> <i
+								class="right-sidebar-toggle" aria-expanded="false"> <i
 								class="fa fa-tasks"></i> 主题
 						</a></li>
 					</ul>
 				</nav>
 			</div>
+
 			<div class="row content-tabs">
 				<button class="roll-nav roll-left J_tabLeft">
 					<i class="fa fa-backward"></i>
@@ -118,10 +103,10 @@
 							data-id="index_v1.html">首页</a>
 					</div>
 				</nav>
-				<button class="roll-nav roll-right J_tabRight">
+				<button class="roll-nav roll-right J_tabRight" style="right: 80px;">
 					<i class="fa fa-forward"></i>
 				</button>
-				<div class="btn-group roll-nav roll-right">
+				<div class="btn-group roll-nav roll-right" style="right: 0px;">
 					<button class="dropdown J_tabClose" data-toggle="dropdown">
 						关闭操作<span class="caret"></span>
 					</button>
@@ -132,8 +117,6 @@
 						<li class="J_tabCloseOther"><a>关闭其他选项卡</a></li>
 					</ul>
 				</div>
-				<a href="/logout" class="roll-nav roll-right J_tabExit"><i
-					class="fa fa fa-sign-out"></i> 退出</a>
 			</div>
 			<div class="row J_mainContent" id="content-main">
 				<iframe class="J_iframe" name="iframe0" width="100%" height="100%"
