@@ -32,7 +32,6 @@ ifast:
     cacheKeyPrefix: sms
     codeExpireTime: 900000
     zt:
-      url: http://www.ztsms.cn/sendNSms.do
       uname: UNAME
       passwd: PASSWD
       productId: PRODUCT_ID

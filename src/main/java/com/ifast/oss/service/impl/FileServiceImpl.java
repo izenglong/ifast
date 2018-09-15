@@ -6,7 +6,7 @@ import com.ifast.common.utils.FileType;
 import com.ifast.oss.dao.FileDao;
 import com.ifast.oss.domain.FileDO;
 import com.ifast.oss.service.FileService;
-import com.ifast.oss.support.UploadServer;
+import com.ifast.common.component.oss.support.UploadServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

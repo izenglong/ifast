@@ -3,7 +3,7 @@ package com.ifast.common.service;
 import com.ifast.common.base.CoreService;
 import com.ifast.common.domain.ConfigDO;
 import com.ifast.common.utils.JSONUtils;
-import com.ifast.oss.support.qiniu.QiNiuProperties;
+import com.ifast.common.component.oss.support.qiniu.QiNiuProperties;
 
 import java.util.List;
 import java.util.Map;
