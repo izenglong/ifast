@@ -12,7 +12,7 @@ ifast:
     description: 开发人员太懒，没有写描述
     contactName: Aron
     contactEmail: izenglong@163.com
-    contactUrl: http://ifast.site/swagger-ui.html
+    contactUrl: http://ifast.site/doc.html
   shiro:
     jsessionidKey: SESSION
     sessionKeyPrefix: ifast:session
@@ -30,7 +30,7 @@ ifast:
   sms:
     cacheKey: ifast:cache
     cacheKeyPrefix: sms
-    codeExpireTime: 900000
+    codeExpireTime: 900
     zt:
       uname: UNAME
       passwd: PASSWD
@@ -43,7 +43,7 @@ ifast:
       #accessKeySecret: 
       scenes:
         # 配置格式为包含SignName和TemplateCode的json字符串：sys_config.sms_aliyun_validCode = {SignName, TemplateCode}
-        validCode: sms_aliyun_validCode        
+        validCode: sms_aliyun_validCode
 logging:
   level:
     com.ifast: info
