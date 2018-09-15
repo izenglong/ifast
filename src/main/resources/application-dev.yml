@@ -12,7 +12,7 @@ ifast:
     description: 开发人员太懒，没有写描述
     contactName: Aron
     contactEmail: izenglong@163.com
-    contactUrl: http://ifast.site/swagger-ui.html
+    contactUrl: http://ifast.site/doc.html
   shiro:
     jsessionidKey: SESSION
     sessionKeyPrefix: ifast:session
