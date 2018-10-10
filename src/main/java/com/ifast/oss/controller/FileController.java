@@ -42,10 +42,9 @@ public class FileController extends AdminBaseController {
     @ResponseBody
     @GetMapping("/list")
     @RequiresPermissions("oss:file:list")
-    public Result<Page<FileDO>> list(Integer pageNumber, Integer pageSize, FileDO fileDTO) {
-        Page<FileDO> page = new Page<>(pageNumber, pageSize);
+    public Result<Page<FileDO>> list(FileDO fileDTO) {
         Wrapper<FileDO> wrapper = new EntityWrapper<FileDO>(fileDTO);
-        page = sysFileService.selectPage(page, wrapper);
+        Page<FileDO> page = sysFileService.selectPage(getPage(FileDO.class), wrapper);
         return Result.ok(page);
     }
     

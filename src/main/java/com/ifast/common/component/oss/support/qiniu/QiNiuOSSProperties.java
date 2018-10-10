@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 @ConfigurationProperties(prefix = "ifast.oss.qiniu")
-public class QiNiuProperties {
+public class QiNiuOSSProperties {
     private String accessKey;
     private String secretKey;
     private String bucket;

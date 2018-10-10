@@ -24,10 +24,10 @@ public class QiNiuUploadServer implements UploadServer {
 
     private UploadManager uploadManager;
     private Configuration cfg;
-    private QiNiuProperties config;
+    private QiNiuOSSProperties config;
 
 
-    public QiNiuUploadServer(QiNiuProperties config, Zone zone) {
+    public QiNiuUploadServer(QiNiuOSSProperties config, Zone zone) {
         cfg = new Configuration(zone);
         uploadManager = new UploadManager(cfg);
         this.config = config;
@@ -36,11 +36,11 @@ public class QiNiuUploadServer implements UploadServer {
     // method
     @Override
     public String upload(byte[] bytes, String fileName) {
-        String token = Auth.create(this.config.getQiNiuAccessKey(), this.config.getQiNiuSecretKey())
-                .uploadToken(this.config.getQiNiuBucket());
+        String token = Auth.create(this.config.getAccessKey(), this.config.getSecretKey())
+                .uploadToken(this.config.getBucket());
         try {
             uploadManager.put(bytes, fileName, token);
-            String fileURL = this.config.getQiNiuAccessURL() + fileName;
+            String fileURL = this.config.getAccessURL() + fileName;
             log.info("上传成功，url:{}", fileURL);
             return fileURL;
         } catch (QiniuException ex) {

@@ -20,5 +20,7 @@ public class SwaggerProperties {
     private String contactEmail;
     private String version;
     private String description;
+    private String basePackage;
+    private String termsOfServiceUrl;
 
 }

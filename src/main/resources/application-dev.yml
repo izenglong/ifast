@@ -13,34 +13,40 @@ ifast:
     contactName: Aron
     contactEmail: izenglong@163.com
     contactUrl: http://ifast.site/doc.html
+    basePackage: com.ifast
+    termsOfServiceUrl: ${ifast.projectRootURL}/docs.html
   shiro:
     jsessionidKey: SESSION
     sessionKeyPrefix: ifast:session
   oss:
-    # local.localPath本地上传（建议使用相对路径），aliyun.accessKeySecret阿里云上传，两个都注释则使用七牛云上传（sys_config.oss_qiniu）
-    local:
+    local: # 配置 localPath 启用本地上传（默认方式）
       localPath: upload
       rootURL: http://localhost:8088/upload
-    aliyun:
-      accessKeyId: 
-      #accessKeySecret:
-      bucketName: 
+    aliyun: # 配置 accessKeySecret 启用阿里云OSS
+      accessKeyId:
+      accessKeySecret:
+      bucketName:
       # endpoint以深圳为例，其它region请按实际情况填写
       endpoint: http://oss-cn-shenzhen.aliyuncs.com
+    qiniu: # 配置 accessKey 启用七牛云OSS
+      accessKey: 8-HMj9EgGNIP-xuOCpSzTn-OMyGOFtR3TxLdn4Uu
+      secretKey: SjpGg3V6PsMdJgn42PeEd5Ik-6aNyuwdqV5CPM6A
+      bucket: ifast
+      accessURL: http://p6r7ke2jc.bkt.clouddn.com/
   sms:
     cacheKey: ifast:cache
     cacheKeyPrefix: sms
     codeExpireTime: 900000
-    zt:
+    scenes: # 短信内容清单
+      validCode: 验证码{code}，您正在进行身份验证，打死也不要告诉别人哦！
+    zt: # 配置 uname 启用上海助通短信平台
       uname: UNAME
       passwd: PASSWD
       productId: PRODUCT_ID
-      scenes:
-        validCode: 验证码{code}，您正在进行身份验证，打死也不要告诉别人哦！
-    # 使用aliyun发送短信时请注释zt.passwd，配置accessKeyId和accessKeySecret，添加配置表项sys_config.sms_aliyun_validCode
-    aliyun:
-      accessKeyId: 
-      #accessKeySecret: 
+    # 配置accessKeyId和accessKeySecret，添加配置表项sys_config.sms_aliyun_validCode
+    aliyun: # 配置 accessKeySecret 启用上海助通短信平台
+      accessKeyId:
+      accessKeySecret:
       scenes:
         # 配置格式为包含SignName和TemplateCode的json字符串：sys_config.sms_aliyun_validCode = {SignName, TemplateCode}
         validCode: sms_aliyun_validCode
