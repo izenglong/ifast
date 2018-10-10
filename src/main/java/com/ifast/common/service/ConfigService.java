@@ -26,7 +26,7 @@ public interface ConfigService extends CoreService<ConfigDO> {
     /**
      * 七牛OSS
      */
-    default QiNiuProperties getOssConfigProperties() {
+    default QiNiuProperties getQiNiuOssConfigProperties() {
         ConfigDO configDO = getByKey("oss_qiniu");
         String v = configDO.getV();
         Map<String, Object> json = JSONUtils.jsonToMap(v);
@@ -36,10 +36,10 @@ public interface ConfigService extends CoreService<ConfigDO> {
         String accessUrl = (String) json.get("AccessUrl");
 
         QiNiuProperties ossConfig = new QiNiuProperties();
-        ossConfig.setQiNiuAccessKey(ak);
-        ossConfig.setQiNiuSecretKey(sk);
-        ossConfig.setQiNiuBucket(bucket);
-        ossConfig.setQiNiuAccessURL(accessUrl);
+        ossConfig.setAccessKey(ak);
+        ossConfig.setSecretKey(sk);
+        ossConfig.setBucket(bucket);
+        ossConfig.setAccessURL(accessUrl);
         return ossConfig;
     }
 }

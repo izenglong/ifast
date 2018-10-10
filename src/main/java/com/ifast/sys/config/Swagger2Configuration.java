@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
@@ -29,8 +28,7 @@ public class Swagger2Configuration {
         int e = s == -1 ? -1 : projectRootURL.indexOf('/', s + 2);
         String host = s == -1 ? null : projectRootURL.substring(s + 2, e == -1 ? projectRootURL.length() : e);
         return new Docket(DocumentationType.SWAGGER_2).host(host).apiInfo(apiInfo()).select()
-                // 为当前包路径
-                .apis(RequestHandlerSelectors.any()).paths(PathSelectors.any()).build();
+                .apis(RequestHandlerSelectors.basePackage(swaggerProperties.getBasePackage())).paths(path -> path.startsWith("/api/") || path.startsWith("/demo/") | path.startsWith("/test/")).build();
     }
 
     private ApiInfo apiInfo() {
@@ -38,6 +36,7 @@ public class Swagger2Configuration {
                 .title(swaggerProperties.getTitle())
                 .contact(new Contact(swaggerProperties.getContactName(), swaggerProperties.getContactUrl(), swaggerProperties.getContactEmail()))
                 .version(swaggerProperties.getVersion())
-                .description(swaggerProperties.getDescription()).build();
+                .description(swaggerProperties.getDescription())
+                .termsOfServiceUrl(swaggerProperties.getTermsOfServiceUrl()).build();
     }
 }

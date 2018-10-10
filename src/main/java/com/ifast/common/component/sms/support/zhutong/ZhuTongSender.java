@@ -6,7 +6,6 @@ import com.ifast.common.type.EnumErrorCode;
 import com.ifast.common.utils.CodecUtils;
 import com.ifast.common.utils.DateUtils;
 import lombok.Setter;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.client.RestTemplate;
@@ -38,9 +37,9 @@ public class ZhuTongSender implements SmsSender {
 
 
     @Override
-    public void send(String mobile, String code, String scene) {
+    public void send(String mobile, String code, String content) {
 
-        String url = buildURL(mobile, code, scene);
+        String url = buildURL(mobile, code, content);
 
         String res = restTemplate.getForObject(url, String.class);
         if(log.isDebugEnabled()){
@@ -60,12 +59,11 @@ public class ZhuTongSender implements SmsSender {
         log.info("【SMS】发送短信成功， mobile:{},code:{}", mobile, code);
     }
 
-    private String buildURL(String mobile, String code, String scene) {
+    private String buildURL(String mobile, String code, String content) {
         String tKey = DateUtils.format(new Date(), "yyyyMMddHHmmss");
         String password = properties.getPasswd();
         password = CodecUtils.md5Hex(CodecUtils.md5Hex(password) + tKey);
 
-        String content = getContentByScene(scene);
         content = content.replace("{code}", code);
 //        try {
 //            content = URLEncoder.encode(content, "UTF-8");
@@ -87,19 +85,5 @@ public class ZhuTongSender implements SmsSender {
             log.debug("【SMS】请求参数: {}",sb);
         }
         return sb.toString();
-    }
-
-    /**
-     * 根据scene查找content,默认是存map，也可以存db
-     * @param scene
-     * @return
-     */
-    private String getContentByScene(String scene) {
-        String content = properties.getScenes().get(scene);
-        if(StringUtils.isBlank(content)){
-            log.warn("【SMS】 - 根据scene查找content，数据不存在");
-            throw new IFastApiException(EnumErrorCode.apiSmsSendFailed.getCodeStr());
-        }
-        return content;
     }
 }
