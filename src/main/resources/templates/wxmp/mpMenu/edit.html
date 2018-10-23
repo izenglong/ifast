@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="signupForm">
+                        <input id="id" name="id" th:value="${mpMenu.id}" type="hidden">
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">父级菜单</label>
+                            <div class="col-sm-8">
+                                <input id="parentidx" name="parentidx" th:value="${mpMenu.parentidx}"
+                                       class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">菜单名称</label>
+                            <div class="col-sm-8">
+                                <input id="menuname" name="menuname" th:value="${mpMenu.menuname}" class="form-control"
+                                       type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">菜单类型</label>
+                            <div class="col-sm-8">
+                                <input id="menutype" name="menutype" th:value="${mpMenu.menutype}" class="form-control"
+                                       type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">菜单Key：</label>
+                            <div class="col-sm-8">
+                                <input id="menukey" name="menukey" th:value="${mpMenu.menukey}" class="form-control"
+                                       type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">菜单链接：</label>
+                            <div class="col-sm-8">
+                                <input id="menuurl" name="menuurl" th:value="${mpMenu.menuurl}" class="form-control"
+                                       type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">回复内容</label>
+                            <div class="col-sm-8">
+                                <input id="replycontent" name="replycontent" th:value="${mpMenu.replycontent}"
+                                       class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">扫码类型</label>
+                            <div class="col-sm-8">
+                                <input id="scantype" name="scantype" th:value="${mpMenu.scantype}" class="form-control"
+                                       type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">发图类型</label>
+                            <div class="col-sm-8">
+                                <input id="picturetype" name="picturetype" th:value="${mpMenu.picturetype}"
+                                       class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">发送位置</label>
+                            <div class="col-sm-8">
+                                <input id="location" name="location" th:value="${mpMenu.location}" class="form-control"
+                                       type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">菜单排序</label>
+                            <div class="col-sm-8">
+                                <input id="sort" name="sort" th:value="${mpMenu.sort}" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">状态</label>
+                            <div class="col-sm-9">
+                                <label class="radio-inline" for="appType1">
+                                    <input type="radio" value="1" th:checked="${mpMenu.status == 1}" id="appType1" name="status"> 启用
+                                </label>
+                                <label class="radio-inline" for="appType2">
+                                    <input type="radio" value="2" th:checked="${mpMenu.status == 2}" id="appType2" name="status"> 停用
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-8 col-sm-offset-3">
+                                <button type="submit" class="btn btn-primary">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<script src="//s.xlongwei.com/res/js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="/js/appjs/wxmp/mpMenu/edit.js">
+</script>
+</body>
+</html>

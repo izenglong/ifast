@@ -1,0 +1,101 @@
+package com.ifast.wxmp.controller;
+
+
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.plugins.Page;
+import com.ifast.common.annotation.Log;
+import com.ifast.common.base.AdminBaseController;
+import com.ifast.common.utils.Result;
+import com.ifast.wxmp.domain.MpArticleDO;
+import com.ifast.wxmp.service.MpArticleService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
+import java.util.Date;
+
+/**
+ * 
+ * <pre>
+ * 
+ * </pre>
+ * <small> 2018-10-18 21:21:36 | Aron</small>
+ */
+@Controller
+@RequestMapping("/wxmp/mpArticle/txt")
+public class MpArticleTxtController extends AdminBaseController {
+	@Autowired
+	private MpArticleService mpArticleService;
+	
+	@GetMapping()
+	@RequiresPermissions("wxmp:mpArticleTxt:mpArticle")
+	String MpArticle(){
+	    return "wxmp/mpArticleTxt/mpArticle";
+	}
+	
+	@ResponseBody
+	@GetMapping("/list")
+	@RequiresPermissions("wxmp:mpArticleTxt:mpArticle")
+	public Result<Page<MpArticleDO>> list(MpArticleDO mpArticleDTO){
+        Wrapper<MpArticleDO> wrapper = new EntityWrapper<>(mpArticleDTO).orderBy("id", false);
+        Page<MpArticleDO> page = mpArticleService.selectPage(getPage(MpArticleDO.class), wrapper);
+        return Result.ok(page);
+	}
+	
+	@GetMapping("/add")
+	@RequiresPermissions("wxmp:mpArticleTxt:add")
+	String add(){
+	    return "wxmp/mpArticleTxt/add";
+	}
+
+	@GetMapping("/edit/{id}")
+	@RequiresPermissions("wxmp:mpArticleTxt:edit")
+	String edit(@PathVariable("id") Long id,Model model){
+		MpArticleDO mpArticle = mpArticleService.selectById(id);
+		model.addAttribute("mpArticle", mpArticle);
+	    return "wxmp/mpArticleTxt/edit";
+	}
+	
+	@Log("添加")
+	@ResponseBody
+	@PostMapping("/save")
+	@RequiresPermissions("wxmp:mpArticleTxt:add")
+	public Result<String> save( MpArticleDO mpArticle){
+	    mpArticle.setCreatedate(new Date());
+		mpArticleService.insert(mpArticle);
+        return Result.ok();
+	}
+	
+	@Log("修改")
+	@ResponseBody
+	@RequestMapping("/update")
+	@RequiresPermissions("wxmp:mpArticleTxt:edit")
+	public Result<String>  update( MpArticleDO mpArticle){
+	    mpArticle.setUpdatedate(new Date());
+		boolean update = mpArticleService.updateById(mpArticle);
+		return update ? Result.ok() : Result.fail();
+	}
+	
+	@Log("删除")
+	@PostMapping( "/remove")
+	@ResponseBody
+	@RequiresPermissions("wxmp:mpArticleTxt:remove")
+	public Result<String>  remove( Long id){
+		mpArticleService.deleteById(id);
+        return Result.ok();
+	}
+	
+	@Log("批量删除")
+	@PostMapping( "/batchRemove")
+	@ResponseBody
+	@RequiresPermissions("wxmp:mpArticleTxt:batchRemove")
+	public Result<String>  remove(@RequestParam("ids[]") Long[] ids){
+		mpArticleService.deleteBatchIds(Arrays.asList(ids));
+		return Result.ok();
+	}
+	
+}

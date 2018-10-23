@@ -29,11 +29,17 @@ public class MpConfigController extends AdminBaseController {
     private MpConfigService mpConfigService;
     
     @GetMapping()
+    @RequiresPermissions("wxmp:mpConfig:config")
+    String config() {
+        return "wxmp/mpConfig/config";
+    }
+
+    @GetMapping("/config")
     @RequiresPermissions("wxmp:mpConfig:mpConfig")
     String MpConfig() {
         return "wxmp/mpConfig/mpConfig";
     }
-    
+
     @ResponseBody
     @GetMapping("/list")
     @RequiresPermissions("wxmp:mpConfig:mpConfig")

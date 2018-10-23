@@ -2,6 +2,7 @@ ifast:
   projectName: ifast
   projectRootURL: http://127.0.0.1:8088/
   demoMode: false
+  devMode: true
   jwt:
     userPrimaryKey: userId
     expireTokenKeyPrefix: ifast:expireToken
@@ -50,6 +51,7 @@ ifast:
       scenes:
         # 配置格式为包含SignName和TemplateCode的json字符串：sys_config.sms_aliyun_validCode = {SignName, TemplateCode}
         validCode: sms_aliyun_validCode
+
 logging:
   level:
     com.ifast: debug
