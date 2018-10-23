@@ -11,5 +11,16 @@ import com.ifast.common.base.CoreService;
  * <small> 2018-04-11 23:27:06 | Aron</small>
  */
 public interface MpFansService extends CoreService<MpFansDO> {
+
+    /**
+     * <pre>
+     * 根据openid查表是否存在，如果存在则更新fans数据
+     * </pre>
+     * 
+     * <small> 2018年6月13日 | Aron</small>
+     * 
+     * @param fans
+     */
+    void sync(MpFansDO fans);
     
 }
