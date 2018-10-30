@@ -1,20 +1,16 @@
 package com.ifast.common.utils;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Iterator;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
-
-import org.springframework.web.multipart.MultipartFile;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Iterator;
 
 /**
  * @author gaoyuzhe
@@ -23,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImageUtils {
     /***
      * 剪裁图片
-     * 
+     *
      * @param file
      *            图片
      * @param x
@@ -49,36 +45,34 @@ public class ImageUtils {
             ImageReadParam param = reader.getDefaultReadParam();
             Rectangle rect = new Rectangle(x, y, w, h);
             param.setSourceRegion(rect);
-            BufferedImage bi = reader.read(0, param);
-            return bi;
+            BufferedImage bufferedImage = reader.read(0, param);
+            return bufferedImage;
         } catch (Exception ignored) {
+            ignored.printStackTrace();
         }
         return null;
     }
 
     /***
      * 图片旋转指定角度
-     * 
+     *
      * @param bufferedimage
      *            图像
      * @param degree
      *            角度
-     * @return
-     * @date
      */
     public static BufferedImage rotateImage(BufferedImage bufferedimage, int degree) {
-        int w = bufferedimage.getWidth();
-        int h = bufferedimage.getHeight();
+        int width = bufferedimage.getWidth();
+        int height = bufferedimage.getHeight();
         int type = bufferedimage.getColorModel().getTransparency();
-        BufferedImage img;
+        BufferedImage bufferedImage;
         Graphics2D graphics2d;
-        (graphics2d = (img = new BufferedImage(w, h, type)).createGraphics())
-                .setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        (graphics2d = (bufferedImage = new BufferedImage(width, height, type)).createGraphics()).setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         graphics2d.setPaint(Color.WHITE);
-        graphics2d.fillRect(0, 0, w, h);
-        graphics2d.rotate(Math.toRadians(degree), w / 2, h / 2);
+        graphics2d.fillRect(0, 0, width, height);
+        graphics2d.rotate(Math.toRadians(degree), width / 2, height / 2);
         graphics2d.drawImage(bufferedimage, 0, 0, Color.WHITE, null);
         graphics2d.dispose();
-        return img;
+        return bufferedImage;
     }
 }

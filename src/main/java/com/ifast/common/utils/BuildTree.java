@@ -1,11 +1,11 @@
 package com.ifast.common.utils;
 
+import com.ifast.common.domain.Tree;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.ifast.common.domain.Tree;
 
 public class BuildTree {
 
@@ -14,7 +14,8 @@ public class BuildTree {
 		if (nodes == null) {
 			return null;
 		}
-		List<Tree<T>> topNodes = new ArrayList<Tree<T>>();
+
+		List<Tree<T>> topNodes = new ArrayList<>();
 
 		for (Tree<T> children : nodes) {
 
@@ -25,19 +26,11 @@ public class BuildTree {
 				continue;
 			}
 
-			for (Tree<T> parent : nodes) {
-				String id = parent.getId();
-				if (id != null && id.equals(pid)) {
-					parent.getChildren().add(children);
-					children.setHasParent(true);
-					parent.setChildren(true);
-					continue;
-				}
-			}
+            children(nodes, children, pid);
 
 		}
 
-		Tree<T> root = new Tree<T>();
+		Tree<T> root = new Tree<>();
 		if (topNodes.size() == 1) {
 			root = topNodes.get(0);
 		} else {
@@ -60,7 +53,7 @@ public class BuildTree {
 		if (nodes == null) {
 			return null;
 		}
-		List<Tree<T>> topNodes = new ArrayList<Tree<T>>();
+		List<Tree<T>> topNodes = new ArrayList<>();
 
 		for (Tree<T> children : nodes) {
 
@@ -71,19 +64,23 @@ public class BuildTree {
 				continue;
 			}
 
-			for (Tree<T> parent : nodes) {
-				String id = parent.getId();
-				if (id != null && id.equals(pid)) {
-					parent.getChildren().add(children);
-					children.setHasParent(true);
-					parent.setChildren(true);
+            children(nodes, children, pid);
 
-					continue;
-				}
-			}
-
-		}
+        }
 		return topNodes;
 	}
+
+    private static <T> void children(List<Tree<T>> nodes, Tree<T> children, String pid) {
+        for (Tree<T> parent : nodes) {
+            String id = parent.getId();
+            if (id != null && id.equals(pid)) {
+                parent.getChildren().add(children);
+                children.setHasParent(true);
+                parent.setChildren(true);
+
+                continue;
+            }
+        }
+    }
 
 }
