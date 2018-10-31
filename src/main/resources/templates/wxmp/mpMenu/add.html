@@ -9,17 +9,12 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
                     <form class="form-horizontal m-t" id="signupForm">
-
                         <div class="form-group">
                             <label class="col-sm-3 control-label">上级菜单</label>
                             <div class="col-sm-8">
-                                <input id="parentidx" name="parentidx" th:value="${pId}" class="form-control" type="text">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">菜单类型</label>
-                            <div class="col-sm-8">
-                                <input id="menutype" name="menutype" class="form-control" type="text">
+                                <input id="parentidx" name="parentidx" th:value="${pId}" class="hidden form-control"
+                                       type="text">
+                                <input th:value="${parentName}" class="form-control" type="text" disabled>
                             </div>
                         </div>
                         <div class="form-group">
@@ -29,36 +24,54 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">菜单Key</label>
+                            <label class="col-sm-3 control-label">菜单类型</label>
+                            <div class="col-sm-8">
+                                <iftg:select id="menutype" name="menutype" dicType="wxmp_menu_type"
+                                             data-placeholder="选择类别" class="form-control chosen-select"
+                                             defaultValue="1" tabindex="2" style="width: 100%">
+                                    <option value="">选择菜单类型</option>
+                                </iftg:select>
+                            </div>
+                        </div>
+                        <div class="form-group m m4 hidden">
+                            <label class="col-sm-3 control-label">关键字</label>
                             <div class="col-sm-8">
                                 <input id="menukey" name="menukey" class="form-control" type="text">
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group m m2 hidden">
                             <label class="col-sm-3 control-label">菜单链接</label>
                             <div class="col-sm-8">
                                 <input id="menuurl" name="menuurl" class="form-control" type="text">
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group m m3 hidden">
                             <label class="col-sm-3 control-label">回复内容</label>
                             <div class="col-sm-8">
                                 <input id="replycontent" name="replycontent" class="form-control" type="text">
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group m m5 hidden">
                             <label class="col-sm-3 control-label">扫码类型</label>
                             <div class="col-sm-8">
-                                <input id="scantype" name="scantype" class="form-control" type="text">
+                                <iftg:select id="scantype" name="scantype" dicType="wxmp_menu_scan_type"
+                                             data-placeholder="选择类别" class="form-control chosen-select"
+                                             defaultValue="1" tabindex="2" style="width: 100%">
+                                    <option value="">选择菜单类型</option>
+                                </iftg:select>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group m m6 hidden">
                             <label class="col-sm-3 control-label">发图类型</label>
                             <div class="col-sm-8">
-                                <input id="picturetype" name="picturetype" class="form-control" type="text">
+                                <iftg:select id="picturetype" name="picturetype" dicType="wxmp_menu_pic_type"
+                                             data-placeholder="选择类别" class="form-control chosen-select"
+                                             defaultValue="1" tabindex="2" style="width: 100%">
+                                    <option value="">选择菜单类型</option>
+                                </iftg:select>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group m m7 hidden">
                             <label class="col-sm-3 control-label">发送位置</label>
                             <div class="col-sm-8">
                                 <input id="location" name="location" class="form-control" type="text">
@@ -73,7 +86,11 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">菜单状态</label>
                             <div class="col-sm-8">
-                                <input id="status" name="status" class="form-control" type="text">
+                                <iftg:select id="status" name="status" dicType="show_hide" data-placeholder="选择类别"
+                                             class="form-control chosen-select"
+                                             defaultValue="0" tabindex="2" style="width: 100%">
+                                    <option value="">选择菜单类型</option>
+                                </iftg:select>
                             </div>
                         </div>
                         <div class="form-group">

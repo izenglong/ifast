@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
- * 
  * <pre>
  * 微信菜单表
  * </pre>
@@ -28,29 +28,29 @@ import java.util.List;
 @Controller
 @RequestMapping("/wxmp/mpMenu")
 public class MpMenuController extends AdminBaseController {
-	@Autowired
-	private MpMenuService mpMenuService;
-	
-	@GetMapping()
-	@RequiresPermissions("wxmp:mpMenu:mpMenu")
-	String MpMenu(){
-	    return "wxmp/mpMenu/mpMenu";
-	}
-	
-	@ResponseBody
-	@GetMapping("/list")
-	@RequiresPermissions("wxmp:mpMenu:mpMenu")
-	public List<MpMenuDO> list(MpMenuDO mpMenuDTO){
-        Wrapper<MpMenuDO> wrapper = new EntityWrapper<>(mpMenuDTO).orderBy("id", false);
+    @Autowired
+    private MpMenuService mpMenuService;
+
+    @GetMapping()
+    @RequiresPermissions("wxmp:mpMenu:mpMenu")
+    String MpMenu() {
+        return "wxmp/mpMenu/mpMenu";
+    }
+
+    @ResponseBody
+    @GetMapping("/list")
+    @RequiresPermissions("wxmp:mpMenu:mpMenu")
+    public List<MpMenuDO> list(MpMenuDO mpMenuDTO) {
+        Wrapper<MpMenuDO> wrapper = new EntityWrapper<>(mpMenuDTO).orderBy("parentidx, sort");
         List<MpMenuDO> list = mpMenuService.selectList(wrapper);
         return list;
-	}
-	
-	@GetMapping("/add")
-	@RequiresPermissions("wxmp:mpMenu:add")
-	String add(){
-	    return "wxmp/mpMenu/add";
-	}
+    }
+
+    @GetMapping("/add")
+    @RequiresPermissions("wxmp:mpMenu:add")
+    String add() {
+        return "wxmp/mpMenu/add";
+    }
 
 
     @GetMapping("/add/{pId}")
@@ -62,64 +62,73 @@ public class MpMenuController extends AdminBaseController {
         } else {
             model.addAttribute("pName", mpMenuService.selectById(pId).getMenuname());
         }
+
+        MpMenuDO menuDO = mpMenuService.selectById(pId);
+        if (!Objects.isNull(menuDO)) {
+            model.addAttribute("parentName", menuDO.getMenuname());
+        }
         return "wxmp/mpMenu/add";
     }
 
 
     @GetMapping("/edit/{id}")
-	@RequiresPermissions("wxmp:mpMenu:edit")
-	String edit(@PathVariable("id") Long id,Model model){
-		MpMenuDO mpMenu = mpMenuService.selectById(id);
-		model.addAttribute("mpMenu", mpMenu);
-	    return "wxmp/mpMenu/edit";
-	}
-	
-	@Log("添加微信菜单表")
-	@ResponseBody
-	@PostMapping("/save")
-	@RequiresPermissions("wxmp:mpMenu:add")
-	public Result<String> save( MpMenuDO mpMenu){
-		mpMenuService.insert(mpMenu);
-        return Result.ok();
-	}
-	
-	@Log("修改微信菜单表")
-	@ResponseBody
-	@RequestMapping("/update")
-	@RequiresPermissions("wxmp:mpMenu:edit")
-	public Result<String>  update( MpMenuDO mpMenu){
-		boolean update = mpMenuService.updateById(mpMenu);
-		return update ? Result.ok() : Result.fail();
-	}
-	
-	@Log("删除微信菜单表")
-	@PostMapping( "/remove")
-	@ResponseBody
-	@RequiresPermissions("wxmp:mpMenu:remove")
-	public Result<String>  remove( Long id){
-		mpMenuService.deleteById(id);
-        return Result.ok();
-	}
-	
-	@Log("批量删除微信菜单表")
-	@PostMapping( "/batchRemove")
-	@ResponseBody
-	@RequiresPermissions("wxmp:mpMenu:batchRemove")
-	public Result<String>  remove(@RequestParam("ids[]") Long[] ids){
-		mpMenuService.deleteBatchIds(Arrays.asList(ids));
-		return Result.ok();
-	}
+    @RequiresPermissions("wxmp:mpMenu:edit")
+    String edit(@PathVariable("id") Long id, Model model) {
+        MpMenuDO mpMenu = mpMenuService.selectById(id);
+        model.addAttribute("mpMenu", mpMenu);
+        MpMenuDO menuDO = mpMenuService.selectById(mpMenu.getParentidx());
+        if (!Objects.isNull(menuDO)) {
+            model.addAttribute("parentName", menuDO.getMenuname());
+        }
+        return "wxmp/mpMenu/edit";
+    }
 
-	@GetMapping("/tree")
-	@ResponseBody
-	public Tree<MpMenuDO> tree() {
-		Tree<MpMenuDO> tree = mpMenuService.getTree();
-		return tree;
-	}
+    @Log("添加微信菜单表")
+    @ResponseBody
+    @PostMapping("/save")
+    @RequiresPermissions("wxmp:mpMenu:add")
+    public Result<String> save(MpMenuDO mpMenu) {
+        mpMenuService.saveMenu(mpMenu);
+        return Result.ok();
+    }
 
-	@GetMapping("/treeView")
-	String treeView() {
-		return "wxmp/mpMenu/mpMenuTree";
-	}
-	
+    @Log("修改微信菜单表")
+    @ResponseBody
+    @RequestMapping("/update")
+    @RequiresPermissions("wxmp:mpMenu:edit")
+    public Result<String> update(MpMenuDO mpMenu) {
+        boolean update = mpMenuService.updateById(mpMenu);
+        return update ? Result.ok() : Result.fail();
+    }
+
+    @Log("删除微信菜单表")
+    @PostMapping("/remove")
+    @ResponseBody
+    @RequiresPermissions("wxmp:mpMenu:remove")
+    public Result<String> remove(Long id) {
+        mpMenuService.deleteById(id);
+        return Result.ok();
+    }
+
+    @Log("批量删除微信菜单表")
+    @PostMapping("/batchRemove")
+    @ResponseBody
+    @RequiresPermissions("wxmp:mpMenu:batchRemove")
+    public Result<String> remove(@RequestParam("ids[]") Long[] ids) {
+        mpMenuService.deleteBatchIds(Arrays.asList(ids));
+        return Result.ok();
+    }
+
+    @GetMapping("/tree")
+    @ResponseBody
+    public Tree<MpMenuDO> tree() {
+        Tree<MpMenuDO> tree = mpMenuService.getTree();
+        return tree;
+    }
+
+    @GetMapping("/treeView")
+    String treeView() {
+        return "wxmp/mpMenu/mpMenuTree";
+    }
+
 }

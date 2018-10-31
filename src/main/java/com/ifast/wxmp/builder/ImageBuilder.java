@@ -16,9 +16,9 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 public class ImageBuilder extends AbstractBuilder {
 
     @Override
-    public WxMpXmlOutMessage build(String content, WxMpXmlMessage wxMessage, WeixinService service) {
+    public WxMpXmlOutMessage build(String mediaId, WxMpXmlMessage wxMessage, WeixinService service) {
 
-        WxMpXmlOutImageMessage m = WxMpXmlOutMessage.IMAGE().mediaId(content).fromUser(wxMessage.getToUser())
+        WxMpXmlOutImageMessage m = WxMpXmlOutMessage.IMAGE().mediaId(mediaId).fromUser(wxMessage.getToUser())
                 .toUser(wxMessage.getFromUser()).build();
 
         return m;

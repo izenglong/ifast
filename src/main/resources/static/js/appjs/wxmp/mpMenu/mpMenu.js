@@ -39,7 +39,27 @@ function load() {
                     },
                     {
                         field: 'menutype',
-                        title: '菜单类型'
+                        title: '菜单类型',
+                        formatter: function (value, row, index) {
+                            switch (value.menutype) {
+                                case "1":
+                                    return '主菜单';
+                                case "2":
+                                    return '链接';
+                                case "3":
+                                    return '文本';
+                                case "4":
+                                    return '关键字';
+                                case "5":
+                                    return '扫码';
+                                case "6":
+                                    return '发图片';
+                                case "7":
+                                    return '发位置';
+                                default:
+                                    return '主菜单';
+                            }
+                        }
                     },
                     {
                         field: 'menuurl',
@@ -54,9 +74,9 @@ function load() {
                         title: '菜单状态',
                         formatter: function (value, row, index) {
                             if (1 == value.status) {
-                                return "1启用";
+                                return "显示";
                             }
-                            return "0停用";
+                            return "隐藏";
                         }
                     },
                     {
@@ -77,10 +97,10 @@ function load() {
                             var d = '<a class="btn btn-warning btn-sm ' + s_remove_h + '" href="#" title="删除"  mce_href="#" onclick="removeone(\''
                                 + item.id
                                 + '\')"><i class="fa fa-remove"></i></a> ';
-                            var f = '<a class="btn btn-success btn-sm＂ href="#" title="备用"  mce_href="#" onclick="resetPwd(\''
-                                + item.id
-                                + '\')"><i class="fa fa-key"></i></a> ';
-                            return e + a + d;
+                            if(item.parentidx == 0){
+                                return e + d + a;
+                            }
+                            return e + d;
                         }
                     }]
             });
@@ -98,6 +118,29 @@ function add(pId) {
         shadeClose: false, // 点击遮罩关闭层
         area: ['800px', '520px'],
         content: prefix + '/add/' + pId
+    });
+}
+
+
+function sync() {
+    // TODO
+    layer.confirm("确认要同步公众号菜单吗?", {
+        btn: ['确定', '取消']
+    }, function () {
+        $.post("/wx/mp/menu/api/sync/appId", function (res) {
+            layer.msg(res.msg);
+        });
+    });
+}
+
+function add(appId) {
+    layer.open({
+        type: 2,
+        title: '增加',
+        maxmin: true,
+        shadeClose: false, // 点击遮罩关闭层
+        area: ['800px', '520px'],
+        content: prefix + '/add/' + appId
     });
 }
 

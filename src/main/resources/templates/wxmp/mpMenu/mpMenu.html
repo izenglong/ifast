@@ -11,11 +11,15 @@
                     <div class="columns pull-left">
                         <button shiro:hasPermission="wxmp:mpMenu:add" type="button" class="btn  btn-primary"
                                 onclick="add(0)">
-                            <i class="fa fa-plus" aria-hidden="true"></i>添加
+                            <i class="fa fa-plus" aria-hidden="true"></i> 添加
+                        </button>
+                        <button shiro:hasPermission="wxmp:mpMenu:sync" type="button" class="btn  btn-info"
+                                onclick="sync()">
+                            <i class="fa fa-refresh" aria-hidden="true"></i> 同步菜单
                         </button>
                     </div>
                     <div class="columns pull-right">
-                        <button class="btn btn-success" onclick="reLoad()">查询</button>
+                        <button class="btn btn-success" onclick="reLoad()"> 查询</button>
                     </div>
                     <div class="columns pull-right col-md-2 nopadding">
                         <input id="searchName" type="text" class="form-control"

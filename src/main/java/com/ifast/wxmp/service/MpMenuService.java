@@ -14,4 +14,6 @@ import com.ifast.common.base.CoreService;
 public interface MpMenuService extends CoreService<MpMenuDO> {
 
     Tree<MpMenuDO> getTree();
+
+    void saveMenu(MpMenuDO mpMenu);
 }

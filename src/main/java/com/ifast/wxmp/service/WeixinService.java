@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 
 import com.ifast.wxmp.handler.AbstractHandler;
@@ -35,6 +37,8 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
  * <small> 2018年6月13日 | Aron</small>
  */
 @Service
+@EnableAsync(proxyTargetClass = true)
+@EnableCaching(proxyTargetClass = true)
 public class WeixinService extends WxMpServiceImpl implements InitializingBean {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -160,8 +164,12 @@ public class WeixinService extends WxMpServiceImpl implements InitializingBean {
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet(){
         this.refreshRouter();
+    }
+
+    public void init(){
+        this.initHttp();
     }
 
 }

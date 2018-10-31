@@ -30,7 +30,9 @@ public enum EnumErrorCode {
     
     , userLoginFail(40401, "用户或密码错误")
     , userUpdatePwd4adminNotAllowed(40402, "超级管理员的账号不允许直接重置！")
-    
+    , wxmpMenuSaveMainError(40500, "微信主菜单不能超过3个")
+    , wxmpMenuSaveSubError(40501, "微信子菜单不能超过5个")
+
     
     // API
     , apiAuthorizationLoginFailed(44000, "用户名或密码错误")

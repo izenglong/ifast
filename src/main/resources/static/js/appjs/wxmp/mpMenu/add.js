@@ -1,5 +1,6 @@
 $().ready(function () {
     validateRule();
+    init();
 });
 
 $.validator.setDefaults({
@@ -7,6 +8,20 @@ $.validator.setDefaults({
         save();
     }
 });
+
+
+function init() {
+    console.log("init ...")
+    $("#menutype").on("change", function () {
+        var selected = $(this).val();
+        initForm(selected);
+    })
+}
+
+function initForm(selected) {
+    $(".m").addClass("hidden");
+    $(".m" + selected).removeClass("hidden")
+}
 
 function save() {
     $.ajax({
