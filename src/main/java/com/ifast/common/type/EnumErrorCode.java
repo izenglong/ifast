@@ -32,6 +32,8 @@ public enum EnumErrorCode {
     , userUpdatePwd4adminNotAllowed(40402, "超级管理员的账号不允许直接重置！")
     , wxmpMenuSaveMainError(40500, "微信主菜单不能超过3个")
     , wxmpMenuSaveSubError(40501, "微信子菜单不能超过5个")
+    , wxmpMediaImageSyncError(40600, "图片素材同步错误")
+    , wxmpMediaGroupSendSyncError(40610, "素材群发失败")
 
     
     // API

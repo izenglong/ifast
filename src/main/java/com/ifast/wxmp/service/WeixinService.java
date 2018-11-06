@@ -168,8 +168,9 @@ public class WeixinService extends WxMpServiceImpl implements InitializingBean {
         this.refreshRouter();
     }
 
-    public void init(){
+    public WeixinService init(){
         this.initHttp();
+        return this;
     }
 
 }

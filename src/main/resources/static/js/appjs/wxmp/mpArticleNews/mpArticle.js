@@ -171,15 +171,28 @@ function remove(id) {
 function resetPwd(id) {
 }
 
-function sync() {
-    // TODO
-    alert("同步素材")
-
+function sync(id) {
+    console.log("同步素材")
+    layer.confirm("确认要同步素材吗?", {
+        btn: ['确定', '取消']
+    }, function () {
+        $.post("/wx/mp/api/media/news/sync/appId/" + id, function (res) {
+            layer.msg(res.msg);
+            reLoad();
+        });
+    });
 }
 
-function groupSend() {
-    // TODO
-    alert("群发")
+function groupSend(id) {
+    console.log("群发素材")
+    layer.confirm("确认要群发素材吗?", {
+        btn: ['确定', '取消']
+    }, function () {
+        $.post("/wx/mp/api/media/news/groupsend/appId/" + id, function (res) {
+            layer.msg(res.msg);
+            reLoad();
+        });
+    });
 
 }
 
