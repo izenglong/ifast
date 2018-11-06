@@ -1,6 +1,6 @@
 ifast:
   projectName: ifast
-  projectRootURL: http://127.0.0.1:8088/
+  projectRootURL: http://127.0.0.1:8888/
   demoMode: false
   devMode: true
   jwt:
