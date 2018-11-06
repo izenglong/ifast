@@ -24,7 +24,7 @@ public class WxMpConfigHolder implements InitializingBean {
     private static final Logger log = LoggerFactory.getLogger(WxMpConfigHolder.class);
 
     @Autowired
-    private MpConfigService mpConfigService;
+    private static MpConfigService mpConfigService;
 
     private static final Hashtable<String, WxMpInMemoryConfigStorage> mpConfigs = new Hashtable<>();
 
@@ -43,7 +43,7 @@ public class WxMpConfigHolder implements InitializingBean {
 
     public static WxMpInMemoryConfigStorage getWxMpInMemoryConfigStorage() {
         // TODO
-        currentAppId.set("wxe9679b2e6082d653");
+        currentAppId.set(mpConfigService.selectById(1L).getAppId());
 
         return mpConfigs.get(currentAppId.get());
     }

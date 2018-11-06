@@ -7,6 +7,7 @@ import com.ifast.common.utils.JSONUtils;
 import com.ifast.common.utils.Result;
 import com.ifast.wxmp.domain.MpArticleDO;
 import com.ifast.wxmp.service.MpArticleService;
+import com.ifast.wxmp.service.MpFansService;
 import com.ifast.wxmp.service.WeixinService;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.api.WxConsts;
@@ -43,6 +44,8 @@ public class WxMediaController extends AdminBaseController {
     private WeixinService wxService;
     @Autowired
     private MpArticleService mpArticleService;
+    @Autowired
+    private MpFansService mpFansService;
 
     ///////////////
     // 图片
@@ -71,8 +74,8 @@ public class WxMediaController extends AdminBaseController {
     public Result imageGroupsend(@PathVariable String appId, @PathVariable Long articleId) {
         MpArticleDO article = mpArticleService.selectById(articleId);
         WxMpMassOpenIdsMessage message = new WxMpMassOpenIdsMessage();
-        message.addUser("oZQD8wvtRERdOzISxpBccQoJ8Hrs");
-        message.addUser("oZQD8wlJnnU1ByTAEh3AKKw235oI");
+        message.addUser(mpFansService.selectById(1).getOpenid());
+        message.addUser(mpFansService.selectById(1).getOpenid());
         message.setMsgType(article.getMsgtype());
         message.setMediaId(article.getTid());
         try {
