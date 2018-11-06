@@ -99,7 +99,7 @@ public class SubscribeHandler extends AbstractHandler {
     }
 
     public long getMpIdByAppId(String appId) {
-        return mpConfigService.findOneByKv("app_id", appId).getId();
+        return mpConfigService.findOneByKv("appId", appId).getId();
     }
 
     /**
