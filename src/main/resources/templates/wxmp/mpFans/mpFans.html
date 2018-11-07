@@ -10,15 +10,20 @@
 					<div class="fixed-table-toolbar">
 						<div class="columns pull-left">
 							<button shiro:hasPermission="wxmp:mpFans:add" type="button" class="btn  btn-primary" onclick="add()">
-								<i class="fa fa-plus" aria-hidden="true"></i>添加
+								<i class="fa fa-plus" aria-hidden="true"></i> 添加
+							</button>
+							<button shiro:hasPermission="wxmp:mpFans:sync" type="button" class="btn  btn-success"
+								onclick="batchSync()">
+								<i class="fa fa-refresh" aria-hidden="true"></i> 批量同步
+							</button>
 							</button>
 							<button shiro:hasPermission="wxmp:mpFans:batchRemove" type="button" class="btn  btn-danger"
 								onclick="batchRemove()">
-								<i class="fa fa-trash" aria-hidden="true"></i>删除
+								<i class="fa fa-trash" aria-hidden="true"></i> 删除
 							</button>
 						</div>
 						<div class="columns pull-right">
-							<button class="btn btn-success" onclick="reLoad()">查询</button>
+							<button class="btn btn-success" onclick="reLoad()"> 查询</button>
 						</div>
 						<div class="columns pull-right col-md-2 nopadding">
 							<input id="searchName" type="text" class="form-control"

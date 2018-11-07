@@ -26,6 +26,8 @@ import java.util.Objects;
 @Component
 public class MenuHandler extends AbstractHandler {
 
+    private static String DEFAULT_ARTICLE_KEYWORD = "DEFAULT_ARTICLE_KEYWORD";
+
     @Autowired
     private MpArticleService mpArticleService;
 
@@ -37,8 +39,13 @@ public class MenuHandler extends AbstractHandler {
 
         MpArticleDO mpArticleDO = mpArticleService.findOneByKv("keyword", key);
         if (Objects.isNull(mpArticleDO)) {
-            return WxMpXmlOutMessage.TEXT().content(key).fromUser(wxMessage.getToUser()).toUser(wxMessage.getFromUser())
-                    .build();
+            logger.info("未找到与关键字【{}】匹配的回复消息。默认回复key【{}】", key, DEFAULT_ARTICLE_KEYWORD);
+            MpArticleDO defaultArticle = mpArticleService.findOneByKv("keyword", DEFAULT_ARTICLE_KEYWORD);
+            if (Objects.isNull(defaultArticle)) {
+                logger.info("未找到与关键字【{}】匹配的回复消息。回复内容【{}】", DEFAULT_ARTICLE_KEYWORD, DEFAULT_ARTICLE_KEYWORD);
+                return WxMpXmlOutMessage.TEXT().content(DEFAULT_ARTICLE_KEYWORD).fromUser(wxMessage.getToUser()).toUser(wxMessage.getFromUser()).build();
+            }
+            return WxMpXmlOutMessage.TEXT().content(defaultArticle.getContent()).fromUser(wxMessage.getToUser()).toUser(wxMessage.getFromUser()).build();
         }
 
         WxMpXmlOutMessage builder = null;

@@ -97,7 +97,7 @@ function load() {
                             var d = '<a class="btn btn-warning btn-sm ' + s_remove_h + '" href="#" title="删除"  mce_href="#" onclick="removeone(\''
                                 + item.id
                                 + '\')"><i class="fa fa-remove"></i></a> ';
-                            if(item.parentidx == 0){
+                            if (item.parentidx == 0) {
                                 return e + d + a;
                             }
                             return e + d;

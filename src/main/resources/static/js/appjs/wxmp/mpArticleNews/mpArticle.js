@@ -66,8 +66,11 @@ function load() {
                         title: '标题'
                     },
                     {
-                        field: 'title',
-                        title: '缩略图'
+                        field: 'imgurl',
+                        title: '缩略图',
+                        formatter : function(value, row, index) {
+                            return '<img src="' + value + '" width="32" height="32"/>'
+                        }
                     },
                     {
                         field: 'createdate',
@@ -166,9 +169,6 @@ function remove(id) {
             }
         });
     })
-}
-
-function resetPwd(id) {
 }
 
 function sync(id) {

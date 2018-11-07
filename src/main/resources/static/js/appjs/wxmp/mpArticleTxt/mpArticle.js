@@ -68,8 +68,8 @@ function load() {
                     {
                         field: 'status',
                         title: '状态',
-                        formatter : function(value, row, index) {
-                            if(1 == value){
+                        formatter: function (value, row, index) {
+                            if (1 == value) {
                                 return "1启用";
                             }
                             return "0停用";

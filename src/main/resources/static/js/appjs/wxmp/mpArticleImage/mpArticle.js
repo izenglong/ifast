@@ -63,7 +63,10 @@ function load() {
                     },
                     {
                         field: 'imgurl',
-                        title: '图片'
+                        title: '图片',
+                        formatter : function(value, row, index) {
+                            return '<img src="' + value + '" width="32" height="32"/>'
+                        }
                     },
                     {
                         field: 'createdate',

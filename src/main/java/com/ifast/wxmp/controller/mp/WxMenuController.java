@@ -5,6 +5,7 @@ import com.ifast.common.base.AdminBaseController;
 import com.ifast.common.utils.JSONUtils;
 import com.ifast.common.utils.Result;
 import com.ifast.wxmp.domain.MpMenuDO;
+import com.ifast.wxmp.pojo.type.Const;
 import com.ifast.wxmp.service.MpMenuService;
 import com.ifast.wxmp.service.WeixinService;
 import lombok.extern.slf4j.Slf4j;
@@ -102,25 +103,25 @@ public class WxMenuController extends AdminBaseController {
     private String convertMenuType(String menutype) {
         switch (menutype) {
             // 主菜单
-            case "1":
+            case Const.MenuKey.MAIN:
                 return null;
             // 链接
-            case "2":
+            case Const.MenuKey.LINK:
                 return WxConsts.MenuButtonType.VIEW;
             // 文本
-            case "3":
+            case Const.MenuKey.TEXT:
                 return WxConsts.MenuButtonType.CLICK;
             // 关键字
-            case "4":
+            case Const.MenuKey.KEY_WORD:
                 return WxConsts.MenuButtonType.CLICK;
             // 扫码
-            case "5":
+            case Const.MenuKey.SCAN:
                 return WxConsts.MenuButtonType.SCANCODE_PUSH;
             // 发图
-            case "6":
+            case Const.MenuKey.PIC:
                 return WxConsts.MenuButtonType.CLICK;
             // 发位置
-            case "7":
+            case Const.MenuKey.LOCATION:
                 return WxConsts.MenuButtonType.LOCATION_SELECT;
             default:
                 return WxConsts.MenuButtonType.CLICK;

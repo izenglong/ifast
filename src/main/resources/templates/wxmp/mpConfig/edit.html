@@ -118,8 +118,8 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">logo：</label>
 								<div class="col-sm-8">
-								    <img id="imgLogo" alt="公众号logo" src="" th:src="${mpConfig.logo}" style="width:100px;display:block;">
-								    <input type="hidden" id="logo" name="logo" >
+								    <img id="imgLogo" alt="公众号logo" src="" th:src="@{${mpConfig.logo}}" style="width:100px;display:block;">
+								    <input type="hidden" id="logo" name="logo" th:value="${mpConfig.logo}" >
 									<button type="button" class="btn btn-success" id="btnUpload">
 			                            <i class="fa fa-cloud"></i>上传文件
 			                        </button>

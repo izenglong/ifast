@@ -13,10 +13,11 @@ import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.bean.result.WxMediaUploadResult;
 import me.chanjar.weixin.common.exception.WxErrorException;
+import me.chanjar.weixin.mp.bean.WxMpMassNews;
 import me.chanjar.weixin.mp.bean.WxMpMassOpenIdsMessage;
-import me.chanjar.weixin.mp.bean.material.WxMediaImgUploadResult;
-import me.chanjar.weixin.mp.bean.material.WxMpMaterialNews;
+import me.chanjar.weixin.mp.bean.material.WxMpMaterial;
 import me.chanjar.weixin.mp.bean.material.WxMpMaterialUploadResult;
+import me.chanjar.weixin.mp.bean.result.WxMpMassUploadResult;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Date;
 
 /**
  * <pre>
@@ -55,17 +55,20 @@ public class WxMediaController extends AdminBaseController {
     public Result imageSync(@PathVariable String appId, @PathVariable Long articleId) {
         MpArticleDO article = mpArticleService.selectById(articleId);
         log.info("素材同步");
-        WxMediaUploadResult wxMediaUploadResult = null;
+        WxMpMaterialUploadResult wxMpMaterialUploadResult = null;
         try {
             File file = new File("/Users/Aron/dev_projects/idea/ifast/temp/" + System.currentTimeMillis() + ".jpg");
             FileUtils.copyURLToFile(new URL(article.getImgurl()), file);
-            wxMediaUploadResult = wxService.init().getMaterialService().mediaUpload(WxConsts.MediaFileType.IMAGE, file);
+            WxMpMaterial material = new WxMpMaterial();
+            material.setName(file.getName());
+            material.setFile(file);
+            wxMpMaterialUploadResult = wxService.init().getMaterialService().materialFileUpload(WxConsts.MediaFileType.IMAGE, material);
         } catch (WxErrorException | IOException e) {
             e.printStackTrace();
             throw new IFastException(EnumErrorCode.wxmpMediaImageSyncError.getCodeStr());
         }
-        log.debug(JSONUtils.beanToJson(wxMediaUploadResult));
-        article.setTid(wxMediaUploadResult.getMediaId());
+        log.debug(JSONUtils.beanToJson(wxMpMaterialUploadResult));
+        article.setTid(wxMpMaterialUploadResult.getMediaId());
         mpArticleService.updateById(article);
         return Result.ok();
     }
@@ -100,23 +103,30 @@ public class WxMediaController extends AdminBaseController {
         // 封面上传
         File file = new File("/Users/Aron/dev_projects/idea/ifast/temp/" + System.currentTimeMillis() + ".jpg");
         FileUtils.copyURLToFile(new URL(article.getImgurl()), file);
-        WxMediaImgUploadResult wxMediaImgUploadResult = weixinService.getMaterialService().mediaImgUpload(file);
-        wxMediaImgUploadResult.getUrl();
+        WxMpMaterial material = new WxMpMaterial();
+        material.setFile(file);
+        material.setName(file.getName());
+        WxMediaUploadResult wxMediaImgUploadResult = weixinService.getMaterialService().mediaUpload(WxConsts.MediaFileType.IMAGE, file);
+        String mediaId = wxMediaImgUploadResult.getMediaId();
 
         log.info("素材同步");
-        WxMpMaterialUploadResult wxMediaUploadResult = null;
+        WxMpMassUploadResult wxMediaUploadResult;
+        WxMpMassNews news = new WxMpMassNews();
+        WxMpMassNews.WxMpMassNewsArticle art = new WxMpMassNews.WxMpMassNewsArticle();
+        art.setTitle(article.getTitle());
+        art.setContent(article.getContent());
+        art.setDigest(article.getIntroduct());
+        // TODO 作者
+        art.setAuthor("Aron");
+        // 原文链接
+        art.setContentSourceUrl(article.getUrl());
+        // 图片封面
+        art.setThumbMediaId(mediaId);
+        // TODO 显示封面
+        art.setShowCoverPic(true);
+        news.addArticle(art);
         try {
-            WxMpMaterialNews news = new WxMpMaterialNews();
-            WxMpMaterialNews.WxMpMaterialNewsArticle art = new WxMpMaterialNews.WxMpMaterialNewsArticle();
-            art.setTitle(article.getTitle());
-            art.setContent(article.getContent());
-            art.setDigest(article.getIntroduct());
-            art.setUrl(article.getUrl());
-            art.setThumbMediaId(article.getThumbid());
-            news.addArticle(art);
-            news.setCreatedTime(new Date());
-            news.setUpdatedTime(new Date());
-            wxMediaUploadResult = weixinService.getMaterialService().materialNewsUpload(news);
+            wxMediaUploadResult = weixinService.getMassMessageService().massNewsUpload(news);
         } catch (WxErrorException e) {
             e.printStackTrace();
             throw new IFastException(EnumErrorCode.wxmpMediaImageSyncError.getCodeStr());
@@ -131,9 +141,9 @@ public class WxMediaController extends AdminBaseController {
     public Result newsGroupsend(@PathVariable String appId, @PathVariable Long articleId) {
         MpArticleDO article = mpArticleService.selectById(articleId);
         WxMpMassOpenIdsMessage message = new WxMpMassOpenIdsMessage();
-        message.addUser("oZQD8wvtRERdOzISxpBccQoJ8Hrs");
-        message.addUser("oZQD8wlJnnU1ByTAEh3AKKw235oI");
-        message.setMsgType(article.getMsgtype());
+        message.addUser(mpFansService.selectById(2L).getOpenid());
+        message.addUser(mpFansService.selectById(2L).getOpenid());
+        message.setMsgType(convertMsgtype(article.getMsgtype()));
         message.setMediaId(article.getTid());
         try {
             wxService.init().getMassMessageService().massOpenIdsMessageSend(message);
@@ -142,6 +152,13 @@ public class WxMediaController extends AdminBaseController {
             throw new IFastException(EnumErrorCode.wxmpMediaGroupSendSyncError.getCodeStr());
         }
         return Result.ok();
+    }
+
+    private String convertMsgtype(String msgType) {
+        if(WxConsts.MaterialType.NEWS.equals(msgType)){
+            return WxConsts.MassMsgType.MPNEWS;
+        }
+        return msgType;
     }
 
 }

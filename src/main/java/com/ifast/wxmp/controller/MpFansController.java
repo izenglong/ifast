@@ -99,5 +99,16 @@ public class MpFansController extends AdminBaseController {
         mpFansService.deleteBatchIds(Arrays.asList(ids));
         return Result.ok();
     }
-    
+
+    /**
+     * 删除
+     */
+    @PostMapping("/sync")
+    @ResponseBody
+    @RequiresPermissions("wxmp:mpFans:sync")
+    public Result<String> sync(@RequestParam("ids[]") Long[] ids) {
+        mpFansService.sync(Arrays.asList(ids));
+        return Result.ok();
+    }
+
 }

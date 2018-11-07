@@ -3,6 +3,8 @@ package com.ifast.wxmp.service;
 import com.ifast.wxmp.domain.MpFansDO;
 import com.ifast.common.base.CoreService;
 
+import java.util.List;
+
 /**
  * 
  * <pre>
@@ -22,5 +24,6 @@ public interface MpFansService extends CoreService<MpFansDO> {
      * @param fans
      */
     void sync(MpFansDO fans);
-    
+    void sync(List<Long> ids);
+
 }

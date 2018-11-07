@@ -1,5 +1,6 @@
 package com.ifast.common.aspect;
 
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Date;
@@ -88,7 +89,7 @@ public class LogAspect {
     	Object result = point.proceed();
     	long time = System.currentTimeMillis() - beginTime;
     	
-    	log.info("result({}) {}", time, JSONUtils.beanToJson(result));
+    	log.info("result({}) {}", time, result instanceof Serializable ? JSONUtils.beanToJson(result) : result);
     	return result;
     }
     

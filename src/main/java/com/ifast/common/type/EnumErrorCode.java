@@ -34,6 +34,7 @@ public enum EnumErrorCode {
     , wxmpMenuSaveSubError(40501, "微信子菜单不能超过5个")
     , wxmpMediaImageSyncError(40600, "图片素材同步错误")
     , wxmpMediaGroupSendSyncError(40610, "素材群发失败")
+    , wxmpFansSyncError(40700, "粉丝同步失败")
 
     
     // API
