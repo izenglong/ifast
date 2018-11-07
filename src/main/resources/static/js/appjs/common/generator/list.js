@@ -83,11 +83,11 @@ function batchCode() {
 	var tables = '';
 	// 遍历所有选择的行数据，取每条数据对应的ID
 	$.each(rows, function(i, row) {
-		if(tables){
-			tables = row['tableName'];
-		}else{
-			tables = tables + ',' + rows['tableName'];
-		}
+        if(tables){
+            tables = tables + ',' + row['tableName'];
+        }else{
+            tables = row['tableName'];
+        }
 	});
 	location.href = prefix + "/batchCode?tables=" + tables;
 }
