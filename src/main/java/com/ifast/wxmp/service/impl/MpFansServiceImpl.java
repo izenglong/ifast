@@ -52,6 +52,8 @@ public class MpFansServiceImpl extends CoreServiceImpl<MpFansDao, MpFansDO> impl
         log.debug("旧:{}", one);
         log.debug("新:{}", fans);
         BeanUtils.copyProperties(fans, one);
+        log.debug("旧1:{}", one);
+        log.debug("新1:{}", fans);
         updateById(one);
     }
 
