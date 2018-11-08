@@ -5,6 +5,7 @@ import com.ifast.common.exception.IFastException;
 import com.ifast.common.type.EnumErrorCode;
 import com.ifast.wxmp.dao.MpFansDao;
 import com.ifast.wxmp.domain.MpFansDO;
+import com.ifast.wxmp.pojo.type.Const;
 import com.ifast.wxmp.service.MpConfigService;
 import com.ifast.wxmp.service.MpFansService;
 import com.ifast.wxmp.service.WeixinService;
@@ -66,7 +67,7 @@ public class MpFansServiceImpl extends CoreServiceImpl<MpFansDao, MpFansDO> impl
         // fans.setSex(wxUser.getSex());
         // fans.setStatus(status);
         // fans.setSubscribeKey();
-        fans.setSubscribe(wxUser.getSubscribe() ? 1 : 0);
+        fans.setSubscribe(wxUser.getSubscribe() ? Const.Subscribe.YES : Const.Subscribe.NO);
         fans.setSubscribeTime(new Date());
         fans.setTagidList(Arrays.toString(wxUser.getTagIds()));
         fans.setUnionid(wxUser.getUnionId());
@@ -118,7 +119,7 @@ public class MpFansServiceImpl extends CoreServiceImpl<MpFansDao, MpFansDO> impl
         }
     }
 
-    private void syncToDb(String appId, WxMpUserList wxMpUserList2) {
+    private void syncToDb(final String appId, WxMpUserList wxMpUserList2) {
         wxMpUserList2.getOpenids().stream().filter(openid -> Objects.isNull(findOneByKv("openid", openid))).forEach(openid -> {
             if(log.isDebugEnabled()){
                 log.debug("sync openid {}", openid);

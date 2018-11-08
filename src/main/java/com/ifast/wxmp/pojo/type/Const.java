@@ -7,6 +7,13 @@ package com.ifast.wxmp.pojo.type;
  * <small> 2018/11/6 23:11 | Aron</small>
  */
 public class Const {
+
+
+    public static class Subscribe {
+        public final static int YES = 1;
+        public final static int NO = 0;
+    }
+
     public static class MenuKey {
         public final static String MAIN = "1";
         public final static String LINK = "2";

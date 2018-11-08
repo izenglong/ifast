@@ -1,6 +1,7 @@
 package com.ifast.wxmp.handler;
 
 import com.ifast.wxmp.domain.MpFansDO;
+import com.ifast.wxmp.pojo.type.Const;
 import com.ifast.wxmp.service.MpFansService;
 import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -32,7 +33,7 @@ public class UnsubscribeHandler extends AbstractHandler {
         String openId = wxMessage.getFromUser();
         this.logger.info("用户取消关注 openid: " + openId);
         MpFansDO fans = mpFansService.findOneByKv("openid", openId);
-        fans.setSubscribe(0);
+        fans.setSubscribe(Const.Subscribe.NO);
         mpFansService.updateById(fans);
         return null;
     }

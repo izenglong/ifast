@@ -2,6 +2,7 @@ package com.ifast.wxmp.handler;
 
 import com.ifast.wxmp.builder.TextBuilder;
 import com.ifast.wxmp.domain.MpFansDO;
+import com.ifast.wxmp.pojo.type.Const;
 import com.ifast.wxmp.service.MpConfigService;
 import com.ifast.wxmp.service.MpFansService;
 import com.ifast.wxmp.service.WeixinService;
@@ -89,7 +90,7 @@ public class SubscribeHandler extends AbstractHandler {
         fans.setMpId(this.getMpIdByAppId(WxMpConfigHolder.getCurrentAppId()));
         // fans.setStatus(status);
         // fans.setSubscribeKey();
-        fans.setSubscribe(wxUser.getSubscribe() ? 1 : 0);
+        fans.setSubscribe(wxUser.getSubscribe() ? Const.Subscribe.YES : Const.Subscribe.NO);
         fans.setSubscribeTime(new Date());
         fans.setTagidList(Arrays.toString(wxUser.getTagIds()));
         fans.setUnionid(wxUser.getUnionId());
