@@ -50,7 +50,7 @@ public class SubscribeHandler extends AbstractHandler {
 
         if (userWxInfo != null) {
             if(logger.isDebugEnabled()){
-                this.logger.debug("同步微信用户信息数据:{}",JSONUtils.beanToJson(userWxInfo);
+                this.logger.debug("同步微信用户信息数据:{}",JSONUtils.beanToJson(userWxInfo));
             }
             MpFansDO fans = new MpFansDO();
             convert(userWxInfo, fans);
