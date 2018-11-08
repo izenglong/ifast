@@ -1,5 +1,6 @@
 package com.ifast.wxmp.handler;
 
+import com.ifast.common.utils.JSONUtils;
 import com.ifast.wxmp.builder.TextBuilder;
 import com.ifast.wxmp.domain.MpFansDO;
 import com.ifast.wxmp.pojo.type.Const;
@@ -48,7 +49,9 @@ public class SubscribeHandler extends AbstractHandler {
         WxMpUser userWxInfo = weixinService.getUserService().userInfo(wxMessage.getFromUser(), null);
 
         if (userWxInfo != null) {
-            this.logger.debug("同步微信用户信息数据");
+            if(logger.isDebugEnabled()){
+                this.logger.debug("同步微信用户信息数据:{}",JSONUtils.beanToJson(userWxInfo);
+            }
             MpFansDO fans = new MpFansDO();
             convert(userWxInfo, fans);
             mpFansService.sync(fans);
@@ -90,7 +93,7 @@ public class SubscribeHandler extends AbstractHandler {
         fans.setMpId(this.getMpIdByAppId(WxMpConfigHolder.getCurrentAppId()));
         // fans.setStatus(status);
         // fans.setSubscribeKey();
-        fans.setSubscribe(wxUser.getSubscribe() ? Const.Subscribe.YES : Const.Subscribe.NO);
+        fans.setSubscribe(Const.Subscribe.YES);
         fans.setSubscribeTime(new Date());
         fans.setTagidList(Arrays.toString(wxUser.getTagIds()));
         fans.setUnionid(wxUser.getUnionId());
