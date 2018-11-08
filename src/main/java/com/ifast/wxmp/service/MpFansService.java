@@ -26,4 +26,5 @@ public interface MpFansService extends CoreService<MpFansDO> {
     void sync(MpFansDO fans);
     void sync(List<Long> ids);
 
+    void syncWxMp(String appId);
 }

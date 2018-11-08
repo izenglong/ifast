@@ -16,6 +16,10 @@
 								onclick="batchSync()">
 								<i class="fa fa-refresh" aria-hidden="true"></i> 批量同步
 							</button>
+							<button shiro:hasPermission="wxmp:mpFans:syncWxMp" type="button" class="btn  btn-success"
+								onclick="syncWxMp()">
+								<i class="fa fa-refresh" aria-hidden="true"></i> 同步微信
+							</button>
 							</button>
 							<button shiro:hasPermission="wxmp:mpFans:batchRemove" type="button" class="btn  btn-danger"
 								onclick="batchRemove()">

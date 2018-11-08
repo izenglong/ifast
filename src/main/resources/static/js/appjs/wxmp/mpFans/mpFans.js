@@ -32,8 +32,8 @@ function load() {
                     return {
                         // 说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
                         pageNumber: params.pageNumber,
-                        pageSize: params.pageSize
-                        // name:$('#searchName').val(),
+                        pageSize: params.pageSize,
+                        searchValue:$('#searchName').val()
                         // username:$('#searchName').val()
                     };
                 },
@@ -280,6 +280,26 @@ function sync(id) {
             data: {
                 'ids': ids
             },
+            success: function (r) {
+                if (r.code == 0) {
+                    layer.msg(r.msg);
+                    reLoad();
+                } else {
+                    layer.msg(r.msg);
+                }
+            }
+        });
+    })
+}
+
+function syncWxMp() {
+    console.log('sync fans from wx server...');
+    layer.confirm('确定要同步所有粉丝记录？', {
+        btn: ['确定', '取消']
+    }, function () {
+        $.ajax({
+            url: prefix + "/sync/wxmp/appId",
+            type: "post",
             success: function (r) {
                 if (r.code == 0) {
                     layer.msg(r.msg);

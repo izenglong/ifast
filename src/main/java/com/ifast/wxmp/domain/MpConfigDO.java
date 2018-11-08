@@ -25,7 +25,7 @@ public class MpConfigDO implements Serializable {
     
     /** 主键ID */
     @TableId
-    private Integer id;
+    private Long id;
     /** token */
     private String token;
     /** APPID */

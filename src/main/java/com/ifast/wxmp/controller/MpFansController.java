@@ -26,28 +26,29 @@ import java.util.Arrays;
 public class MpFansController extends AdminBaseController {
     @Autowired
     private MpFansService mpFansService;
-    
+
     @GetMapping()
     @RequiresPermissions("wxmp:mpFans:mpFans")
     String MpFans() {
         return "wxmp/mpFans/mpFans";
     }
-    
+
     @ResponseBody
     @GetMapping("/list")
     @RequiresPermissions("wxmp:mpFans:mpFans")
-    public Result<Page<MpFansDO>> list(MpFansDO mpFansDTO) {
-        Wrapper<MpFansDO> wrapper = new EntityWrapper<MpFansDO>(mpFansDTO);
+    public Result<Page<MpFansDO>> list(String searchValue) {
+        Wrapper<MpFansDO> wrapper = new EntityWrapper<>();
+        wrapper.like("nickname", searchValue).or().like("openid", searchValue).or().like("subscribeKey", searchValue);
         Page<MpFansDO> page = mpFansService.selectPage(getPage(MpFansDO.class), wrapper);
         return Result.ok(page);
     }
-    
+
     @GetMapping("/add")
     @RequiresPermissions("wxmp:mpFans:add")
     String add() {
         return "wxmp/mpFans/add";
     }
-    
+
     @GetMapping("/edit/{id}")
     @RequiresPermissions("wxmp:mpFans:edit")
     String edit(@PathVariable("id") Long id, Model model) {
@@ -55,7 +56,7 @@ public class MpFansController extends AdminBaseController {
         model.addAttribute("mpFans", mpFans);
         return "wxmp/mpFans/edit";
     }
-    
+
     /**
      * 保存
      */
@@ -66,7 +67,7 @@ public class MpFansController extends AdminBaseController {
         mpFansService.insert(mpFans);
         return Result.ok();
     }
-    
+
     /**
      * 修改
      */
@@ -77,7 +78,7 @@ public class MpFansController extends AdminBaseController {
         mpFansService.updateById(mpFans);
         return Result.ok();
     }
-    
+
     /**
      * 删除
      */
@@ -88,7 +89,7 @@ public class MpFansController extends AdminBaseController {
         mpFansService.deleteById(id);
         return Result.ok();
     }
-    
+
     /**
      * 删除
      */
@@ -101,7 +102,7 @@ public class MpFansController extends AdminBaseController {
     }
 
     /**
-     * 删除
+     * 同步粉丝，强制更新用户数据
      */
     @PostMapping("/sync")
     @ResponseBody
@@ -110,5 +111,18 @@ public class MpFansController extends AdminBaseController {
         mpFansService.sync(Arrays.asList(ids));
         return Result.ok();
     }
+
+    /**
+     * 同步粉丝到服务器，存在即不更新
+     */
+    @PostMapping("/sync/wxmp/{appId}")
+    @ResponseBody
+    @RequiresPermissions("wxmp:mpFans:sync")
+    public Result<String> syncWxMp(@PathVariable String appId) {
+        appId = null;
+        mpFansService.syncWxMp(appId);
+        return Result.ok();
+    }
+
 
 }

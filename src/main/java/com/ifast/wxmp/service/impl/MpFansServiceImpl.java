@@ -5,10 +5,15 @@ import com.ifast.common.exception.IFastException;
 import com.ifast.common.type.EnumErrorCode;
 import com.ifast.wxmp.dao.MpFansDao;
 import com.ifast.wxmp.domain.MpFansDO;
+import com.ifast.wxmp.service.MpConfigService;
 import com.ifast.wxmp.service.MpFansService;
 import com.ifast.wxmp.service.WeixinService;
+import com.ifast.wxmp.util.WxMpConfigHolder;
 import me.chanjar.weixin.common.exception.WxErrorException;
+import me.chanjar.weixin.mp.api.WxMpUserService;
 import me.chanjar.weixin.mp.bean.result.WxMpUser;
+import me.chanjar.weixin.mp.bean.result.WxMpUserList;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * <pre>
@@ -29,6 +35,8 @@ public class MpFansServiceImpl extends CoreServiceImpl<MpFansDao, MpFansDO> impl
 
     @Autowired
     private WeixinService weixinService;
+    @Autowired
+    private MpConfigService mpConfigService;
 
 
     @Override
@@ -44,7 +52,7 @@ public class MpFansServiceImpl extends CoreServiceImpl<MpFansDao, MpFansDO> impl
         updateById(one);
     }
 
-    private void convert(WxMpUser wxUser, MpFansDO fans) {
+    private void convert(WxMpUser wxUser, MpFansDO fans, String appId) {
         BeanUtils.copyProperties(wxUser, fans);
         fans.setCity(wxUser.getCity());
         fans.setCountry(wxUser.getCountry());
@@ -62,6 +70,10 @@ public class MpFansServiceImpl extends CoreServiceImpl<MpFansDao, MpFansDO> impl
         fans.setSubscribeTime(new Date());
         fans.setTagidList(Arrays.toString(wxUser.getTagIds()));
         fans.setUnionid(wxUser.getUnionId());
+        if (StringUtils.isBlank(appId)) {
+            appId = WxMpConfigHolder.getCurrentAppId();
+        }
+        fans.setMpId(mpConfigService.findOneByKv("appId", appId).getId());
 
         log.debug("convert return :{}", fans);
 
@@ -74,11 +86,57 @@ public class MpFansServiceImpl extends CoreServiceImpl<MpFansDao, MpFansDO> impl
             MpFansDO mpFansDO = selectById(id);
             try {
                 WxMpUser wxMpUser = weixinService.init().getUserService().userInfo(mpFansDO.getOpenid());
-                convert(wxMpUser, mpFansDO);
+                // appId
+                convert(wxMpUser, mpFansDO, null);
                 updateById(mpFansDO);
             } catch (WxErrorException e) {
                 e.printStackTrace();
-                throw  new IFastException(EnumErrorCode.wxmpFansSyncError.getCodeStr());
+                throw new IFastException(EnumErrorCode.wxmpFansSyncError.getCodeStr());
+            }
+        });
+    }
+
+    @Override
+    public void syncWxMp(final String appId) {
+        WeixinService wx = weixinService.init();
+        WxMpUserService userService = wx.getUserService();
+        try {
+            WxMpUserList wxMpUserList = userService.userList(null);
+            long total = wxMpUserList.getTotal();
+            int count = wxMpUserList.getCount();
+            String nextOpenid = wxMpUserList.getNextOpenid();
+            syncToDb(appId, wxMpUserList);
+            while (count < total) {
+                WxMpUserList wxMpUserList2 = userService.userList(nextOpenid);
+                count += wxMpUserList2.getCount();
+                nextOpenid = wxMpUserList2.getNextOpenid();
+
+                syncToDb(appId, wxMpUserList2);
+            }
+        } catch (WxErrorException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void syncToDb(String appId, WxMpUserList wxMpUserList2) {
+        wxMpUserList2.getOpenids().stream().filter(openid -> Objects.isNull(findOneByKv("openid", openid))).forEach(openid -> {
+            if(log.isDebugEnabled()){
+                log.debug("sync openid {}", openid);
+            }
+            // 获取微信用户基本信息
+            WxMpUser userWxInfo = null;
+            try {
+                userWxInfo = weixinService.getUserService().userInfo(openid, null);
+            } catch (WxErrorException e1) {
+                e1.printStackTrace();
+            }
+
+            if (userWxInfo != null) {
+                this.log.debug("同步微信用户信息数据 from 微信服务器");
+                MpFansDO fans = new MpFansDO();
+                convert(userWxInfo, fans, appId);
+                insert(fans);
+
             }
         });
     }
