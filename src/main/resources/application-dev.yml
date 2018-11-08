@@ -1,6 +1,6 @@
 ifast:
   projectName: ifast
-  projectRootURL: http://127.0.0.1:8080/
+  projectRootURL: http://127.0.0.1:8888/
   demoMode: false
   devMode: true
   jwt:
@@ -66,7 +66,7 @@ spring:
     # 推荐utf8mb4编码以便支持表情字符，sys_log记录系统数据变动需要支持utf8mb4
     connectionInitSqls: SET NAMES utf8mb4;
     username: root
-    password: aron
+    password: 1024key@root
     initialSize: 1
     minIdle: 3
     maxActive: 20
