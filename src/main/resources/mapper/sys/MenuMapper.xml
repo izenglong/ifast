@@ -12,7 +12,7 @@
 		where 
 		  ur.userId = #{id} 
 		  and m.type in(0,1)
-		order by m.orderNum
+		order by m.orderNum asc
 	</select>
 
 	<select id="listUserPerms" resultType="string">
@@ -20,6 +20,6 @@
 		left join sys_role_menu rm on m.id = rm.menuId
 		left join sys_user_role ur on rm.roleId = ur.roleId 
 		where 
-		  ur.userId = #{id}
+		  ur.userId = #{id} order by m.orderNum asc
 	</select>
 </mapper>

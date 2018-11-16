@@ -6,7 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Select;
 
 public interface GeneratorMapper {
-    @Select("select table_name tableName, engine, table_comment tableComment, create_time createTime from information_schema.tables where table_schema = (select database())")
+    @Select("select table_name tableName, engine, table_comment tableComment, create_time createTime from information_schema.tables where table_schema = (select database()) order by createTime desc")
     List<Map<String, Object>> list();
 
     @Select("select count(*) from information_schema.tables where table_schema = (select database())")

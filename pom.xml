@@ -92,48 +92,6 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 		</profile>
-		<profile>
-			<id>prod</id>
-			<properties>
-				<activatedProperties>prod</activatedProperties>
-			</properties>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>net.alchim31.maven</groupId>
-						<artifactId>yuicompressor-maven-plugin</artifactId>
-						<version>1.3.0</version>
-						<executions>
-							<execution>
-								<id>cpjscs</id>
-								<phase>prepare-package</phase>
-								<goals>
-									<goal>compress</goal>
-								</goals>
-							</execution>
-						</executions>
-						<configuration>
-							<includes>
-								<include>js/appjs/**/*.js</include>
-								<include>css/*.css</include>
-								<include>css/blog/*.css</include>
-							</includes>
-							<excludes>
-								<exclude>js/appjs/common/generator/edit.js</exclude>
-							</excludes>
-							<encoding>utf8</encoding>
-							<failOnWarning>false</failOnWarning>
-							<force>false</force>
-							<nosuffix>true</nosuffix>
-							<linebreakpos>-1</linebreakpos>
-							<sourceDirectory>src/main/resources/static</sourceDirectory>
-							<outputDirectory>target/classes/static</outputDirectory>
-							<jswarn>false</jswarn>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
 	</profiles>
 
 	<repositories>

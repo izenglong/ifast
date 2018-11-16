@@ -1,5 +1,7 @@
 package com.ifast;
 
+import com.ifast.common.config.IFastProperties;
+import com.ifast.common.utils.SpringContextHolder;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,9 +11,6 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import com.ifast.common.config.IFastProperties;
-import com.ifast.common.utils.SpringContextHolder;
 
 /**
  * <pre>
