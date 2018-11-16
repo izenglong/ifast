@@ -28,6 +28,17 @@ public class FileServiceImpl extends CoreServiceImpl<FileDao, FileDO> implements
 
     @Override
     public String upload(byte[] uploadBytes, String fileName) {
+
+
+        //处理浏览器文件名获取兼容问题
+        if(fileName == null) {
+            fileName =  "";
+        } else {
+            int unixSep = fileName.lastIndexOf("/");
+            int winSep = fileName.lastIndexOf("\\");
+            int pos = winSep > unixSep?winSep:unixSep;
+            fileName= pos != -1?fileName.substring(pos + 1):fileName;
+        }
 //        fileName = fileName.substring(0, fileName.indexOf(".")) + "-" + System.currentTimeMillis() + fileName.substring(fileName.indexOf("."));
 //        fileName = ifastConfig.getProjectName() + "/" + DateUtils.format(new Date(), DateUtils.DATE_TIME_PATTERN_8)
 //                + "/" + fileName;
