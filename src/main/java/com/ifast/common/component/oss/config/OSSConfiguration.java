@@ -5,7 +5,7 @@ import com.ifast.common.component.oss.support.aliyun.AliyunOSSProperties;
 import com.ifast.common.component.oss.support.aliyun.AliyunUploadServer;
 import com.ifast.common.component.oss.support.local.LocalUploadProperties;
 import com.ifast.common.component.oss.support.local.LocalUploadServer;
-import com.ifast.common.component.oss.support.qiniu.QiNiuOSSProperties;
+import com.ifast.common.component.oss.support.qiniu.QiNiuProperties;
 import com.ifast.common.component.oss.support.qiniu.QiNiuUploadServer;
 import com.qiniu.common.Zone;
 import lombok.extern.slf4j.Slf4j;
@@ -26,29 +26,29 @@ import org.springframework.context.annotation.Configuration;
 public class OSSConfiguration {
 
     /**
-     * 七牛上传
-     */
-    @Bean
-    @ConditionalOnProperty(prefix="ifast.oss.qiniu", name="accessKey")
-    @ConditionalOnMissingBean(UploadServer.class)
-    public UploadServer qiNiuUploadServer(QiNiuOSSProperties ossConfig) {
-        if(log.isDebugEnabled()){
-            log.debug("启用七牛云上传服务");
-        }
-        return new QiNiuUploadServer(ossConfig, Zone.zone2());
-    }
-
-    /**
      * 阿里云OSS上传
      */
     @Bean
     @ConditionalOnProperty(prefix="ifast.oss.aliyun", name="accessKeySecret")
     @ConditionalOnMissingBean(UploadServer.class)
     public UploadServer aliyunUploadServer(AliyunOSSProperties properties) {
+    	if(log.isDebugEnabled()){
+    		log.debug("启用阿里云上传服务");
+    	}
+    	return new AliyunUploadServer(properties);
+    }
+
+    /**
+     * 七牛上传
+     */
+    @Bean
+    @ConditionalOnProperty(prefix="ifast.oss.qiniu", name="accessKey")
+    @ConditionalOnMissingBean(UploadServer.class)
+    public UploadServer qiNiuUploadServer(QiNiuProperties ossConfig) {
         if(log.isDebugEnabled()){
-            log.debug("启用阿里云上传服务");
+            log.debug("启用七牛云上传服务");
         }
-        return new AliyunUploadServer(properties);
+        return new QiNiuUploadServer(ossConfig, Zone.zone2());
     }
 
     /**
