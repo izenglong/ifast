@@ -5,7 +5,7 @@ import com.ifast.common.component.oss.support.aliyun.AliyunOSSProperties;
 import com.ifast.common.component.oss.support.aliyun.AliyunUploadServer;
 import com.ifast.common.component.oss.support.local.LocalUploadProperties;
 import com.ifast.common.component.oss.support.local.LocalUploadServer;
-import com.ifast.common.component.oss.support.qiniu.QiNiuProperties;
+import com.ifast.common.component.oss.support.qiniu.QiNiuOSSProperties;
 import com.ifast.common.component.oss.support.qiniu.QiNiuUploadServer;
 import com.qiniu.common.Zone;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +44,7 @@ public class OSSConfiguration {
     @Bean
     @ConditionalOnProperty(prefix="ifast.oss.qiniu", name="accessKey")
     @ConditionalOnMissingBean(UploadServer.class)
-    public UploadServer qiNiuUploadServer(QiNiuProperties ossConfig) {
+    public UploadServer qiNiuUploadServer(QiNiuOSSProperties ossConfig) {
         if(log.isDebugEnabled()){
             log.debug("启用七牛云上传服务");
         }
