@@ -36,6 +36,8 @@
 		<lombok.version>1.16.14</lombok.version>
 		<docker.registry>127.0.0.1:5000</docker.registry>
 		<spotify.version>0.4.10</spotify.version>
+		<javax.mail.version>1.5.6</javax.mail.version>
+		<freemarker.version>2.3.23</freemarker.version>
 	</properties>
 
 	<build>
@@ -409,5 +411,26 @@
 			<artifactId>aliyun-java-sdk-dysmsapi</artifactId>
 			<version>1.1.0</version>
 		</dependency>
+		
+		 <!-- https://mvnrepository.com/artifact/com.sun.mail/javax.mail -->
+		<dependency>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>javax.mail</artifactId>
+			<version>${javax.mail.version}</version>
+		</dependency>
+		
+		<!-- freemarker -->
+		<dependency>
+			<groupId>org.freemarker</groupId>
+		    <artifactId>freemarker</artifactId>
+		    <version>${freemarker.version}</version><!--$NO-MVN-MAN-VER$-->
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+		
+		
 	</dependencies>
 </project>

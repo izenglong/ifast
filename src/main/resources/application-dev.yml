@@ -64,7 +64,7 @@ spring:
     # 推荐utf8mb4编码以便支持表情字符，sys_log记录系统数据变动需要支持utf8mb4
     connectionInitSqls: SET NAMES utf8mb4;
     username: root
-    password: aron
+    password: tiger
     initialSize: 1
     minIdle: 3
     maxActive: 20
@@ -87,3 +87,25 @@ spring:
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
     # 合并多个DruidDataSource的监控数据
     #useGlobalDataSourceStat: true
+    
+#邮件配置
+#  stmp: 
+#    host: smtp.163.com
+#    port: 25
+#    account: 18291548738@163.com
+#    password: zyl163com
+#  mail: 
+#    smtp: 
+#      auth: true
+#      timeout: 25000
+    
+#    
+#  mail:
+#    protocol: smtp #smtp是邮件发送协议，pop3和imap是邮件接收协议。因为我们要发送邮件，因此是smtp
+#    host: smtp.163.com #邮件发送服务器的主机，这里采用的是126邮箱来发送邮件
+#    port: 25 #邮件发送服务器的端口
+#    auth: true #一般情况下，发送邮件都是要进行验证
+#    username: 18291548738@163.com #邮件发送服务器的用户名
+#    password: zyl163com #密码
+#    timeout: 25000
+#    templateLoaderPath: classpath:/freemarker
