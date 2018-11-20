@@ -113,6 +113,16 @@ $(function () {
             flag = true;
         if (dataUrl == undefined || $.trim(dataUrl).length == 0)return false;
 
+        // 微信公众号菜单时，初始化选择公众号
+        var currentMp = $('.currentMp');
+        if(dataUrl.indexOf('/wxmp/') != -1){
+            currentMp.removeClass('hidden');
+        }else {
+            if(!currentMp.hasClass('hidden')){
+                currentMp.addClass('hidden');
+            }
+        }
+
         // 选项卡菜单已存在
         $('.J_menuTab').each(function () {
             if ($(this).data('id') == dataUrl) {
@@ -136,6 +146,7 @@ $(function () {
         if (flag) {
             var str = '<a href="javascript:;" class="active J_menuTab" data-id="' + dataUrl + '">' + menuName + ' <i class="fa fa-times-circle"></i></a>';
             $('.J_menuTab').removeClass('active');
+
 
             // 添加选项卡对应的iframe
             var str1 = '<iframe class="J_iframe" name="iframe' + dataIndex + '" width="100%" height="100%" src="' + dataUrl + '" frameborder="0" data-id="' + dataUrl + '" seamless></iframe>';
