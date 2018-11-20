@@ -28,8 +28,6 @@ public class FileServiceImpl extends CoreServiceImpl<FileDao, FileDO> implements
 
     @Override
     public String upload(byte[] uploadBytes, String fileName) {
-
-
         //处理浏览器文件名获取兼容问题
         if(fileName == null) {
             fileName =  "";
