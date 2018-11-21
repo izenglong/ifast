@@ -1,20 +1,19 @@
 package com.ifast.job.service.impl;
 
-import java.io.Serializable;
-import java.util.List;
-
-import org.quartz.SchedulerException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.ifast.common.base.CoreServiceImpl;
 import com.ifast.common.config.Constant;
 import com.ifast.common.utils.ScheduleJobUtils;
 import com.ifast.job.dao.TaskDao;
-import com.ifast.job.domain.ScheduleJob;
+import com.ifast.job.domain.ScheduleJobDO;
 import com.ifast.job.domain.TaskDO;
 import com.ifast.job.quartz.QuartzManager;
 import com.ifast.job.service.JobService;
+import org.quartz.SchedulerException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * <pre>
@@ -61,7 +60,7 @@ public class JobServiceImpl extends CoreServiceImpl<TaskDao, TaskDO> implements 
         List<TaskDO> jobList = baseMapper.selectList(null);
         for (TaskDO scheduleJob : jobList) {
             if ("1".equals(scheduleJob.getJobStatus())) {
-                ScheduleJob job = ScheduleJobUtils.entityToData(scheduleJob);
+                ScheduleJobDO job = ScheduleJobUtils.entityToData(scheduleJob);
                 quartzManager.addJob(job);
             }
 
@@ -76,11 +75,11 @@ public class JobServiceImpl extends CoreServiceImpl<TaskDao, TaskDO> implements 
         }
         if (Constant.Job.STATUS_RUNNING_STOP.equals(cmd)) {
             quartzManager.deleteJob(ScheduleJobUtils.entityToData(scheduleJob));
-            scheduleJob.setJobStatus(ScheduleJob.STATUS_NOT_RUNNING);
+            scheduleJob.setJobStatus(ScheduleJobDO.STATUS_NOT_RUNNING);
         } else {
             if (!Constant.Job.STATUS_RUNNING_START.equals(cmd)) {
             } else {
-                scheduleJob.setJobStatus(ScheduleJob.STATUS_RUNNING);
+                scheduleJob.setJobStatus(ScheduleJobDO.STATUS_RUNNING);
                 quartzManager.addJob(ScheduleJobUtils.entityToData(scheduleJob));
             }
         }
@@ -93,7 +92,7 @@ public class JobServiceImpl extends CoreServiceImpl<TaskDao, TaskDO> implements 
         if (scheduleJob == null) {
             return;
         }
-        if (ScheduleJob.STATUS_RUNNING.equals(scheduleJob.getJobStatus())) {
+        if (ScheduleJobDO.STATUS_RUNNING.equals(scheduleJob.getJobStatus())) {
             quartzManager.updateJobCron(ScheduleJobUtils.entityToData(scheduleJob));
         }
         updateById(scheduleJob);
