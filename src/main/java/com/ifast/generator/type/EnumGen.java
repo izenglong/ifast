@@ -1,5 +1,7 @@
 package com.ifast.generator.type;
 
+import lombok.Getter;
+
 /**
  * <pre>
  * </pre>
@@ -7,7 +9,9 @@ package com.ifast.generator.type;
  * <small> 2018年5月30日 | Aron</small>
  */
 public class EnumGen {
-    public static enum KvType {
+
+    @Getter
+    public enum KvType {
         mapping(4400, "java与db字段映射关系")
         , base(4401, "生成注释基本配置");
 
@@ -18,23 +22,6 @@ public class EnumGen {
             this.value = value;
             this.desc = desc;
         }
-
-        public int getValue() {
-            return value;
-        }
-
-        public void setValue(int value) {
-            this.value = value;
-        }
-
-        public String getDesc() {
-            return desc;
-        }
-
-        public void setDesc(String desc) {
-            this.desc = desc;
-        }
-
         public static String getMsgByCode(int value) {
             KvType[] values = KvType.values();
             for (KvType ec : values) {
