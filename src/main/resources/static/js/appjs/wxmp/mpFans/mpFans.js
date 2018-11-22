@@ -1,6 +1,15 @@
-var prefix = "/wxmp/mpFans"
+var prefix = "/wxmp/mpFans";
+var appId = '';
 $(function () {
-    load();
+
+    appId = $('.currentMpInfo', window.parent.document).attr('data-appid');
+    console.log(appId)
+    if(appId){
+        console.log('mpFans 获取appId:' + appId);
+        load();
+    }else {
+        console.log('mpfans 获取appId为空')
+    }
 });
 
 function load() {
@@ -33,7 +42,8 @@ function load() {
                         // 说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
                         pageNumber: params.pageNumber,
                         pageSize: params.pageSize,
-                        searchValue:$('#searchName').val()
+                        searchValue:$('#searchName').val(),
+                        appId:appId
                         // username:$('#searchName').val()
                     };
                 },
@@ -252,7 +262,7 @@ function batchSync() {
             data: {
                 "ids": ids
             },
-            url: prefix + '/sync',
+            url: prefix + '/sync?appId=' + appId,
             success: function (r) {
                 if (r.code == 0) {
                     layer.msg(r.msg);
@@ -275,7 +285,7 @@ function sync(id) {
         btn: ['确定', '取消']
     }, function () {
         $.ajax({
-            url: prefix + "/sync",
+            url: prefix + "/sync?appId=" + appId,
             type: "post",
             data: {
                 'ids': ids
@@ -298,7 +308,7 @@ function syncWxMp() {
         btn: ['确定', '取消']
     }, function () {
         $.ajax({
-            url: prefix + "/sync/wxmp/appId",
+            url: prefix + "/sync/wxmp?appId=" + appId,
             type: "post",
             success: function (r) {
                 if (r.code == 0) {

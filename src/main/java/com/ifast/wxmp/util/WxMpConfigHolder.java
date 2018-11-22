@@ -42,10 +42,6 @@ public class WxMpConfigHolder implements InitializingBean {
     }
 
     public static WxMpInMemoryConfigStorage getWxMpInMemoryConfigStorage() {
-        // TODO
-
-        currentAppId.set("wxe9679b2e6082d653");
-
         return mpConfigs.get(currentAppId.get());
     }
 

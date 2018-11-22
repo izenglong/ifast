@@ -100,6 +100,7 @@
                     <div class="minimalize-styl-2 hidden text-primary currentMp input-group-btn open">
                         <span class="hidden currentMp"> 当前公众号： </span>
                         <div data-toggle="dropdown" class=" dropdown-toggle inline" aria-expanded="true">
+                            <span class="lastMpInfo hidden">保存切换前的公众号</span>
                             <span class="currentMpInfo">请选择公众号</span><span class="caret"></span>
                         </div>
                         <ul class="dropdown-menu mpList" style="margin-left: 100px;">
@@ -305,21 +306,6 @@
         },
     })
 
-    $('.dropdown-menu.mpList li a').on('click', function () {
-        var that = $(this);
-        var appId = that.attr('lang');
-        var mpName = that.text();
-
-        console.log('当前appId：' + appId);
-        console.log('当前公众号名称：' + mpName);
-
-        var currentMpInfo = $('.currentMpInfo');
-
-        currentMpInfo.text(mpName);
-        currentMpInfo.attr('data-appid', appId);
-        console.log(currentMpInfo);
-
-    })
 
 </script>
 </body>

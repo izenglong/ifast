@@ -6,7 +6,9 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.ifast.common.base.AdminBaseController;
 import com.ifast.common.utils.Result;
 import com.ifast.wxmp.domain.MpFansDO;
+import com.ifast.wxmp.service.MpConfigService;
 import com.ifast.wxmp.service.MpFansService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +28,8 @@ import java.util.Arrays;
 public class MpFansController extends AdminBaseController {
     @Autowired
     private MpFansService mpFansService;
+    @Autowired
+    private MpConfigService mpConfigService;
 
     @GetMapping()
     @RequiresPermissions("wxmp:mpFans:mpFans")
@@ -36,9 +40,14 @@ public class MpFansController extends AdminBaseController {
     @ResponseBody
     @GetMapping("/list")
     @RequiresPermissions("wxmp:mpFans:mpFans")
-    public Result<Page<MpFansDO>> list(String searchValue) {
+    public Result<Page<MpFansDO>> list(String searchValue, String appId) {
         Wrapper<MpFansDO> wrapper = new EntityWrapper<>();
-        wrapper.like("nickname", searchValue).or().like("openid", searchValue).or().like("subscribeKey", searchValue);
+        wrapper.eq("mpId", mpConfigService.findOneByKv("appId", appId).getId());
+        if (StringUtils.isNotBlank(searchValue)) {
+            wrapper.andNew().like("nickname", searchValue)
+                    .or().like("openid", searchValue)
+                    .or().like("subscribeKey", searchValue);
+        }
         Page<MpFansDO> page = mpFansService.selectPage(getPage(MpFansDO.class), wrapper);
         return Result.ok(page);
     }
@@ -115,11 +124,10 @@ public class MpFansController extends AdminBaseController {
     /**
      * 同步粉丝到服务器，存在即不更新
      */
-    @PostMapping("/sync/wxmp/{appId}")
+    @PostMapping("/sync/wxmp")
     @ResponseBody
     @RequiresPermissions("wxmp:mpFans:sync")
-    public Result<String> syncWxMp(@PathVariable String appId) {
-        appId = null;
+    public Result<String> syncWxMp(String appId) {
         mpFansService.syncWxMp(appId);
         return Result.ok();
     }
