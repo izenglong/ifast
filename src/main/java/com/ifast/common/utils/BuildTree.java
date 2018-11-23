@@ -70,17 +70,12 @@ public class BuildTree {
 		return topNodes;
 	}
 
-    private static <T> void children(List<Tree<T>> nodes, Tree<T> children, String pid) {
-        for (Tree<T> parent : nodes) {
-            String id = parent.getId();
-            if (id != null && id.equals(pid)) {
-                parent.getChildren().add(children);
-                children.setHasParent(true);
-                parent.setChildren(true);
-
-                continue;
-            }
-        }
+    private static <T> void children(List<Tree<T>> nodes, final Tree<T> children, final String pId) {
+		nodes.stream().filter(node -> node.getId() != null && node.getId().equals(pId)).forEach(node -> {
+			node.getChildren().add(children);
+			node.setHasParent(true);
+			node.setChildren(true);
+		});
     }
 
 }
