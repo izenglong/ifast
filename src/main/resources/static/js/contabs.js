@@ -14,18 +14,20 @@ $(function () {
     function scrollToTab(element) {
         var marginLeftVal = calSumWidth($(element).prevAll()), marginRightVal = calSumWidth($(element).nextAll());
         // 可视区域非tab宽度
-        var tabOuterWidth = calSumWidth($(".content-tabs").children().not(".J_menuTabs"));
+        var $contentTabs = $(".content-tabs");
+        var tabOuterWidth = calSumWidth($contentTabs.children().not(".J_menuTabs"));
         //可视区域tab宽度
-        var visibleWidth = $(".content-tabs").outerWidth(true) - tabOuterWidth;
+        var visibleWidth = $contentTabs.outerWidth(true) - tabOuterWidth;
         //实际滚动宽度
         var scrollVal = 0;
-        if ($(".page-tabs-content").outerWidth() < visibleWidth) {
+        var $pageTabsContent = $(".page-tabs-content");
+        if ($pageTabsContent.outerWidth() < visibleWidth) {
             scrollVal = 0;
         } else if (marginRightVal <= (visibleWidth - $(element).outerWidth(true) - $(element).next().outerWidth(true))) {
             if ((visibleWidth - $(element).next().outerWidth(true)) > marginRightVal) {
                 scrollVal = marginLeftVal;
                 var tabElement = element;
-                while ((scrollVal - $(tabElement).outerWidth()) > ($(".page-tabs-content").outerWidth() - visibleWidth)) {
+                while ((scrollVal - $(tabElement).outerWidth()) > ($pageTabsContent.outerWidth() - visibleWidth)) {
                     scrollVal -= $(tabElement).prev().outerWidth();
                     tabElement = $(tabElement).prev();
                 }
@@ -33,21 +35,23 @@ $(function () {
         } else if (marginLeftVal > (visibleWidth - $(element).outerWidth(true) - $(element).prev().outerWidth(true))) {
             scrollVal = marginLeftVal - $(element).prev().outerWidth(true);
         }
-        $('.page-tabs-content').animate({
+        $pageTabsContent.animate({
             marginLeft: 0 - scrollVal + 'px'
         }, "fast");
     }
 
     //查看左侧隐藏的选项卡
     function scrollTabLeft() {
-        var marginLeftVal = Math.abs(parseInt($('.page-tabs-content').css('margin-left')));
+        var $pageTabsContent = $('.page-tabs-content');
+        var marginLeftVal = Math.abs(parseInt($pageTabsContent.css('margin-left')));
         // 可视区域非tab宽度
-        var tabOuterWidth = calSumWidth($(".content-tabs").children().not(".J_menuTabs"));
+        var $contentTabs = $(".content-tabs");
+        var tabOuterWidth = calSumWidth($contentTabs.children().not(".J_menuTabs"));
         //可视区域tab宽度
-        var visibleWidth = $(".content-tabs").outerWidth(true) - tabOuterWidth;
+        var visibleWidth = $contentTabs.outerWidth(true) - tabOuterWidth;
         //实际滚动宽度
         var scrollVal = 0;
-        if ($(".page-tabs-content").width() < visibleWidth) {
+        if ($pageTabsContent.width() < visibleWidth) {
             return false;
         } else {
             var tabElement = $(".J_menuTab:first");
@@ -65,21 +69,23 @@ $(function () {
                 scrollVal = calSumWidth($(tabElement).prevAll());
             }
         }
-        $('.page-tabs-content').animate({
+        $pageTabsContent.animate({
             marginLeft: 0 - scrollVal + 'px'
         }, "fast");
     }
 
     //查看右侧隐藏的选项卡
     function scrollTabRight() {
-        var marginLeftVal = Math.abs(parseInt($('.page-tabs-content').css('margin-left')));
+        var $pageTabsContent = $('.page-tabs-content');
+        var marginLeftVal = Math.abs(parseInt($pageTabsContent.css('margin-left')));
         // 可视区域非tab宽度
-        var tabOuterWidth = calSumWidth($(".content-tabs").children().not(".J_menuTabs"));
+        var $contentTabs = $(".content-tabs");
+        var tabOuterWidth = calSumWidth($contentTabs.children().not(".J_menuTabs"));
         //可视区域tab宽度
-        var visibleWidth = $(".content-tabs").outerWidth(true) - tabOuterWidth;
+        var visibleWidth = $contentTabs.outerWidth(true) - tabOuterWidth;
         //实际滚动宽度
         var scrollVal = 0;
-        if ($(".page-tabs-content").width() < visibleWidth) {
+        if ($pageTabsContent.width() < visibleWidth) {
             return false;
         } else {
             var tabElement = $(".J_menuTab:first");
@@ -95,7 +101,7 @@ $(function () {
             }
             scrollVal = calSumWidth($(tabElement).prevAll());
             if (scrollVal > 0) {
-                $('.page-tabs-content').animate({
+                $pageTabsContent.animate({
                     marginLeft: 0 - scrollVal + 'px'
                 }, "fast");
             }
@@ -362,11 +368,12 @@ $(function () {
 
     //关闭其他选项卡
     function closeOtherTabs() {
-        $('.page-tabs-content').children("[data-id]").not(":first").not(".active").each(function () {
+        var $pageTabsContent = $('.page-tabs-content');
+        $pageTabsContent.children("[data-id]").not(":first").not(".active").each(function () {
             $('.J_iframe[data-id="' + $(this).data('id') + '"]').remove();
             $(this).remove();
         });
-        $('.page-tabs-content').css("margin-left", "0");
+        $pageTabsContent.css("margin-left", "0");
     }
 
     $('.J_tabCloseOther').on('click', closeOtherTabs);
@@ -382,10 +389,10 @@ $(function () {
     // 点击选项卡菜单
     function activeTab() {
 
-        console.log('tab click.')
+        console.log('tab click.');
         var dataUrl = $(this).data('id');
         if (isWxMpUrl(dataUrl) && wxMpHasChange()) {
-            console.log('公众号已经切换 && 为公众号tab，数据需要reload')
+            console.log('公众号已经切换 && 为公众号tab，数据需要reload');
             $('.J_mainContent .J_iframe').each(function () {
                 if ($(this).data('id') == dataUrl) {
                     $(this).show().siblings('.J_iframe').hide();
@@ -436,15 +443,16 @@ $(function () {
 
     // 关闭全部
     $('.J_tabCloseAll').on('click', function () {
-        $('.page-tabs-content').children("[data-id]").not(":first").each(function () {
+        var $pageTabsContent = $('.page-tabs-content');
+        $pageTabsContent.children("[data-id]").not(":first").each(function () {
             $('.J_iframe[data-id="' + $(this).data('id') + '"]').remove();
             $(this).remove();
         });
-        $('.page-tabs-content').children("[data-id]:first").each(function () {
+        $pageTabsContent.children("[data-id]:first").each(function () {
             $('.J_iframe[data-id="' + $(this).data('id') + '"]').show();
             $(this).addClass("active");
         });
-        $('.page-tabs-content').css("margin-left", "0");
+        $pageTabsContent.css("margin-left", "0");
     });
 
 });

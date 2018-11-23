@@ -21,7 +21,7 @@ public class MpArticleDO implements Serializable {
 	private Long id;
 
     /** 微信ID */
-    private Integer wechatid;
+    private Long mpId;
 
     /** 文章标题 */
     private String title;

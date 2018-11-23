@@ -1,6 +1,15 @@
 var prefix = "/wxmp/mpArticle/image"
+var appId = '';
 $(function () {
-    load();
+
+    appId = $('.currentMpInfo', window.parent.document).attr('data-appid');
+    console.log(appId);
+    if(appId){
+        console.log('mpFans 获取appId:' + appId);
+        load();
+    }else {
+        console.log('mpfans 获取appId为空')
+    }
 });
 
 function load() {
@@ -32,7 +41,8 @@ function load() {
                         //说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
                         pageNumber: params.pageNumber,
                         pageSize: params.pageSize,
-                        msgtype: 'image'
+                        msgtype: 'image',
+                        appId:appId
                         // username:$('#searchName').val()
                     };
                 },
@@ -172,11 +182,11 @@ function resetPwd(id) {
 }
 
 function sync(id) {
-    console.log("同步素材")
+    console.log("同步素材");
     layer.confirm("确认要同步素材吗?", {
         btn: ['确定', '取消']
     }, function () {
-        $.post("/wx/mp/api/media/image/sync/appId/" + id, function (res) {
+        $.post("/wx/mp/api/media/image/sync/" + id + '?appId=' + appId, function (res) {
             layer.msg(res.msg);
             reLoad();
         });
@@ -188,7 +198,7 @@ function groupSend(id) {
     layer.confirm("确认要群发素材吗?", {
         btn: ['确定', '取消']
     }, function () {
-        $.post("/wx/mp/api/media/image/groupsend/appId/" + id, function (res) {
+        $.post("/wx/mp/api/media/image/groupsend/" + id +'?appId=' + appId, function (res) {
             layer.msg(res.msg);
             reLoad();
         });

@@ -58,7 +58,7 @@ function load() {
                         title: '主键ID'
                     },
                     {
-                        field: 'wechatid',
+                        field: 'mpId',
                         title: '微信ID'
                     },
                     {

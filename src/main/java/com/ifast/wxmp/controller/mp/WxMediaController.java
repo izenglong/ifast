@@ -51,8 +51,8 @@ public class WxMediaController extends AdminBaseController {
     // 图片
     ///////////////
 
-    @RequestMapping("/image/sync/{appId}/{articleId}")
-    public Result imageSync(@PathVariable String appId, @PathVariable Long articleId) {
+    @RequestMapping("/image/sync/{articleId}")
+    public Result imageSync(String appId, @PathVariable Long articleId) {
         MpArticleDO article = mpArticleService.selectById(articleId);
         log.info("素材同步");
         WxMpMaterialUploadResult wxMpMaterialUploadResult = null;
@@ -73,8 +73,8 @@ public class WxMediaController extends AdminBaseController {
         return Result.ok();
     }
 
-    @RequestMapping("/image/groupsend/{appId}/{articleId}")
-    public Result imageGroupsend(@PathVariable String appId, @PathVariable Long articleId) {
+    @RequestMapping("/image/groupsend/{articleId}")
+    public Result imageGroupsend(String appId, @PathVariable Long articleId) {
         MpArticleDO article = mpArticleService.selectById(articleId);
         WxMpMassOpenIdsMessage message = new WxMpMassOpenIdsMessage();
         message.addUser(mpFansService.selectById(1).getOpenid());
@@ -95,8 +95,8 @@ public class WxMediaController extends AdminBaseController {
     ///////////////
 
 
-    @RequestMapping("/news/sync/{appId}/{articleId}")
-    public Result newsSync(@PathVariable String appId, @PathVariable Long articleId) throws IOException, WxErrorException {
+    @RequestMapping("/news/sync/{articleId}")
+    public Result newsSync(String appId, @PathVariable Long articleId) throws IOException, WxErrorException {
         MpArticleDO article = mpArticleService.selectById(articleId);
 
         WeixinService weixinService = wxService.init();
@@ -137,8 +137,8 @@ public class WxMediaController extends AdminBaseController {
         return Result.ok();
     }
 
-    @RequestMapping("/news/groupsend/{appId}/{articleId}")
-    public Result newsGroupsend(@PathVariable String appId, @PathVariable Long articleId) {
+    @RequestMapping("/news/groupsend/{articleId}")
+    public Result newsGroupsend(String appId, @PathVariable Long articleId) {
         MpArticleDO article = mpArticleService.selectById(articleId);
         WxMpMassOpenIdsMessage message = new WxMpMassOpenIdsMessage();
         message.addUser(mpFansService.selectById(2L).getOpenid());
@@ -155,7 +155,7 @@ public class WxMediaController extends AdminBaseController {
     }
 
     private String convertMsgtype(String msgType) {
-        if(WxConsts.MaterialType.NEWS.equals(msgType)){
+        if (WxConsts.MaterialType.NEWS.equals(msgType)) {
             return WxConsts.MassMsgType.MPNEWS;
         }
         return msgType;

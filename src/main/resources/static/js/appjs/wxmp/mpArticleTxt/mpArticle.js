@@ -1,6 +1,14 @@
-var prefix = "/wxmp/mpArticle/txt"
+var prefix = "/wxmp/mpArticle/txt";
+var appId = '';
 $(function () {
-    load();
+    appId = $('.currentMpInfo', window.parent.document).attr('data-appid');
+    console.log(appId);
+    if(appId){
+        console.log('mpFans 获取appId:' + appId);
+        load();
+    }else {
+        console.log('mpfans 获取appId为空')
+    }
 });
 
 function load() {
@@ -32,7 +40,8 @@ function load() {
                         //说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
                         pageNumber: params.pageNumber,
                         pageSize: params.pageSize,
-                        msgtype: 'text'
+                        msgtype: 'text',
+                        appId:appId
                         // username:$('#searchName').val()
                     };
                 },

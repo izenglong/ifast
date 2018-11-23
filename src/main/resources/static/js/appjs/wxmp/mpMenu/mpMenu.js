@@ -1,6 +1,15 @@
 var prefix = "/wxmp/mpMenu";
+var appId = '';
 $(function () {
-    load();
+
+    appId = $('.currentMpInfo', window.parent.document).attr('data-appid');
+    console.log(appId)
+    if(appId){
+        console.log('mpFans 获取appId:' + appId);
+        load();
+    }else {
+        console.log('mpfans 获取appId为空')
+    }
 });
 
 function load() {
@@ -127,7 +136,7 @@ function sync() {
     layer.confirm("确认要同步公众号菜单吗?", {
         btn: ['确定', '取消']
     }, function () {
-        $.post("/wx/mp/menu/api/sync/appId", function (res) {
+        $.post("/wx/mp/menu/api/sync?appId=" + appId, function (res) {
             layer.msg(res.msg);
         });
     });

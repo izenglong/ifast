@@ -9,6 +9,7 @@ import com.ifast.common.base.AdminBaseController;
 import com.ifast.common.utils.Result;
 import com.ifast.wxmp.domain.MpArticleDO;
 import com.ifast.wxmp.service.MpArticleService;
+import com.ifast.wxmp.service.MpConfigService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +30,8 @@ import java.util.Arrays;
 public class MpArticleImageController extends AdminBaseController {
 	@Autowired
 	private MpArticleService mpArticleService;
+	@Autowired
+	private MpConfigService mpConfigService;
 	
 	@GetMapping()
 	@RequiresPermissions("wxmp:mpArticleImage:mpArticle")
@@ -39,8 +42,8 @@ public class MpArticleImageController extends AdminBaseController {
 	@ResponseBody
 	@GetMapping("/list")
 	@RequiresPermissions("wxmp:mpArticleImage:mpArticle")
-	public Result<Page<MpArticleDO>> list(MpArticleDO mpArticleDTO){
-        Wrapper<MpArticleDO> wrapper = new EntityWrapper<>(mpArticleDTO).orderBy("id", false);
+	public Result<Page<MpArticleDO>> list(MpArticleDO mpArticleDTO, String appId){
+        Wrapper<MpArticleDO> wrapper = new EntityWrapper<>(mpArticleDTO).eq("mpId", mpConfigService.findOneByKv("appId", appId).getId()).orderBy("id", false);
         Page<MpArticleDO> page = mpArticleService.selectPage(getPage(MpArticleDO.class), wrapper);
         return Result.ok(page);
 	}

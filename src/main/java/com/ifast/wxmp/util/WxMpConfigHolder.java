@@ -28,9 +28,6 @@ public class WxMpConfigHolder implements InitializingBean {
 
     private static final Hashtable<String, WxMpInMemoryConfigStorage> mpConfigs = new Hashtable<>();
 
-    /**
-     * 存String方便
-     */
     private static final ThreadLocal<String> currentAppId = new ThreadLocal<>();
 
     public static void setCurrentAppId(String aliasName) {
