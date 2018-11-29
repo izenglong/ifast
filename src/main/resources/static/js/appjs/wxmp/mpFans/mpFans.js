@@ -1,8 +1,7 @@
 var prefix = "/wxmp/mpFans";
-var appId = '';
 $(function () {
 
-    appId = $('.currentMpInfo', window.parent.document).attr('data-appid');
+    var appId = $('.currentMpInfo', window.top.document).attr('data-appid');
     console.log(appId)
     if(appId){
         console.log('mpFans 获取appId:' + appId);
@@ -43,7 +42,7 @@ function load() {
                         pageNumber: params.pageNumber,
                         pageSize: params.pageSize,
                         searchValue:$('#searchName').val(),
-                        appId:appId
+                        appId:$('.currentMpInfo', window.top.document).attr('data-appid')
                         // username:$('#searchName').val()
                     };
                 },
@@ -262,7 +261,7 @@ function batchSync() {
             data: {
                 "ids": ids
             },
-            url: prefix + '/sync?appId=' + appId,
+            url: prefix + '/sync?appId=' + $('.currentMpInfo', window.top.document).attr('data-appid'),
             success: function (r) {
                 if (r.code == 0) {
                     layer.msg(r.msg);
@@ -285,7 +284,7 @@ function sync(id) {
         btn: ['确定', '取消']
     }, function () {
         $.ajax({
-            url: prefix + "/sync?appId=" + appId,
+            url: prefix + "/sync?appId=" + $('.currentMpInfo', window.top.document).attr('data-appid'),
             type: "post",
             data: {
                 'ids': ids
@@ -308,7 +307,7 @@ function syncWxMp() {
         btn: ['确定', '取消']
     }, function () {
         $.ajax({
-            url: prefix + "/sync/wxmp?appId=" + appId,
+            url: prefix + "/sync/wxmp?appId=" + $('.currentMpInfo', window.top.document).attr('data-appid'),
             type: "post",
             success: function (r) {
                 if (r.code == 0) {

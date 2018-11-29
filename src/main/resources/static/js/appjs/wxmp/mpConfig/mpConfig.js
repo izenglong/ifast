@@ -33,7 +33,7 @@ function load() {
                         // 说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
                         pageNumber: params.pageNumber,
                         pageSize: params.pageSize,
-                        appId:appId
+                        appId: $('.currentMpInfo', window.parent.document).attr('data-appid')
                         // name:$('#searchName').val(),
                         // username:$('#searchName').val()
                     };

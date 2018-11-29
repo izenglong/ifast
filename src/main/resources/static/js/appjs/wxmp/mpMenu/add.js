@@ -1,6 +1,17 @@
+function checkAppId() {
+    var appId = $('.currentMpInfo', window.top.document).attr('data-appid');
+    console.log(appId);
+    if(appId){
+        console.log('mpMenu 获取appId:' + appId);
+    }else {
+        console.log('mpMenu 获取appId为空')
+    }
+}
+
 $().ready(function () {
     validateRule();
     init();
+    checkAppId();
 });
 
 $.validator.setDefaults({
@@ -24,6 +35,10 @@ function initForm(selected) {
 }
 
 function save() {
+
+    // 填充当前公众号的appId
+    $('#appId').val($('.currentMpInfo', window.top.document).attr('data-appid'));
+
     $.ajax({
         cache: true,
         type: "POST",

@@ -8,6 +8,7 @@ import com.ifast.common.base.AdminBaseController;
 import com.ifast.common.domain.Tree;
 import com.ifast.common.utils.Result;
 import com.ifast.wxmp.domain.MpMenuDO;
+import com.ifast.wxmp.service.MpConfigService;
 import com.ifast.wxmp.service.MpMenuService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,8 @@ import java.util.Objects;
 public class MpMenuController extends AdminBaseController {
     @Autowired
     private MpMenuService mpMenuService;
+    @Autowired
+    private MpConfigService mpConfigService;
 
     @GetMapping()
     @RequiresPermissions("wxmp:mpMenu:mpMenu")
@@ -40,7 +43,8 @@ public class MpMenuController extends AdminBaseController {
     @ResponseBody
     @GetMapping("/list")
     @RequiresPermissions("wxmp:mpMenu:mpMenu")
-    public List<MpMenuDO> list(MpMenuDO mpMenuDTO) {
+    public List<MpMenuDO> list(MpMenuDO mpMenuDTO, String appId) {
+        mpMenuDTO.setMpid(mpConfigService.findOneByKv("appId", appId).getId());
         Wrapper<MpMenuDO> wrapper = new EntityWrapper<>(mpMenuDTO).orderBy("parentidx, sort");
         List<MpMenuDO> list = mpMenuService.selectList(wrapper);
         return list;
@@ -87,8 +91,8 @@ public class MpMenuController extends AdminBaseController {
     @ResponseBody
     @PostMapping("/save")
     @RequiresPermissions("wxmp:mpMenu:add")
-    public Result<String> save(MpMenuDO mpMenu) {
-        mpMenuService.saveMenu(mpMenu);
+    public Result<String> save(MpMenuDO mpMenu, String appId) {
+        mpMenuService.saveMenu(mpMenu, appId);
         return Result.ok();
     }
 

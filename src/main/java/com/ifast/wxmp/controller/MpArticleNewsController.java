@@ -65,7 +65,8 @@ public class MpArticleNewsController extends AdminBaseController {
     @ResponseBody
     @PostMapping("/save")
     @RequiresPermissions("wxmp:mpArticleNews:add")
-    public Result<String> save(MpArticleDO mpArticle) {
+    public Result<String> save(MpArticleDO mpArticle, String appId) {
+        mpArticle.setMpId(mpConfigService.findOneByKv("appId", appId).getId());
         mpArticleService.insert(mpArticle);
         return Result.ok();
     }

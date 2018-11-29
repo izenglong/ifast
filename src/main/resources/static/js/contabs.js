@@ -1,5 +1,3 @@
-
-
 $(function () {
     //计算元素集合的总宽度
     function calSumWidth(elements) {
@@ -126,9 +124,20 @@ $(function () {
 
         // 微信公众号菜单时，初始化选择公众号
         var currentMp = $('.currentMp');
-        if (dataUrl.indexOf('/wxmp/') != -1) {
+        if (isWxMpUrl(dataUrl)) {
             console.log('公众号菜单. URL：' + dataUrl);
             currentMp.removeClass('hidden');
+
+            var currentMpInfo = $('.currentMpInfo');
+            var appId = currentMpInfo.attr('data-appid');
+            if (!appId) {
+                console.log('公众号为空，准备初始化...')
+                var $mpList01 = $(".mpList li:nth-child(1) a");
+                console.log($mpList01);
+                console.log($mpList01.attr('data-appid'));
+                currentMpInfo.text($mpList01.text());
+                currentMpInfo.attr('data-appid', $mpList01.attr('lang'));
+            }
         } else {
             console.log('非公众号菜单. URL：' + dataUrl);
             if (!currentMp.hasClass('hidden')) {
@@ -162,7 +171,7 @@ $(function () {
                         }
                     });
                 } else {
-                    console.log('TODO 如果是公众号tab && 公众号已经切换，reload');
+                    console.log('如果是公众号tab && 公众号已经切换，reload');
                     if (isWxMpUrl(dataUrl) && wxMpHasChange) {
 
                         $('.J_mainContent .J_iframe').each(function () {

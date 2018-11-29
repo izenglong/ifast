@@ -6,10 +6,13 @@ import com.ifast.common.exception.IFastException;
 import com.ifast.common.type.EnumErrorCode;
 import com.ifast.common.utils.BuildTree;
 import com.ifast.wxmp.dao.MpMenuDao;
+import com.ifast.wxmp.domain.MpConfigDO;
 import com.ifast.wxmp.domain.MpMenuDO;
 import com.ifast.wxmp.pojo.type.Const;
+import com.ifast.wxmp.service.MpConfigService;
 import com.ifast.wxmp.service.MpMenuService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -33,6 +36,9 @@ public class MpMenuServiceImpl extends CoreServiceImpl<MpMenuDao, MpMenuDO> impl
     private static final int SUB_MENU_SIZE = 5;
     private static final String TEXT_KEY = "TEXT_";
 
+    @Autowired
+    private MpConfigService mpConfigService;
+
     @Override
     public Tree<MpMenuDO> getTree() {
         List<Tree<MpMenuDO>> nodes = baseMapper.selectList(null).stream().map(menu -> {
@@ -50,22 +56,26 @@ public class MpMenuServiceImpl extends CoreServiceImpl<MpMenuDao, MpMenuDO> impl
     }
 
     @Override
-    public void saveMenu(MpMenuDO mpMenu) {
+    public void saveMenu(MpMenuDO mpMenu, String appId) {
         Long parentIdx = mpMenu.getParentidx();
+        MpConfigDO mpConfig = mpConfigService.findOneByKv("appId", appId);
         if(Objects.isNull(parentIdx) || parentIdx.equals(0L)){
-            int count = this.selectCount(convertToEntityWrapper("parentidx", parentIdx));
+            int count = this.selectCount(convertToEntityWrapper("parentidx", parentIdx, "mpId", mpConfig.getId()));
             if(count >= MAIN_MENU_SIZE){
                 log.info("主菜单不能超过3个");
                 throw new IFastException(EnumErrorCode.wxmpMenuSaveMainError.getCodeStr());
             }
         }else{
-            int count = this.selectCount(convertToEntityWrapper("parentidx", parentIdx));
+            int count = this.selectCount(convertToEntityWrapper("parentidx", parentIdx, "mpId", mpConfig.getId()));
             if(count >= SUB_MENU_SIZE){
                 log.info("子菜单不能超过5个");
                 throw new IFastException(EnumErrorCode.wxmpMenuSaveSubError.getCodeStr());
             }
         }
+
+        mpMenu.setMpid(mpConfig.getId());
         insert(mpMenu);
+
         if(Const.MenuKey.TEXT.equals(mpMenu.getMenutype())){
             mpMenu.setMenukey(TEXT_KEY + mpMenu.getId());
             updateById(mpMenu);

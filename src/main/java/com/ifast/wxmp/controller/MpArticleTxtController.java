@@ -67,8 +67,9 @@ public class MpArticleTxtController extends AdminBaseController {
 	@ResponseBody
 	@PostMapping("/save")
 	@RequiresPermissions("wxmp:mpArticleTxt:add")
-	public Result<String> save( MpArticleDO mpArticle){
+	public Result<String> save( MpArticleDO mpArticle, String appId){
 	    mpArticle.setCreatedate(new Date());
+		mpArticle.setMpId(mpConfigService.findOneByKv("appId", appId).getId());
 		mpArticleService.insert(mpArticle);
         return Result.ok();
 	}
@@ -78,7 +79,7 @@ public class MpArticleTxtController extends AdminBaseController {
 	@RequestMapping("/update")
 	@RequiresPermissions("wxmp:mpArticleTxt:edit")
 	public Result<String>  update( MpArticleDO mpArticle){
-	    mpArticle.setUpdatedate(new Date());
+		mpArticle.setUpdatedate(new Date());
 		boolean update = mpArticleService.updateById(mpArticle);
 		return update ? Result.ok() : Result.fail();
 	}

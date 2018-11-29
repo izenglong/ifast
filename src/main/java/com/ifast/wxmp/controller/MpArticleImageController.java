@@ -66,7 +66,8 @@ public class MpArticleImageController extends AdminBaseController {
 	@ResponseBody
 	@PostMapping("/save")
 	@RequiresPermissions("wxmp:mpArticleImage:add")
-	public Result<String> save( MpArticleDO mpArticle){
+	public Result<String> save( MpArticleDO mpArticle, String appId){
+		mpArticle.setMpId(mpConfigService.findOneByKv("appId", appId).getId());
 		mpArticleService.insert(mpArticle);
         return Result.ok();
 	}

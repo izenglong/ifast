@@ -1,13 +1,12 @@
 var prefix = "/wxmp/mpMenu";
-var appId = '';
 $(function () {
 
-    appId = $('.currentMpInfo', window.parent.document).attr('data-appid');
+    var appId = $('.currentMpInfo', window.parent.document).attr('data-appid');
     console.log(appId)
-    if(appId){
+    if (appId) {
         console.log('mpFans 获取appId:' + appId);
         load();
-    }else {
+    } else {
         console.log('mpfans 获取appId为空')
     }
 });
@@ -20,7 +19,7 @@ function load() {
                 code: 'id',
                 parentCode: 'parentidx',
                 type: "GET", // 请求数据的ajax类型
-                url: prefix + '/list', // 请求数据的ajax的url
+                url: prefix + '/list?appId=' + $('.currentMpInfo', window.top.document).attr('data-appid'), // 请求数据的ajax的url
                 ajaxParams: {}, // 请求数据的ajax的data属性
                 expandColumn: '1', // 在哪一列上面显示展开按钮
                 striped: true, // 是否各行渐变色
@@ -136,20 +135,20 @@ function sync() {
     layer.confirm("确认要同步公众号菜单吗?", {
         btn: ['确定', '取消']
     }, function () {
-        $.post("/wx/mp/menu/api/sync?appId=" + appId, function (res) {
+        $.post("/wx/mp/menu/api/sync?appId=" + $('.currentMpInfo', window.top.document).attr('data-appid'), function (res) {
             layer.msg(res.msg);
         });
     });
 }
 
-function add(appId) {
+function add(pId) {
     layer.open({
         type: 2,
         title: '增加',
         maxmin: true,
         shadeClose: false, // 点击遮罩关闭层
         area: ['800px', '520px'],
-        content: prefix + '/add/' + appId
+        content: prefix + '/add/' + pId
     });
 }
 

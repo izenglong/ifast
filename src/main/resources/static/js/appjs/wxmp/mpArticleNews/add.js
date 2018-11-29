@@ -9,6 +9,10 @@ $.validator.setDefaults({
 });
 
 function save() {
+
+    // 填充当前公众号的appId
+    $('#appId').val($('.currentMpInfo', window.top.document).attr('data-appid'));
+
     $.ajax({
         cache: true,
         type: "POST",

@@ -6,6 +6,7 @@ import com.ifast.common.utils.JSONUtils;
 import com.ifast.common.utils.Result;
 import com.ifast.wxmp.domain.MpMenuDO;
 import com.ifast.wxmp.pojo.type.Const;
+import com.ifast.wxmp.service.MpConfigService;
 import com.ifast.wxmp.service.MpMenuService;
 import com.ifast.wxmp.service.WeixinService;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +16,7 @@ import me.chanjar.weixin.common.bean.menu.WxMenuButton;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,12 +40,14 @@ public class WxMenuController extends AdminBaseController {
     private WeixinService wxService;
     @Autowired
     private MpMenuService mpMenuService;
+    @Autowired
+    private MpConfigService mpConfigService;
 
-    @RequestMapping("/sync/{appId}")
-    public Result sync(@PathVariable String appId) {
+    @PostMapping("/sync")
+    public Result sync(String appId) {
+
         log.info("菜单同步");
-
-        List<WxMenuButton> buttons = mpMenuService.selectList(null).stream().filter(menu -> menu.getParentidx() == 0L).sorted(Comparator.comparing(MpMenuDO::getParentidx).thenComparing(MpMenuDO::getSort)).map(menuDO -> {
+        List<WxMenuButton> buttons = mpMenuService.findByKv("mpId", mpConfigService.findOneByKv("appId", appId).getId()).stream().filter(menu -> menu.getParentidx() == 0L).sorted(Comparator.comparing(MpMenuDO::getParentidx).thenComparing(MpMenuDO::getSort)).map(menuDO -> {
             // 一级菜单
             WxMenuButton button = new WxMenuButton();
             String menuType = convertMenuType(menuDO.getMenutype());

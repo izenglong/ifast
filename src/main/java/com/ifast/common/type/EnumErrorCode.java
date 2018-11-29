@@ -49,6 +49,8 @@ public enum EnumErrorCode {
     , apiSmsSendFailed4ContentNull(44101, "短信发送失败")
     , apiSmsCodeInvalid(44110, "短信验证码错误")
 
+    , apiWxMpAppIdError(44200, "appId不合法")
+
     ;
 
     private int code;

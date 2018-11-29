@@ -15,5 +15,5 @@ public interface MpMenuService extends CoreService<MpMenuDO> {
 
     Tree<MpMenuDO> getTree();
 
-    void saveMenu(MpMenuDO mpMenu);
+    void saveMenu(MpMenuDO mpMenu, String appId);
 }

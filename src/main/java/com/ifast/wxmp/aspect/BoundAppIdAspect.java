@@ -22,12 +22,18 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class BoundAppIdAspect {
 
-    @Pointcut("execution(* com.ifast.wxmp.controller.*.*(..))")
+//    @Autowired
+//    private MpConfigService mpConfigService;
+
+    @Pointcut("execution(* com.ifast.wxmp.controller..*.*(..))")
     public void pointCut() {}
 
     @Around("pointCut()")
     public Object around(ProceedingJoinPoint point) throws Throwable {
         String appId = HttpContextUtils.getHttpServletRequest().getParameter("appId");
+
+        checkAppId(appId);
+
         if(StringUtils.isNotBlank(appId)){
             if(log.isDebugEnabled()){
                 log.debug("WxMpConfigHolder.setCurrentAppId(), appId : {}", appId);
@@ -36,6 +42,13 @@ public class BoundAppIdAspect {
         }
         Object result = point.proceed();
         return result;
+    }
+
+    private void checkAppId(String appId) {
+//        List<MpConfigDO> mpConfigs = mpConfigService.findByKv("appId", appId);
+//        if(mpConfigs.isEmpty()){
+//            throw new IFastApiException(EnumErrorCode.apiWxMpAppIdError.getCodeStr());
+//        }
     }
 
 }

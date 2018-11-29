@@ -1,5 +1,12 @@
 $().ready(function () {
     validateRule();
+    var appId = $('.currentMpInfo', window.top.document).attr('data-appid');
+    console.log(appId);
+    if(appId){
+        console.log('articleTxt 获取appId:' + appId);
+    }else {
+        console.log('articleTxt 获取appId为空')
+    }
 });
 
 $.validator.setDefaults({
@@ -9,6 +16,10 @@ $.validator.setDefaults({
 });
 
 function save() {
+
+    // 填充当前公众号的appId
+    $('#appId').val($('.currentMpInfo', window.top.document).attr('data-appid'));
+
     $.ajax({
         cache: true,
         type: "POST",
