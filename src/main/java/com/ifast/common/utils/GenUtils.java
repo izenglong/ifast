@@ -1,20 +1,13 @@
 package com.ifast.common.utils;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
-
+import com.ifast.common.config.Constant;
+import com.ifast.common.domain.ConfigDO;
+import com.ifast.common.exception.IFastException;
+import com.ifast.common.service.ConfigService;
+import com.ifast.common.type.EnumErrorCode;
+import com.ifast.generator.domain.ColumnDO;
+import com.ifast.generator.domain.TableDO;
+import com.ifast.generator.type.EnumGen;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
@@ -24,14 +17,12 @@ import org.apache.velocity.app.Velocity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ifast.common.config.Constant;
-import com.ifast.common.domain.ConfigDO;
-import com.ifast.common.exception.IFastException;
-import com.ifast.common.service.ConfigService;
-import com.ifast.common.type.EnumErrorCode;
-import com.ifast.generator.domain.ColumnDO;
-import com.ifast.generator.domain.TableDO;
-import com.ifast.generator.type.EnumGen;
+import java.io.File;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * 代码生成器 工具类
@@ -159,6 +150,7 @@ public class GenUtils {
                 IOUtils.closeQuietly(sw);
                 zip.closeEntry();
             } catch (IOException e) {
+                log.warn(e.getMessage());
                 log.info("渲染模板失败，表名：" + tableDO.getTableName());
                 throw new IFastException(EnumErrorCode.genRenderTemplateError.getCodeStr());
             }

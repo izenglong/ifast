@@ -97,6 +97,7 @@ public class WxMenuController extends AdminBaseController {
             log.info("菜单：{}", json);
             String s = wxService.getMenuService().menuCreate(menu);
         } catch (WxErrorException e) {
+            e.printStackTrace();
             throw new IFastApiException("菜单同步失败2!");
         }
 

@@ -32,6 +32,7 @@ public class ApplicationExceptionHandler {
      */
     @ExceptionHandler(IllegalArgumentException.class)
     public Result<String> illegalArgumentException(IllegalArgumentException e) {
+        e.printStackTrace();
         return Result.build(EnumErrorCode.illegalArgument.getCode(), e.getMessage());
     }
 
@@ -40,6 +41,7 @@ public class ApplicationExceptionHandler {
      */
     @ExceptionHandler(IFastApiException.class)
     public Result<String> handleIFastAPIException(IFastApiException e) {
+        e.printStackTrace();
         return getStringResult(e.getMessage());
     }
 
@@ -48,6 +50,7 @@ public class ApplicationExceptionHandler {
      */
     @ExceptionHandler(IFastException.class)
     public Object handleIFastException(IFastException e) {
+        e.getMessage();
 
         if(!HttpContextUtils.isAjax()){
             ModelAndView mv = new ModelAndView();
@@ -95,12 +98,12 @@ public class ApplicationExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public Object handleException(Exception e) {
+        log.error(e.getMessage());
         if(!HttpContextUtils.isAjax()){
             ModelAndView mv = new ModelAndView();
             mv.setViewName(ERROR_DEFAULT_PAGE);
             return mv;
         }else{
-            log.error(e.getMessage());
             return Result.build(EnumErrorCode.unknowFail.getCode(), EnumErrorCode.unknowFail.getMsg());
         }
 

@@ -40,9 +40,9 @@ import java.util.*;
 @Service("sysUserServiceImpl")
 public class UserServiceImpl extends CoreServiceImpl<UserDao, UserDO> implements UserService {
     @Autowired
-    UserRoleDao userRoleMapper;
+    private UserRoleDao userRoleMapper;
     @Autowired
-    DeptDao deptMapper;
+    private DeptDao deptMapper;
     @Autowired
     private FileService sysFileService;
 
@@ -214,6 +214,7 @@ public class UserServiceImpl extends CoreServiceImpl<UserDao, UserDO> implements
             byte[] b = out.toByteArray();
             url = sysFileService.upload(b, fileName);
         } catch (Exception e) {
+            log.warn(e.getMessage());
             throw new IFastException("图片裁剪错误！！");
         }
         Map<String, Object> result = new HashMap<>();

@@ -106,6 +106,7 @@ public class JWTUtil {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.create().withClaim(userPrimaryKey, userId).withExpiresAt(date).sign(algorithm);
         } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
             throw new IFastApiException(EnumErrorCode.apiAuthorizationSignFailed.getCodeStr());
         }
     }
