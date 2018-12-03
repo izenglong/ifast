@@ -20,6 +20,6 @@
 		left join sys_role_menu rm on m.id = rm.menuId
 		left join sys_user_role ur on rm.roleId = ur.roleId 
 		where 
-		  ur.userId = #{id} order by m.orderNum asc
+		  ur.userId = #{id}
 	</select>
 </mapper>
