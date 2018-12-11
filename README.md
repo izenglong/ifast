@@ -49,6 +49,7 @@ ifast以基础建设和实用性为切入点，内置了众多很多优秀的基
  * 缓存框架：Ehcache
  * 日志管理：SLF4J、Log4j
  * 工具类：Apache Commons、Jackson、Xstream、
+ * 后端渲染模板引擎: Thymeleaf
 
 2.前端
 
