@@ -33,7 +33,7 @@ ifast:
       accessKey: 8-HMj9EgGNIP-xuOCpSzTn-OMyGOFtR3TxLdn4Uu
       secretKey: SjpGg3V6PsMdJgn42PeEd5Ik-6aNyuwdqV5CPM6A
       bucket: ifast
-      accessURL: http://p6r7ke2jc.bkt.clouddn.com/
+      accessURL: http://http://cdn.ifast.site/
   sms:
     cacheKey: ifast:cache
     cacheKeyPrefix: sms
@@ -56,8 +56,8 @@ logging:
   level:
     com.ifast: debug
     springfox.documentation: error
-    org.springframework.web.servlet.mvc.method.annotation: error
-    org.springframework.context.support: error
+#    org.springframework.web.servlet.mvc.method.annotation: error
+#    org.springframework.context.support: error
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource

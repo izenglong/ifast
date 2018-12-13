@@ -125,6 +125,7 @@ $(function () {
         // 微信公众号菜单时，初始化选择公众号
         var currentMp = $('.currentMp');
         if (isWxMpUrl(dataUrl)) {
+
             console.log('公众号菜单. URL：' + dataUrl);
             currentMp.removeClass('hidden');
 
@@ -138,6 +139,9 @@ $(function () {
                 currentMpInfo.text($mpList01.text());
                 currentMpInfo.attr('data-appid', $mpList01.attr('lang'));
             }
+
+            dataUrl += "?appId=" + currentMpInfo.attr('data-appid');
+
         } else {
             console.log('非公众号菜单. URL：' + dataUrl);
             if (!currentMp.hasClass('hidden')) {
@@ -278,7 +282,12 @@ $(function () {
                 $('.J_mainContent .J_iframe').each(function () {
                     if ($(this).data('id') == dataUrl) {
                         $(this).show().siblings('.J_iframe').hide();
-                        $(this).attr('src', $(this).attr('src'));
+                        if(dataUrl.indexOf('/wxmp/mpConfig/edit') != -1){
+                            var newUrl = $(this).attr('src').slice(0, $(this).attr('src').indexOf('?')) + '?appId=' + appId;
+                            $(this).attr('src', newUrl);
+                        }else{
+                            $(this).attr('src', $(this).attr('src'));
+                        }
                     }
                 });
             } else {
