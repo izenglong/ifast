@@ -33,7 +33,7 @@ ifast:
       accessKey: 8-HMj9EgGNIP-xuOCpSzTn-OMyGOFtR3TxLdn4Uu
       secretKey: SjpGg3V6PsMdJgn42PeEd5Ik-6aNyuwdqV5CPM6A
       bucket: ifast
-      accessURL: http://http://cdn.ifast.site/
+      accessURL: http://cdn.ifast.site/
   sms:
     cacheKey: ifast:cache
     cacheKeyPrefix: sms
