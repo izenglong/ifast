@@ -135,7 +135,7 @@
 			</build>
 		</profile>
 	</profiles>
-
+ 
 	<repositories>
 		<repository>
 			<id>public</id>
