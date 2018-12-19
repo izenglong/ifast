@@ -38,7 +38,7 @@
 		<spotify.version>0.4.10</spotify.version>
 	</properties>
 
-	<build>
+	<build> 
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
