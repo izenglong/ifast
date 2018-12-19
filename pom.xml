@@ -8,7 +8,7 @@
 	<artifactId>ifast</artifactId>
 	<version>1.0.0</version>
 	<packaging>jar</packaging>
-
+ 
 	<name>ifast</name>
 	<description>Aron fast devolop framework, ifast.</description>
 
