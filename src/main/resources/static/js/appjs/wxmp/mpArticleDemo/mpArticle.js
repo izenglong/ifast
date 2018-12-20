@@ -83,7 +83,13 @@ function load() {
                     },
                     {
                         field: 'status',
-                        title: '文章状态：1启用 0停用'
+                        title: '文章状态：1启用 0停用',
+                        formatter : function(value, row, index) {
+                            if (1 == value) {
+                                return "<span class='badge badge-success'>启用</span>";
+                            }
+                            return "<span class='badge badge-danger'>停用</span>";
+                        }
                     },
                     {
                         field: 'sort',

@@ -1,6 +1,7 @@
 package com.ifast.wxmp.controller.mp;
 
 import com.ifast.common.base.AdminBaseController;
+import com.ifast.common.config.IFastProperties;
 import com.ifast.common.exception.IFastException;
 import com.ifast.common.type.EnumErrorCode;
 import com.ifast.common.utils.JSONUtils;
@@ -46,6 +47,8 @@ public class WxMediaController extends AdminBaseController {
     private MpArticleService mpArticleService;
     @Autowired
     private MpFansService mpFansService;
+    @Autowired
+    private IFastProperties properties;
 
     ///////////////
     // 图片
@@ -57,7 +60,7 @@ public class WxMediaController extends AdminBaseController {
         log.info("素材同步");
         WxMpMaterialUploadResult wxMpMaterialUploadResult = null;
         try {
-            File file = new File("/Users/Aron/dev_projects/idea/ifast/temp/" + System.currentTimeMillis() + ".jpg");
+            File file = new File(properties.getTempDir() + System.currentTimeMillis() + ".jpg");
             FileUtils.copyURLToFile(new URL(article.getImgurl()), file);
             WxMpMaterial material = new WxMpMaterial();
             material.setName(file.getName());
@@ -77,6 +80,7 @@ public class WxMediaController extends AdminBaseController {
     public Result imageGroupsend(String appId, @PathVariable Long articleId) {
         MpArticleDO article = mpArticleService.selectById(articleId);
         WxMpMassOpenIdsMessage message = new WxMpMassOpenIdsMessage();
+        // TODO 群发对象
         message.addUser(mpFansService.selectById(1).getOpenid());
         message.addUser(mpFansService.selectById(1).getOpenid());
         message.setMsgType(article.getMsgtype());
@@ -101,7 +105,7 @@ public class WxMediaController extends AdminBaseController {
 
         WeixinService weixinService = wxService.init();
         // 封面上传
-        File file = new File("/Users/Aron/dev_projects/idea/ifast/temp/" + System.currentTimeMillis() + ".jpg");
+        File file = new File(properties.getTempDir() + System.currentTimeMillis() + ".jpg");
         FileUtils.copyURLToFile(new URL(article.getImgurl()), file);
         WxMpMaterial material = new WxMpMaterial();
         material.setFile(file);
@@ -133,6 +137,7 @@ public class WxMediaController extends AdminBaseController {
         }
         log.debug(JSONUtils.beanToJson(wxMediaUploadResult));
         article.setTid(wxMediaUploadResult.getMediaId());
+        article.setThumbid(mediaId);
         mpArticleService.updateById(article);
         return Result.ok();
     }

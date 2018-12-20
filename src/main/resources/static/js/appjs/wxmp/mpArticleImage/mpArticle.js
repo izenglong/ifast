@@ -90,21 +90,20 @@ function load() {
                         field: 'status',
                         title: '状态',
                         formatter : function(value, row, index) {
-                            if(1 == value){
-                                return "1启用";
+                            if (1 == value) {
+                                return "<span class='badge badge-success'>启用</span>";
                             }
-                            return "0停用";
+                            return "<span class='badge badge-danger'>停用</span>";
                         }
                     },
                     {
                         field: 'tid',
                         title: '同步到微信素材',
                         formatter : function(value, row, index) {
-                            console.log(value)
-                            if(value){
-                                return "已同步";
+                            if (value) {
+                                return "<span class='badge badge-success'>已同步</span>";
                             }
-                            return "未同步";
+                            return "<span class='badge badge-danger'>未同步</span>";
                         }
                     },
                     {

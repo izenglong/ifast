@@ -79,9 +79,9 @@ function load() {
                         title: '状态',
                         formatter: function (value, row, index) {
                             if (1 == value) {
-                                return "1启用";
+                                return "<span class='badge badge-success'>启用</span>";
                             }
-                            return "0停用";
+                            return "<span class='badge badge-danger'>停用</span>";
                         }
                     },
                     {

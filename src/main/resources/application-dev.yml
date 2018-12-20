@@ -3,6 +3,7 @@ ifast:
   projectRootURL: http://127.0.0.1:8888/
   demoMode: false
   devMode: true
+  tempDir: /Users/Aron/dev_projects/idea/ifast/temp/
   jwt:
     userPrimaryKey: userId
     expireTokenKeyPrefix: ifast:expireToken
