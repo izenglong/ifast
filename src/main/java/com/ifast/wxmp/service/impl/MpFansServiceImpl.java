@@ -1,9 +1,11 @@
 package com.ifast.wxmp.service.impl;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.ifast.common.base.CoreServiceImpl;
 import com.ifast.common.exception.IFastException;
 import com.ifast.common.type.EnumErrorCode;
 import com.ifast.wxmp.dao.MpFansDao;
+import com.ifast.wxmp.domain.MpConfigDO;
 import com.ifast.wxmp.domain.MpFansDO;
 import com.ifast.wxmp.pojo.type.Const;
 import com.ifast.wxmp.service.MpConfigService;
@@ -42,7 +44,7 @@ public class MpFansServiceImpl extends CoreServiceImpl<MpFansDao, MpFansDO> impl
 
     @Override
     public void sync(MpFansDO fans) {
-        MpFansDO one = findOneByKv("openid", fans.getOpenid());
+        MpFansDO one = baseMapper.selectOne(MpFansDO.builder().openid(fans.getOpenid()).build());
         if (one == null) {
             log.debug("新用户保存信息到db");
             insert(fans);
@@ -75,7 +77,7 @@ public class MpFansServiceImpl extends CoreServiceImpl<MpFansDao, MpFansDO> impl
         if (StringUtils.isBlank(appId)) {
             appId = WxMpConfigHolder.getCurrentAppId();
         }
-        fans.setMpId(mpConfigService.findOneByKv("appId", appId).getId());
+        fans.setMpId(mpConfigService.selectOne(new EntityWrapper(MpConfigDO.builder().appId(appId))).getId());
 
         log.debug("convert return :{}", fans);
 
@@ -121,7 +123,7 @@ public class MpFansServiceImpl extends CoreServiceImpl<MpFansDao, MpFansDO> impl
     }
 
     private void syncToDb(final String appId, WxMpUserList wxMpUserList2) {
-        wxMpUserList2.getOpenids().stream().filter(openid -> Objects.isNull(findOneByKv("openid", openid))).forEach(openid -> {
+        wxMpUserList2.getOpenids().stream().filter(openid -> Objects.isNull(baseMapper.selectOne(MpFansDO.builder().openid(openid).build()))).forEach(openid -> {
             if(log.isDebugEnabled()){
                 log.debug("sync openid {}", openid);
             }
@@ -135,7 +137,7 @@ public class MpFansServiceImpl extends CoreServiceImpl<MpFansDao, MpFansDO> impl
 
             if (userWxInfo != null) {
                 this.log.debug("同步微信用户信息数据 from 微信服务器");
-                MpFansDO fans = new MpFansDO();
+                MpFansDO fans = MpFansDO.builder().build();
                 convert(userWxInfo, fans, appId);
                 insert(fans);
 

@@ -2,6 +2,7 @@ package com.ifast.wxmp.domain;
 
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -16,6 +17,7 @@ import java.util.Date;
  */
 @Data
 @TableName("wx_mp_menu")
+@Builder
 public class MpMenuDO implements Serializable {
 	@TableId
 	private Long id;

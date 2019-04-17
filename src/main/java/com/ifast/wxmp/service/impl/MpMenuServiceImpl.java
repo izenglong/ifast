@@ -1,5 +1,6 @@
 package com.ifast.wxmp.service.impl;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.ifast.common.base.CoreServiceImpl;
 import com.ifast.common.domain.Tree;
 import com.ifast.common.exception.IFastException;
@@ -35,6 +36,8 @@ public class MpMenuServiceImpl extends CoreServiceImpl<MpMenuDao, MpMenuDO> impl
     private static final int MAIN_MENU_SIZE = 3;
     private static final int SUB_MENU_SIZE = 5;
     private static final String TEXT_KEY = "TEXT_";
+    private static final Long MENU_ROOT_IDX = 0L;
+
 
     @Autowired
     private MpConfigService mpConfigService;
@@ -58,15 +61,15 @@ public class MpMenuServiceImpl extends CoreServiceImpl<MpMenuDao, MpMenuDO> impl
     @Override
     public void saveMenu(MpMenuDO mpMenu, String appId) {
         Long parentIdx = mpMenu.getParentidx();
-        MpConfigDO mpConfig = mpConfigService.findOneByKv("appId", appId);
-        if(Objects.isNull(parentIdx) || parentIdx.equals(0L)){
-            int count = this.selectCount(convertToEntityWrapper("parentidx", parentIdx, "mpId", mpConfig.getId()));
+        MpConfigDO mpConfig = mpConfigService.selectOne(new EntityWrapper<>(MpConfigDO.builder().appId(appId).build()));
+        if(Objects.isNull(parentIdx) || parentIdx.equals(MENU_ROOT_IDX)){
+            int count = this.selectCount(new EntityWrapper<>(MpMenuDO.builder().parentidx(parentIdx).mpid(mpConfig.getId()).build()));
             if(count >= MAIN_MENU_SIZE){
                 log.info("主菜单不能超过3个");
                 throw new IFastException(EnumErrorCode.wxmpMenuSaveMainError.getCodeStr());
             }
         }else{
-            int count = this.selectCount(convertToEntityWrapper("parentidx", parentIdx, "mpId", mpConfig.getId()));
+            int count = this.selectCount(new EntityWrapper<>(MpMenuDO.builder().parentidx(parentIdx).mpid(mpConfig.getId()).build()));
             if(count >= SUB_MENU_SIZE){
                 log.info("子菜单不能超过5个");
                 throw new IFastException(EnumErrorCode.wxmpMenuSaveSubError.getCodeStr());

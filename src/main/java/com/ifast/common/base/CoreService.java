@@ -16,32 +16,28 @@ import java.util.Map;
  * @param <T>
  */
 public interface CoreService<T> extends IService<T> {
+
+    @Deprecated
     List<T> findByKv(Object... param);
 
+    @Deprecated
     T findOneByKv(Object... param);
 
     /**
      * <pre>
-     *
      * </pre>
-     *
      * <small> 2018/6/14 17:32 | Aron</small>
-     * @param [clazz, param]
      * @return java.util.Map<java.lang.String,java.lang.Object>
-     *
      */
-
+    @Deprecated
     Map<String, Object> convertToMap(Object... param);
 
     /**
      * <pre>
-     *
      * </pre>
-     *
      * <small> 2018/6/14 17:14 | Aron</small>
-     * @param [clazz, params]
      * @return java.util.Map<java.lang.String,java.lang.Object>
-     *
      */
+    @Deprecated
     EntityWrapper<T> convertToEntityWrapper(Object... params);
 }
