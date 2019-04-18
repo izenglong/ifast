@@ -146,8 +146,9 @@ public class WxMediaController extends AdminBaseController {
     public Result newsGroupsend(String appId, @PathVariable Long articleId) {
         MpArticleDO article = mpArticleService.selectById(articleId);
         WxMpMassOpenIdsMessage message = new WxMpMassOpenIdsMessage();
-        message.addUser(mpFansService.selectById(2L).getOpenid());
-        message.addUser(mpFansService.selectById(2L).getOpenid());
+        // TODO 群发对象
+        message.addUser(mpFansService.selectById(1L).getOpenid());
+        message.addUser(mpFansService.selectById(1L).getOpenid());
         message.setMsgType(convertMsgtype(article.getMsgtype()));
         message.setMediaId(article.getTid());
         try {

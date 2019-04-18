@@ -43,7 +43,7 @@ public class MpFansController extends AdminBaseController {
     @RequiresPermissions("wxmp:mpFans:mpFans")
     public Result<Page<MpFansDO>> list(String searchValue, String appId) {
         Wrapper<MpFansDO> wrapper = new EntityWrapper<>();
-        wrapper.eq("mpId", mpConfigService.selectOne(new EntityWrapper<>(MpConfigDO.builder().appId(appId).build())).getId());
+        wrapper.eq("mpId", mpConfigService.selectOne(MpConfigDO.builder().appId(appId).build()).getId());
         if (StringUtils.isNotBlank(searchValue)) {
             wrapper.andNew().like("nickname", searchValue)
                     .or().like("openid", searchValue)

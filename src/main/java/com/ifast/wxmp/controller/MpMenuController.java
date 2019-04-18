@@ -45,7 +45,7 @@ public class MpMenuController extends AdminBaseController {
     @GetMapping("/list")
     @RequiresPermissions("wxmp:mpMenu:mpMenu")
     public List<MpMenuDO> list(MpMenuDO mpMenuDTO, String appId) {
-        mpMenuDTO.setMpid(mpConfigService.selectOne(new EntityWrapper<>(MpConfigDO.builder().appId(appId).build())).getId());
+        mpMenuDTO.setMpid(mpConfigService.selectOne(MpConfigDO.builder().appId(appId).build()).getId());
         Wrapper<MpMenuDO> wrapper = new EntityWrapper<>(mpMenuDTO).orderBy("parentidx, sort");
         List<MpMenuDO> list = mpMenuService.selectList(wrapper);
         return list;

@@ -70,7 +70,7 @@ public class MpArticleTxtController extends AdminBaseController {
 	@RequiresPermissions("wxmp:mpArticleTxt:add")
 	public Result<String> save( MpArticleDO mpArticle, String appId){
 	    mpArticle.setCreatedate(new Date());
-		mpArticle.setMpId(mpConfigService.selectOne(new EntityWrapper<>(MpConfigDO.builder().appId(appId).build())).getId());
+		mpArticle.setMpId(mpConfigService.selectOne(MpConfigDO.builder().appId(appId).build()).getId());
 		mpArticleService.insert(mpArticle);
         return Result.ok();
 	}

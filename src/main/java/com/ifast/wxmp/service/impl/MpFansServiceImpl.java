@@ -1,6 +1,5 @@
 package com.ifast.wxmp.service.impl;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.ifast.common.base.CoreServiceImpl;
 import com.ifast.common.exception.IFastException;
 import com.ifast.common.type.EnumErrorCode;
@@ -77,7 +76,7 @@ public class MpFansServiceImpl extends CoreServiceImpl<MpFansDao, MpFansDO> impl
         if (StringUtils.isBlank(appId)) {
             appId = WxMpConfigHolder.getCurrentAppId();
         }
-        fans.setMpId(mpConfigService.selectOne(new EntityWrapper(MpConfigDO.builder().appId(appId))).getId());
+        fans.setMpId(mpConfigService.selectOne(MpConfigDO.builder().appId(appId).build()).getId());
 
         log.debug("convert return :{}", fans);
 

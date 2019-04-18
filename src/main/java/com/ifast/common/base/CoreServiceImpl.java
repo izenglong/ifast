@@ -66,4 +66,9 @@ public abstract class CoreServiceImpl<M extends BaseMapper<T>, T> extends Servic
         }
         return ew;
     }
+
+    @Override
+    public T selectOne(T t) {
+        return baseMapper.selectOne(t);
+    }
 }

@@ -40,4 +40,11 @@ public interface CoreService<T> extends IService<T> {
      */
     @Deprecated
     EntityWrapper<T> convertToEntityWrapper(Object... params);
+
+    /**
+     * 根据实体查询
+     * @param t
+     * @return
+     */
+    T selectOne(T t);
 }

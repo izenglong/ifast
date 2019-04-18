@@ -44,7 +44,7 @@ public class MpArticleImageController extends AdminBaseController {
 	@GetMapping("/list")
 	@RequiresPermissions("wxmp:mpArticleImage:mpArticle")
 	public Result<Page<MpArticleDO>> list(MpArticleDO mpArticleDTO, String appId){
-        Wrapper<MpArticleDO> wrapper = new EntityWrapper<>(mpArticleDTO).eq("mpId", mpConfigService.selectOne(new EntityWrapper<>(MpConfigDO.builder().appId(appId).build())).getId()).orderBy("id", false);
+        Wrapper<MpArticleDO> wrapper = new EntityWrapper<>(mpArticleDTO).eq("mpId", mpConfigService.selectOne(MpConfigDO.builder().appId(appId).build()).getId()).orderBy("id", false);
         Page<MpArticleDO> page = mpArticleService.selectPage(getPage(MpArticleDO.class), wrapper);
         return Result.ok(page);
 	}

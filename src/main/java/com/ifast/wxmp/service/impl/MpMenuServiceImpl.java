@@ -61,7 +61,7 @@ public class MpMenuServiceImpl extends CoreServiceImpl<MpMenuDao, MpMenuDO> impl
     @Override
     public void saveMenu(MpMenuDO mpMenu, String appId) {
         Long parentIdx = mpMenu.getParentidx();
-        MpConfigDO mpConfig = mpConfigService.selectOne(new EntityWrapper<>(MpConfigDO.builder().appId(appId).build()));
+        MpConfigDO mpConfig = mpConfigService.selectOne(MpConfigDO.builder().appId(appId).build());
         if(Objects.isNull(parentIdx) || parentIdx.equals(MENU_ROOT_IDX)){
             int count = this.selectCount(new EntityWrapper<>(MpMenuDO.builder().parentidx(parentIdx).mpid(mpConfig.getId()).build()));
             if(count >= MAIN_MENU_SIZE){
