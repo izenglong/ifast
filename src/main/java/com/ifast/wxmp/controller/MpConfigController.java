@@ -59,7 +59,7 @@ public class MpConfigController extends AdminBaseController {
     @RequiresPermissions("wxmp:mpConfig:edit")
     String edit(String appId, Model model) {
 
-        MpConfigDO mpConfig = mpConfigService.findOneByKv("appId", appId);
+        MpConfigDO mpConfig = mpConfigService.selectOne(new EntityWrapper<>(MpConfigDO.builder().appId(appId).build()));
         model.addAttribute("mpConfig", mpConfig);
         return "wxmp/mpConfig/edit";
     }

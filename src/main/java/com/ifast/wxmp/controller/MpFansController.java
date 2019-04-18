@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.ifast.common.base.AdminBaseController;
 import com.ifast.common.utils.Result;
+import com.ifast.wxmp.domain.MpConfigDO;
 import com.ifast.wxmp.domain.MpFansDO;
 import com.ifast.wxmp.service.MpConfigService;
 import com.ifast.wxmp.service.MpFansService;
@@ -42,7 +43,7 @@ public class MpFansController extends AdminBaseController {
     @RequiresPermissions("wxmp:mpFans:mpFans")
     public Result<Page<MpFansDO>> list(String searchValue, String appId) {
         Wrapper<MpFansDO> wrapper = new EntityWrapper<>();
-        wrapper.eq("mpId", mpConfigService.findOneByKv("appId", appId).getId());
+        wrapper.eq("mpId", mpConfigService.selectOne(new EntityWrapper<>(MpConfigDO.builder().appId(appId).build())).getId());
         if (StringUtils.isNotBlank(searchValue)) {
             wrapper.andNew().like("nickname", searchValue)
                     .or().like("openid", searchValue)

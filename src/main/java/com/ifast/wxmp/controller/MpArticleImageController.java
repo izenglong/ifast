@@ -8,6 +8,7 @@ import com.ifast.common.annotation.Log;
 import com.ifast.common.base.AdminBaseController;
 import com.ifast.common.utils.Result;
 import com.ifast.wxmp.domain.MpArticleDO;
+import com.ifast.wxmp.domain.MpConfigDO;
 import com.ifast.wxmp.service.MpArticleService;
 import com.ifast.wxmp.service.MpConfigService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -43,7 +44,7 @@ public class MpArticleImageController extends AdminBaseController {
 	@GetMapping("/list")
 	@RequiresPermissions("wxmp:mpArticleImage:mpArticle")
 	public Result<Page<MpArticleDO>> list(MpArticleDO mpArticleDTO, String appId){
-        Wrapper<MpArticleDO> wrapper = new EntityWrapper<>(mpArticleDTO).eq("mpId", mpConfigService.findOneByKv("appId", appId).getId()).orderBy("id", false);
+        Wrapper<MpArticleDO> wrapper = new EntityWrapper<>(mpArticleDTO).eq("mpId", mpConfigService.selectOne(new EntityWrapper<>(MpConfigDO.builder().appId(appId).build())).getId()).orderBy("id", false);
         Page<MpArticleDO> page = mpArticleService.selectPage(getPage(MpArticleDO.class), wrapper);
         return Result.ok(page);
 	}
@@ -67,7 +68,7 @@ public class MpArticleImageController extends AdminBaseController {
 	@PostMapping("/save")
 	@RequiresPermissions("wxmp:mpArticleImage:add")
 	public Result<String> save( MpArticleDO mpArticle, String appId){
-		mpArticle.setMpId(mpConfigService.findOneByKv("appId", appId).getId());
+		mpArticle.setMpId(mpConfigService.selectOne(new EntityWrapper<>(MpConfigDO.builder().appId(appId).build())).getId());
 		mpArticleService.insert(mpArticle);
         return Result.ok();
 	}

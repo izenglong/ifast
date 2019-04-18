@@ -1,6 +1,8 @@
 package com.ifast.wxmp.builder;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.ifast.common.utils.SpringContextHolder;
+import com.ifast.wxmp.domain.MpArticleDO;
 import com.ifast.wxmp.service.MpArticleService;
 import com.ifast.wxmp.service.WeixinService;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
@@ -22,7 +24,7 @@ public class NewsBuilder extends AbstractBuilder {
 
     @Override
     public WxMpXmlOutMessage build(String keyword, WxMpXmlMessage wxMessage, WeixinService service) {
-        List<WxMpXmlOutNewsMessage.Item> items = SpringContextHolder.getBean(MpArticleService.class).findByKv("keyword", keyword, "msgtype", "news").stream().map(article -> {
+        List<WxMpXmlOutNewsMessage.Item> items = SpringContextHolder.getBean(MpArticleService.class).selectList(new EntityWrapper<>(MpArticleDO.builder().keyword(keyword).msgtype("news").build())).stream().map(article -> {
             WxMpXmlOutNewsMessage.Item item = new WxMpXmlOutNewsMessage.Item();
             item.setDescription(article.getIntroduct());
             item.setPicUrl(article.getImgurl());

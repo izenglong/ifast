@@ -1,5 +1,6 @@
 package com.ifast.wxmp.handler;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.ifast.wxmp.builder.ImageBuilder;
 import com.ifast.wxmp.builder.NewsBuilder;
 import com.ifast.wxmp.builder.TextBuilder;
@@ -37,10 +38,10 @@ public class MenuHandler extends AbstractHandler {
 
         String key = wxMessage.getEventKey();
 
-        MpArticleDO mpArticleDO = mpArticleService.findOneByKv("keyword", key);
+        MpArticleDO mpArticleDO = mpArticleService.selectOne(new EntityWrapper<>(MpArticleDO.builder().keyword(key).build()));
         if (Objects.isNull(mpArticleDO)) {
             logger.info("未找到与关键字【{}】匹配的回复消息。默认回复key【{}】", key, DEFAULT_ARTICLE_KEYWORD);
-            MpArticleDO defaultArticle = mpArticleService.findOneByKv("keyword", DEFAULT_ARTICLE_KEYWORD);
+            MpArticleDO defaultArticle = mpArticleService.selectOne(new EntityWrapper<>(MpArticleDO.builder().keyword(DEFAULT_ARTICLE_KEYWORD).build()));
             if (Objects.isNull(defaultArticle)) {
                 logger.info("未找到与关键字【{}】匹配的回复消息。回复内容【{}】", DEFAULT_ARTICLE_KEYWORD, DEFAULT_ARTICLE_KEYWORD);
                 return WxMpXmlOutMessage.TEXT().content(DEFAULT_ARTICLE_KEYWORD).fromUser(wxMessage.getToUser()).toUser(wxMessage.getFromUser()).build();

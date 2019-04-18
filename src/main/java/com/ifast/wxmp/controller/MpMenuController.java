@@ -7,6 +7,7 @@ import com.ifast.common.annotation.Log;
 import com.ifast.common.base.AdminBaseController;
 import com.ifast.common.domain.Tree;
 import com.ifast.common.utils.Result;
+import com.ifast.wxmp.domain.MpConfigDO;
 import com.ifast.wxmp.domain.MpMenuDO;
 import com.ifast.wxmp.service.MpConfigService;
 import com.ifast.wxmp.service.MpMenuService;
@@ -44,7 +45,7 @@ public class MpMenuController extends AdminBaseController {
     @GetMapping("/list")
     @RequiresPermissions("wxmp:mpMenu:mpMenu")
     public List<MpMenuDO> list(MpMenuDO mpMenuDTO, String appId) {
-        mpMenuDTO.setMpid(mpConfigService.findOneByKv("appId", appId).getId());
+        mpMenuDTO.setMpid(mpConfigService.selectOne(new EntityWrapper<>(MpConfigDO.builder().appId(appId).build())).getId());
         Wrapper<MpMenuDO> wrapper = new EntityWrapper<>(mpMenuDTO).orderBy("parentidx, sort");
         List<MpMenuDO> list = mpMenuService.selectList(wrapper);
         return list;

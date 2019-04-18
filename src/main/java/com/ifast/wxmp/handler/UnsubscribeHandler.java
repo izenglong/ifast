@@ -1,5 +1,6 @@
 package com.ifast.wxmp.handler;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.ifast.wxmp.domain.MpFansDO;
 import com.ifast.wxmp.pojo.type.Const;
 import com.ifast.wxmp.service.MpFansService;
@@ -32,7 +33,7 @@ public class UnsubscribeHandler extends AbstractHandler {
             WxSessionManager sessionManager) {
         String openId = wxMessage.getFromUser();
         this.logger.info("用户取消关注 openid: " + openId);
-        MpFansDO fans = mpFansService.findOneByKv("openid", openId);
+        MpFansDO fans = mpFansService.selectOne(new EntityWrapper<>(MpFansDO.builder().openid(openId).build()));
         fans.setSubscribe(Const.Subscribe.NO);
         mpFansService.updateById(fans);
         return null;
