@@ -13,7 +13,7 @@ import com.ifast.wxmp.service.WeixinService;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.bean.result.WxMediaUploadResult;
-import me.chanjar.weixin.common.exception.WxErrorException;
+import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.bean.WxMpMassNews;
 import me.chanjar.weixin.mp.bean.WxMpMassOpenIdsMessage;
 import me.chanjar.weixin.mp.bean.material.WxMpMaterial;

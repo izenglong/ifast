@@ -28,7 +28,7 @@
 		<mybatisplus-spring-boot-starter.version>1.0.5</mybatisplus-spring-boot-starter.version>
 		<velocity.version>1.7</velocity.version>
 		<activiti.version>5.22.0</activiti.version>
-		<weixin-java-mp.version>3.0.0</weixin-java-mp.version>
+		<weixin-java-mp.version>3.3.0</weixin-java-mp.version>
 		<poi.version>3.14</poi.version>
 		<qiniu.version>[7.0.0, 7.2.99]</qiniu.version>
 		<oltu.version>1.0.2</oltu.version>
@@ -151,6 +151,11 @@
 		<dependency>
 			<groupId>com.github.binarywang</groupId>
 			<artifactId>weixin-java-mp</artifactId>
+			<version>${weixin-java-mp.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.binarywang</groupId>
+			<artifactId>weixin-java-miniapp</artifactId>
 			<version>${weixin-java-mp.version}</version>
 		</dependency>
 		<!-- weixin SDK E -->

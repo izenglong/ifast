@@ -1,5 +1,6 @@
 package com.ifast.wxmp.util;
 
+import com.ifast.common.utils.JSONUtils;
 import com.ifast.wxmp.service.MpConfigService;
 import me.chanjar.weixin.common.util.http.apache.DefaultApacheHttpClientBuilder;
 import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
@@ -45,7 +46,7 @@ public class WxMpConfigHolder implements InitializingBean {
     @Override
     public void afterPropertiesSet(){
         mpConfigService.selectList(null).stream().forEach(bean -> {
-            final WxMpInMemoryConfigStorage config = new WxMpInMemoryConfigStorage();
+            WxMpInMemoryConfigStorage config = new WxMpInMemoryConfigStorage();
             // 设置微信公众号的appid
             config.setAppId(bean.getAppId());
             // 设置微信公众号的app corpSecret
@@ -57,7 +58,7 @@ public class WxMpConfigHolder implements InitializingBean {
 
             config.setApacheHttpClientBuilder(DefaultApacheHttpClientBuilder.get());
 
-            log.debug("公众号配置初始化：{}", config);
+            log.debug("公众号配置初始化：{}", JSONUtils.beanToJson(config));
             mpConfigs.put(bean.getAppId(), config);
 
         });
