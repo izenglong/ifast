@@ -14,7 +14,7 @@ ifast是一款基于Spring Boot + Mybatis + Mybatis Plus搭建的快速开发平
 - [Aron](https://gitee.com/icron/ifast) 
 - Lety
 - [xiahongwei](https://xlongwei.com)
-- Zetting
+- [zetting](https://www.jianshu.com/u/d78eea897ed6)
 
 # 内置功能 | Features
 ifast以基础建设和实用性为切入点，内置了众多很多优秀的基础功能和工具。包括：
