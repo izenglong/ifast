@@ -3,6 +3,7 @@ package com.ifast.wxmp.domain;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,8 @@ import java.util.Date;
  @TableName("wx_mp_fans")
  @Data
  @Builder
+ @NoArgsConstructor
+ @AllArgsConstructor
 public class MpFansDO implements Serializable {
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

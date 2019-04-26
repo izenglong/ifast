@@ -23,7 +23,7 @@ ifast:
   oss:
     local: # 配置 localPath 启用本地上传（默认方式）
       localPath: upload
-      rootURL: http://localhost:8088/upload
+      rootURL: ${ifast.projectRootURL}upload
     aliyun: # 配置 accessKeySecret 启用阿里云OSS
       accessKeyId:
       accessKeySecret:

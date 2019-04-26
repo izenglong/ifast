@@ -152,7 +152,7 @@ public class ShiroConfiguration {
         filterChainDefinitionMap.put("/api/**", "jwt");
         // email
         filterChainDefinitionMap.put("/emil/**", "anon");
-        
+
         filterChainDefinitionMap.put("/doc.html**", "anon");
         filterChainDefinitionMap.put("/swagger-resources/**", "anon");
         filterChainDefinitionMap.put("/webjars/**", "anon");

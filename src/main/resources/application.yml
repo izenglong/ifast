@@ -22,7 +22,7 @@ spring:
     generator:
       WRITE_NUMBERS_AS_STRINGS: true    
   profiles:
-    active: @activatedProperties@
+    active: dev
   http:
     multipart:
       max-file-size: 30Mb
