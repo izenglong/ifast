@@ -146,8 +146,13 @@ public class ShiroConfiguration {
         shiroFilterFactoryBean.setSuccessUrl("/index");
         shiroFilterFactoryBean.setUnauthorizedUrl("/shiro/405");
         LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-        filterChainDefinitionMap.put("/api/**", "jwt"); // api
+        // 微信对接
+        filterChainDefinitionMap.put("/wx/mp/msg/**", "anon");
+        // api
+        filterChainDefinitionMap.put("/api/**", "jwt");
+        // email
         filterChainDefinitionMap.put("/emil/**", "anon");
+        
         filterChainDefinitionMap.put("/doc.html**", "anon");
         filterChainDefinitionMap.put("/swagger-resources/**", "anon");
         filterChainDefinitionMap.put("/webjars/**", "anon");

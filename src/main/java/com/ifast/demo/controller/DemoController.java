@@ -37,6 +37,12 @@ public class DemoController extends AdminBaseController {
 	}
 	
 	@ResponseBody
+	@GetMapping("/{id}")
+	public Result<DemoDO> list(@PathVariable Long id){
+        return Result.ok(demoBaseService.selectById(id));
+	}
+	
+	@ResponseBody
 	@GetMapping("/list")
 	@RequiresPermissions("demo:demoBase:demoBase")
 	public Result<Page<DemoDO>> list(DemoDO demoBaseDTO){
@@ -46,7 +52,7 @@ public class DemoController extends AdminBaseController {
         Page<DemoDO> page = demoBaseService.selectPage(getPage(DemoDO.class), wrapper);
         return Result.ok(page);
 	}
-	
+
 	@GetMapping("/add")
 	@RequiresPermissions("demo:demoBase:add")
 	String add(){

@@ -2,6 +2,8 @@ ifast:
   projectName: ifast
   projectRootURL: http://127.0.0.1:8088/
   demoMode: false
+  devMode: true
+  tempDir: /Users/Aron/dev_projects/idea/ifast/temp/
   jwt:
     userPrimaryKey: userId
     expireTokenKeyPrefix: ifast:expireToken
@@ -32,7 +34,7 @@ ifast:
       accessKey: 8-HMj9EgGNIP-xuOCpSzTn-OMyGOFtR3TxLdn4Uu
       secretKey: SjpGg3V6PsMdJgn42PeEd5Ik-6aNyuwdqV5CPM6A
       bucket: ifast
-      accessURL: http://p6r7ke2jc.bkt.clouddn.com/
+      accessURL: http://cdn.ifast.site/
   sms:
     cacheKey: ifast:cache
     cacheKeyPrefix: sms
@@ -50,12 +52,13 @@ ifast:
       scenes:
         # 配置格式为包含SignName和TemplateCode的json字符串：sys_config.sms_aliyun_validCode = {SignName, TemplateCode}
         validCode: sms_aliyun_validCode
+
 logging:
   level:
     com.ifast: debug
     springfox.documentation: error
-    org.springframework.web.servlet.mvc.method.annotation: error
-    org.springframework.context.support: error
+#    org.springframework.web.servlet.mvc.method.annotation: error
+#    org.springframework.context.support: error
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
@@ -64,7 +67,7 @@ spring:
     # 推荐utf8mb4编码以便支持表情字符，sys_log记录系统数据变动需要支持utf8mb4
     connectionInitSqls: SET NAMES utf8mb4;
     username: root
-    password: tiger
+    password: aron
     initialSize: 1
     minIdle: 3
     maxActive: 20
@@ -87,25 +90,3 @@ spring:
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
     # 合并多个DruidDataSource的监控数据
     #useGlobalDataSourceStat: true
-    
-#邮件配置
-#  stmp: 
-#    host: smtp.163.com
-#    port: 25
-#    account: 18291548738@163.com
-#    password: zyl163com
-#  mail: 
-#    smtp: 
-#      auth: true
-#      timeout: 25000
-    
-#    
-#  mail:
-#    protocol: smtp #smtp是邮件发送协议，pop3和imap是邮件接收协议。因为我们要发送邮件，因此是smtp
-#    host: smtp.163.com #邮件发送服务器的主机，这里采用的是126邮箱来发送邮件
-#    port: 25 #邮件发送服务器的端口
-#    auth: true #一般情况下，发送邮件都是要进行验证
-#    username: 18291548738@163.com #邮件发送服务器的用户名
-#    password: zyl163com #密码
-#    timeout: 25000
-#    templateLoaderPath: classpath:/freemarker

@@ -18,7 +18,7 @@
 							<input id="id" name="id" th:value="${mpConfig.id}" type="hidden">
 							<div class="form-group">
                                 <label class="col-sm-3 control-label">公众号名字：</label>
-                                <div class="col-sm-8">
+                                <div class="col-sm-3">
                                     <input id="mpName" name="mpName" th:value="${mpConfig.mpName}"
                                         class="form-control" type="text">
                                 </div>
@@ -39,7 +39,7 @@
                                         <input type="radio" value="4" th:checked="${mpConfig.appType == 4}" id="appType4" name="appType">小程序 
                                     </label> 
                                      <label class="radio-inline" for="appType5"> 
-                                        <input type="radio" value="5" th:checked="${mpConfig.appType == 5}" id="appType" name="appType">测试号
+                                        <input type="radio" value="5" th:checked="${mpConfig.appType == 5}" id="appType5" name="appType">测试号
                                      </label>
                                 </div>
                             </div>
@@ -118,8 +118,8 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">logo：</label>
 								<div class="col-sm-8">
-								    <img id="imgLogo" alt="公众号logo" src="" th:src="${mpConfig.logo}" style="width:100px;display:block;">
-								    <input type="hidden" id="logo" name="logo" >
+								    <img id="imgLogo" alt="公众号logo" src="" th:src="@{${mpConfig.logo}}" style="width:100px;display:block;">
+								    <input type="hidden" id="logo" name="logo" th:value="${mpConfig.logo}" >
 									<button type="button" class="btn btn-success" id="btnUpload">
 			                            <i class="fa fa-cloud"></i>上传文件
 			                        </button>
@@ -127,7 +127,7 @@
 							</div>
 							<div class="form-group">
 								<label class="col-sm-3 control-label">创建时间：</label>
-								<div class="col-sm-8">
+								<div class="col-sm-2">
 									<input id="createTime" name="createTime" th:value="${#dates.format(mpConfig.createTime,'yyyy-MM-dd HH:mm:ss')}" class="form-control" type="text" readonly>
 								</div>
 							</div>

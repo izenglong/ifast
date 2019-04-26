@@ -10,6 +10,8 @@ import com.ifast.oss.domain.FileDO;
 import com.ifast.oss.service.FileService;
 import com.ifast.sys.domain.MenuDO;
 import com.ifast.sys.service.MenuService;
+import com.ifast.wxmp.domain.MpConfigDO;
+import com.ifast.wxmp.service.MpConfigService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -35,6 +37,8 @@ public class LoginController extends AdminBaseController {
     MenuService menuService;
     @Autowired
     FileService fileService;
+    @Autowired
+    MpConfigService mpConfigService;
 
     @GetMapping({ "/", "" })
     String welcome(Model model) {
@@ -49,6 +53,8 @@ public class LoginController extends AdminBaseController {
         model.addAttribute("username", getUser().getUsername());
         FileDO fileDO = fileService.selectById(getUser().getPicId());
         model.addAttribute("picUrl", fileDO == null ? "/img/photo_s.jpg" : fileDO.getUrl());
+        List<MpConfigDO> mpList = mpConfigService.selectList(null);
+        model.addAttribute("mpList", mpList);
         return "index_v1";
     }
 

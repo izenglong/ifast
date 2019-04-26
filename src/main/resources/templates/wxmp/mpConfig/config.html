@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header">
+	<link href="/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+	<link href="/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+	<link href="/css/animate.css" rel="stylesheet">
+	<link href="/css/layui.css" rel="stylesheet">
+	<link href="/css/style.css?v=4.1.0" rel="stylesheet">
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="ibox float-e-margins">
+				<div class="ibox-content">
+					<form class="form-horizontal m-t" id="signupForm">
+						<input id="id" name="id" th:value="${mpConfig.id}" type="hidden">
+						<div class="form-group">
+							<label class="col-sm-3 control-label">公众号名字：</label>
+							<div class="col-sm-8">
+								<input id="mpName" name="mpName" th:value="${mpConfig.mpName}"
+									   class="form-control" type="text">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">公众号类型：</label>
+							<div class="col-sm-9">
+								<label class="radio-inline" for="appType1">
+									<input type="radio" value="1" th:checked="${mpConfig.appType == 1}" id="appType1" name="appType">订阅号
+								</label>
+								<label class="radio-inline" for="appType2">
+									<input type="radio" value="2" th:checked="${mpConfig.appType == 2}" id="appType2" name="appType"> 服务号
+								</label>
+								<label class="radio-inline" for="appType3">
+									<input type="radio" value="3" th:checked="${mpConfig.appType == 3}" id="appType3" name="appType">企业号
+								</label>
+								<label class="radio-inline" for="appType4">
+									<input type="radio" value="4" th:checked="${mpConfig.appType == 4}" id="appType4" name="appType">小程序
+								</label>
+								<label class="radio-inline" for="appType5">
+									<input type="radio" value="5" th:checked="${mpConfig.appType == 5}" id="appType5" name="appType">测试号
+								</label>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">认证：</label>
+							<div class="col-sm-8">
+								<label class="radio-inline" for="isAuth1">
+									<input type="radio" value="1" th:checked="${mpConfig.isAuth == 1}" id="isAuth1" name="isAuth">已认证
+								</label>
+								<label class="radio-inline" for="isAuth0">
+									<input type="radio" value="0" th:checked="${mpConfig.isAuth == 0}" id="isAuth0" name="isAuth">未认证
+								</label>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">appId：</label>
+							<div class="col-sm-8">
+								<input id="appId" name="appId" th:value="${mpConfig.appId}"
+									   class="form-control" type="text">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">appSecret：</label>
+							<div class="col-sm-8">
+								<input id="appSecret" name="appSecret"
+									   th:value="${mpConfig.appSecret}" class="form-control"
+									   type="text">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">token：</label>
+							<div class="col-sm-8">
+								<input id="token" name="token" th:value="${mpConfig.token}"
+									   class="form-control" type="text">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label" for="msgMode">消息加密：</label>
+							<div class="col-sm-9">
+								<label class="radio-inline" for="msgMode1">
+									<input type="radio" value="1" th:checked="${mpConfig.msgMode == 1}" id="msgMode1" name="msgMode">是
+								</label>
+								<label class="radio-inline" for="msgMode0">
+									<input type="radio" value="0" th:checked="${mpConfig.msgMode == 0}" id="msgMode0" name="msgMode">否
+								</label>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">秘钥：</label>
+							<div class="col-sm-8">
+								<input id="msgSecret" name="msgSecret"
+									   th:value="${mpConfig.msgSecret}" class="form-control"
+									   type="text">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">提示订阅URL：</label>
+							<div class="col-sm-8">
+								<input id="subscribeUrl" name="subscribeUrl"
+									   th:value="${mpConfig.subscribeUrl}" class="form-control"
+									   type="text">
+							</div>
+						</div>
+
+						<style>
+							#btnUpload{
+								margin-top: 10px;
+							}
+							.layui-upload-file {
+								display: none!important;
+								opacity: .01;
+								filter: Alpha(opacity=1);
+							}
+						</style>
+
+						<div class="form-group">
+							<label class="col-sm-3 control-label">logo：</label>
+							<div class="col-sm-8">
+								<img id="imgLogo" alt="公众号logo" src="" th:src="${mpConfig.logo}" style="width:100px;display:block;">
+								<input type="hidden" id="logo" name="logo" >
+								<button type="button" class="btn btn-success" id="btnUpload">
+									<i class="fa fa-cloud"></i>上传文件
+								</button>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">创建时间：</label>
+							<div class="col-sm-8">
+								<input id="createTime" name="createTime" th:value="${#dates.format(mpConfig.createTime,'yyyy-MM-dd HH:mm:ss')}" class="form-control" type="text" readonly>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-8 col-sm-offset-3">
+								<button type="submit" class="btn btn-primary">提交</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript" src="/js/appjs/wxmp/mpConfig/edit.js"></script>
+<script src="/js/content.js?v=1.0.0"></script>
+<script src="/js/layui.js"></script>
+<script src="/js/plugins/clipboard/clipboard.min.js"></script>
+<script src="/js/plugins/layer/layer.min.js"></script>
+<script type="text/javascript">
+    layui.use('upload', function () {
+        var upload = layui.upload;
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#btnUpload', //绑定元素
+            url: '/common/sysFile/upload', //上传接口
+            size: 1000,
+            accept: 'file',
+            done: function (r) {
+                $("#imgLogo").attr("src", r.data)
+                $("#logo").val(r.data)
+            },
+            error: function (r) {
+                layer.msg(r.msg);
+            }
+        });
+    });
+</script>
+</body>
+</html>

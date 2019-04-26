@@ -1,31 +1,11 @@
 package com.ifast.sys.service.impl;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-
-import javax.imageio.ImageIO;
-
-import org.apache.commons.lang.ArrayUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.ifast.common.base.CoreServiceImpl;
 import com.ifast.common.domain.Tree;
 import com.ifast.common.exception.IFastException;
 import com.ifast.common.type.EnumErrorCode;
 import com.ifast.common.utils.BuildTree;
 import com.ifast.common.utils.FileType;
-import com.ifast.common.utils.FileUtil;
 import com.ifast.common.utils.ImageUtils;
 import com.ifast.common.utils.MD5Utils;
 import com.ifast.oss.domain.FileDO;
@@ -38,6 +18,17 @@ import com.ifast.sys.domain.UserDO;
 import com.ifast.sys.domain.UserRoleDO;
 import com.ifast.sys.service.UserService;
 import com.ifast.sys.vo.UserVO;
+import org.apache.commons.lang.ArrayUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * <pre>
@@ -49,9 +40,9 @@ import com.ifast.sys.vo.UserVO;
 @Service("sysUserServiceImpl")
 public class UserServiceImpl extends CoreServiceImpl<UserDao, UserDO> implements UserService {
     @Autowired
-    UserRoleDao userRoleMapper;
+    private UserRoleDao userRoleMapper;
     @Autowired
-    DeptDao deptMapper;
+    private DeptDao deptMapper;
     @Autowired
     private FileService sysFileService;
 
@@ -198,7 +189,7 @@ public class UserServiceImpl extends CoreServiceImpl<UserDao, UserDO> implements
     @Override
     public Map<String, Object> updatePersonalImg(MultipartFile file, String avatar_data, Long userId) throws Exception {
         String fileName = file.getOriginalFilename();
-        fileName = FileUtil.renameToUUID(fileName);
+        fileName = UUID.randomUUID() + "." + fileName.substring(fileName.lastIndexOf(".") + 1);
         String url = "";
 
         // 获取图片后缀
@@ -223,6 +214,7 @@ public class UserServiceImpl extends CoreServiceImpl<UserDao, UserDO> implements
             byte[] b = out.toByteArray();
             url = sysFileService.upload(b, fileName);
         } catch (Exception e) {
+            log.warn(e.getMessage());
             throw new IFastException("图片裁剪错误！！");
         }
         Map<String, Object> result = new HashMap<>();

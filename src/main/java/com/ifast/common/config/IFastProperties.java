@@ -32,4 +32,9 @@ public class IFastProperties {
      */
     private boolean devMode;
 
+    /**
+     * 临时目录，用于存放一些临时文件
+     */
+    private String tempDir;
+
 }

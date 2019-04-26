@@ -153,6 +153,7 @@ public class GenUtils {
                 IOUtils.closeQuietly(sw);
                 zip.closeEntry();
             } catch (IOException e) {
+                log.warn(e.getMessage());
                 log.info("渲染模板失败，表名：" + tableDO.getTableName());
                 throw new IFastException(EnumErrorCode.genRenderTemplateError.getCodeStr());
             }

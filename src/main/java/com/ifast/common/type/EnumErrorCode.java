@@ -30,7 +30,12 @@ public enum EnumErrorCode {
     
     , userLoginFail(40401, "用户或密码错误")
     , userUpdatePwd4adminNotAllowed(40402, "超级管理员的账号不允许直接重置！")
-    
+    , wxmpMenuSaveMainError(40500, "微信主菜单不能超过3个")
+    , wxmpMenuSaveSubError(40501, "微信子菜单不能超过5个")
+    , wxmpMediaImageSyncError(40600, "图片素材同步错误")
+    , wxmpMediaGroupSendSyncError(40610, "素材群发失败")
+    , wxmpFansSyncError(40700, "粉丝同步失败")
+
     
     // API
     , apiAuthorizationLoginFailed(44000, "用户名或密码错误")
@@ -43,6 +48,8 @@ public enum EnumErrorCode {
     , apiSmsSendFailed(44100, "短信发送失败")
     , apiSmsSendFailed4ContentNull(44101, "短信发送失败")
     , apiSmsCodeInvalid(44110, "短信验证码错误")
+
+    , apiWxMpAppIdError(44200, "appId不合法")
 
     ;
 

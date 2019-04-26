@@ -1,11 +1,11 @@
 package com.ifast.common.utils;
 
-import com.ifast.job.domain.ScheduleJob;
+import com.ifast.job.domain.ScheduleJobDO;
 import com.ifast.job.domain.TaskDO;
 
 public class ScheduleJobUtils {
-	public static ScheduleJob entityToData(TaskDO scheduleJobEntity) {
-		ScheduleJob scheduleJob = new ScheduleJob();
+	public static ScheduleJobDO entityToData(TaskDO scheduleJobEntity) {
+		ScheduleJobDO scheduleJob = new ScheduleJobDO();
 		scheduleJob.setBeanClass(scheduleJobEntity.getBeanClass());
 		scheduleJob.setCronExpression(scheduleJobEntity.getCronExpression());
 		scheduleJob.setDescription(scheduleJobEntity.getDescription());

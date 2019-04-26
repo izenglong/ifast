@@ -36,7 +36,7 @@ public class JobController extends AdminBaseController {
     @ResponseBody
     @GetMapping("/list")
     public Result<Page<TaskDO>> list(TaskDO taskDTO) {
-        Wrapper<TaskDO> wrapper = new EntityWrapper<TaskDO>(taskDTO);
+        Wrapper<TaskDO> wrapper = new EntityWrapper<>(taskDTO);
         Page<TaskDO> page = taskScheduleJobService.selectPage(getPage(TaskDO.class), wrapper);
         return Result.ok(page);
     }

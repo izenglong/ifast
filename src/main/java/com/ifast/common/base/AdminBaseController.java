@@ -57,7 +57,9 @@ public abstract class AdminBaseController {
         if(StringUtils.isNotBlank(sort)) {
         	page.setOrderByField(sort);
         	String order = HttpContextUtils.getHttpServletRequest().getParameter("order");
-        	if(StringUtils.isNotBlank(order)) page.setAsc("asc".equalsIgnoreCase(order));
+        	if(StringUtils.isNotBlank(order)){
+        	    page.setAsc("asc".equalsIgnoreCase(order));
+            }
         }
         return page;
     }

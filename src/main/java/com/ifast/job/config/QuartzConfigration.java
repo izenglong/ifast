@@ -1,10 +1,6 @@
 package com.ifast.job.config;
 
-import java.io.IOException;
-import java.util.Properties;
-
-import javax.sql.DataSource;
-
+import com.ifast.job.quartz.JobFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.Scheduler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +10,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
-import com.ifast.job.quartz.JobFactory;
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.util.Properties;
 
 @Configuration
 public class QuartzConfigration {
@@ -25,25 +23,22 @@ public class QuartzConfigration {
     DataSource dataSource;
 
     @Bean
-    public SchedulerFactoryBean schedulerFactoryBean() {
+    public SchedulerFactoryBean schedulerFactoryBean(Properties quartzProperties) {
         SchedulerFactoryBean schedulerFactoryBean = new SchedulerFactoryBean();
-        try {
-            schedulerFactoryBean.setOverwriteExistingJobs(true);
-            Properties quartzProperties = quartzProperties();
-            schedulerFactoryBean.setQuartzProperties(quartzProperties);
-            //如果开启了cluster特性，又没有自定义dataSource，则使用ifast定义好的DataSource，需要先导入quartz.sql
-            if("true".equalsIgnoreCase(quartzProperties.getProperty("org.quartz.jobStore.isClustered"))
-            		&& StringUtils.isBlank(quartzProperties.getProperty("org.quartz.jobStore.dataSource"))) {
-            	schedulerFactoryBean.setDataSource(dataSource);
-            }
-            schedulerFactoryBean.setJobFactory(jobFactory);
-        } catch (IOException e) {
-            e.printStackTrace();
+        schedulerFactoryBean.setOverwriteExistingJobs(true);
+        schedulerFactoryBean.setQuartzProperties(quartzProperties);
+        //如果开启了cluster特性，又没有自定义dataSource，则使用ifast定义好的DataSource，需要先导入quartz.sql
+        if ("true".equalsIgnoreCase(quartzProperties.getProperty("org.quartz.jobStore.isClustered"))
+                && StringUtils.isBlank(quartzProperties.getProperty("org.quartz.jobStore.dataSource"))) {
+            schedulerFactoryBean.setDataSource(dataSource);
         }
+        schedulerFactoryBean.setJobFactory(jobFactory);
         return schedulerFactoryBean;
     }
 
-    // 指定quartz.properties
+    /**
+     * 指定quartz.properties
+     */
     @Bean
     public Properties quartzProperties() throws IOException {
         PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();
@@ -52,9 +47,11 @@ public class QuartzConfigration {
         return propertiesFactoryBean.getObject();
     }
 
-    // 创建schedule
+    /**
+     * 创建schedule
+     */
     @Bean(name = "scheduler")
-    public Scheduler scheduler() {
-        return schedulerFactoryBean().getScheduler();
+    public Scheduler scheduler(Properties quartzProperties) {
+        return schedulerFactoryBean(quartzProperties).getScheduler();
     }
 }

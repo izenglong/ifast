@@ -3,7 +3,10 @@ package com.ifast.wxmp.domain;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -19,13 +22,16 @@ import java.util.Date;
  */
  @TableName("wx_mp_config")
  @Data
+ @Builder
+ @NoArgsConstructor
+ @AllArgsConstructor
 public class MpConfigDO implements Serializable {
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
     
     /** 主键ID */
     @TableId
-    private Integer id;
+    private Long id;
     /** token */
     private String token;
     /** APPID */

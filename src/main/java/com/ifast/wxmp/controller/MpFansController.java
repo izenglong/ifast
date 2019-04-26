@@ -5,8 +5,11 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.ifast.common.base.AdminBaseController;
 import com.ifast.common.utils.Result;
+import com.ifast.wxmp.domain.MpConfigDO;
 import com.ifast.wxmp.domain.MpFansDO;
+import com.ifast.wxmp.service.MpConfigService;
 import com.ifast.wxmp.service.MpFansService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,28 +29,36 @@ import java.util.Arrays;
 public class MpFansController extends AdminBaseController {
     @Autowired
     private MpFansService mpFansService;
-    
+    @Autowired
+    private MpConfigService mpConfigService;
+
     @GetMapping()
     @RequiresPermissions("wxmp:mpFans:mpFans")
     String MpFans() {
         return "wxmp/mpFans/mpFans";
     }
-    
+
     @ResponseBody
     @GetMapping("/list")
     @RequiresPermissions("wxmp:mpFans:mpFans")
-    public Result<Page<MpFansDO>> list(MpFansDO mpFansDTO) {
-        Wrapper<MpFansDO> wrapper = new EntityWrapper<MpFansDO>(mpFansDTO);
+    public Result<Page<MpFansDO>> list(String searchValue, String appId) {
+        Wrapper<MpFansDO> wrapper = new EntityWrapper<>();
+        wrapper.eq("mpId", mpConfigService.selectOne(MpConfigDO.builder().appId(appId).build()).getId());
+        if (StringUtils.isNotBlank(searchValue)) {
+            wrapper.andNew().like("nickname", searchValue)
+                    .or().like("openid", searchValue)
+                    .or().like("subscribeKey", searchValue);
+        }
         Page<MpFansDO> page = mpFansService.selectPage(getPage(MpFansDO.class), wrapper);
         return Result.ok(page);
     }
-    
+
     @GetMapping("/add")
     @RequiresPermissions("wxmp:mpFans:add")
     String add() {
         return "wxmp/mpFans/add";
     }
-    
+
     @GetMapping("/edit/{id}")
     @RequiresPermissions("wxmp:mpFans:edit")
     String edit(@PathVariable("id") Long id, Model model) {
@@ -55,7 +66,7 @@ public class MpFansController extends AdminBaseController {
         model.addAttribute("mpFans", mpFans);
         return "wxmp/mpFans/edit";
     }
-    
+
     /**
      * 保存
      */
@@ -66,7 +77,7 @@ public class MpFansController extends AdminBaseController {
         mpFansService.insert(mpFans);
         return Result.ok();
     }
-    
+
     /**
      * 修改
      */
@@ -77,7 +88,7 @@ public class MpFansController extends AdminBaseController {
         mpFansService.updateById(mpFans);
         return Result.ok();
     }
-    
+
     /**
      * 删除
      */
@@ -88,7 +99,7 @@ public class MpFansController extends AdminBaseController {
         mpFansService.deleteById(id);
         return Result.ok();
     }
-    
+
     /**
      * 删除
      */
@@ -99,5 +110,28 @@ public class MpFansController extends AdminBaseController {
         mpFansService.deleteBatchIds(Arrays.asList(ids));
         return Result.ok();
     }
-    
+
+    /**
+     * 同步粉丝，强制更新用户数据
+     */
+    @PostMapping("/sync")
+    @ResponseBody
+    @RequiresPermissions("wxmp:mpFans:sync")
+    public Result<String> sync(@RequestParam("ids[]") Long[] ids) {
+        mpFansService.sync(Arrays.asList(ids));
+        return Result.ok();
+    }
+
+    /**
+     * 同步粉丝到服务器，存在即不更新
+     */
+    @PostMapping("/sync/wxmp")
+    @ResponseBody
+    @RequiresPermissions("wxmp:mpFans:sync")
+    public Result<String> syncWxMp(String appId) {
+        mpFansService.syncWxMp(appId);
+        return Result.ok();
+    }
+
+
 }

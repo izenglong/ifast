@@ -56,11 +56,13 @@ public class IftgSelectProcessor extends AbstractMarkupSubstitutionElementProces
         //初始化
         init(arguments);
 
-        //获取值
-        String dicType = element.getAttributeValue("dicType");//字典类型
-        String defaultValue = element.getAttributeValue("defaultValue");//默认选中
+        //字典类型
+        String dicType = element.getAttributeValue("dicType");
+        //默认选中
+        String defaultValue = element.getAttributeValue("defaultValue");
 
-        String thValue = IftgUtil.getTargetAttributeValue(arguments, element, "th:value");//回显值
+        //回显值
+        String thValue = IftgUtil.getTargetAttributeValue(arguments, element, "th:value");
         String defaultSelect = StringUtils.isNoneBlank(thValue) ? thValue : defaultValue;
         List<ValueVO> valueVos = IftgUtil.getValues(dictService, dicType, new String[]{defaultSelect});
 

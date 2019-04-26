@@ -29,11 +29,17 @@ public class MpConfigController extends AdminBaseController {
     private MpConfigService mpConfigService;
     
     @GetMapping()
+    @RequiresPermissions("wxmp:mpConfig:config")
+    String config() {
+        return "wxmp/mpConfig/config";
+    }
+
+    @GetMapping("/config")
     @RequiresPermissions("wxmp:mpConfig:mpConfig")
     String MpConfig() {
         return "wxmp/mpConfig/mpConfig";
     }
-    
+
     @ResponseBody
     @GetMapping("/list")
     @RequiresPermissions("wxmp:mpConfig:mpConfig")
@@ -49,10 +55,11 @@ public class MpConfigController extends AdminBaseController {
         return "wxmp/mpConfig/add";
     }
     
-    @GetMapping("/edit/{id}")
+    @GetMapping("/edit")
     @RequiresPermissions("wxmp:mpConfig:edit")
-    String edit(@PathVariable("id") Integer id, Model model) {
-        MpConfigDO mpConfig = mpConfigService.selectById(id);
+    String edit(String appId, Model model) {
+
+        MpConfigDO mpConfig = mpConfigService.selectOne(MpConfigDO.builder().appId(appId).build());
         model.addAttribute("mpConfig", mpConfig);
         return "wxmp/mpConfig/edit";
     }
