@@ -12,47 +12,69 @@ import java.io.Serializable;
 import java.util.Date;
 
 
-
 /**
- * 
  * <pre>
  * 微信配置表
  * </pre>
  * <small> 2018-04-11 23:27:06 | Aron</small>
  */
- @TableName("wx_mp_config")
- @Data
- @Builder
- @NoArgsConstructor
- @AllArgsConstructor
+@TableName("wx_mp_config")
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class MpConfigDO implements Serializable {
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
-    
-    /** 主键ID */
+
+    /**
+     * 主键ID
+     */
     @TableId
     private Long id;
-    /** token */
+    /**
+     * token
+     */
     private String token;
-    /** APPID */
+    /**
+     * APPID
+     */
     private String appId;
-    /** AppSecret */
+    /**
+     * AppSecret
+     */
     private String appSecret;
-    /** 1加密 0不加密 */
+    /**
+     * 1加密 0不加密
+     */
     private Integer msgMode;
-    /** 秘钥 */
+    /**
+     * 秘钥
+     */
     private String msgSecret;
-    /** 公众号名字 */
+    /**
+     * 公众号名字
+     */
     private String mpName;
-    /** 公众号类型： 1.订阅号 2.服务号 3.企业号 4.小程序 5. 测试号 */
+    /**
+     * 公众号类型： 1.订阅号 2.服务号 3.企业号 4.小程序 5. 测试号
+     */
     private Integer appType;
-    /** 认证授权：1已认证 0未认证 */
+    /**
+     * 认证授权：1已认证 0未认证
+     */
     private Integer isAuth;
-    /** 提示订阅URL */
+    /**
+     * 提示订阅URL
+     */
     private String subscribeUrl;
-    /** logo */
+    /**
+     * logo
+     */
     private String logo;
-    /** 创建时间 */
+    /**
+     * 创建时间
+     */
     private Date createTime;
 
 }

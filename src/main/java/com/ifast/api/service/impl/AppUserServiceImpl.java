@@ -9,11 +9,15 @@ import com.ifast.common.base.CoreServiceImpl;
 import com.ifast.common.config.CacheConfiguration;
 import com.ifast.common.exception.IFastException;
 import com.ifast.common.type.EnumErrorCode;
-import com.ifast.common.utils.MD5Utils;
 import com.ifast.common.utils.SpringContextHolder;
 import com.ifast.sys.dao.UserDao;
 import com.ifast.sys.domain.UserDO;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.apache.commons.lang.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.cache.Cache;
 import org.springframework.stereotype.Service;
 
@@ -24,21 +28,24 @@ import org.springframework.stereotype.Service;
  * <small> 2018年4月27日 | Aron</small>
  */
 @Service
+@AllArgsConstructor
+@Data
 public class AppUserServiceImpl extends CoreServiceImpl<UserDao, UserDO> implements AppUserService {
+
 	/** Holder for lazy-init */
-	private static class Holder {
-		static final JWTConfigProperties jwtConfig = SpringContextHolder.getBean(JWTConfigProperties.class);
-		static final Cache logoutTokens = CacheConfiguration.dynaConfigCache(jwtConfig.getExpireTokenKeyPrefix(), jwtConfig
+	public static class Holder {
+		public static final JWTConfigProperties jwtConfig = SpringContextHolder.getBean(JWTConfigProperties.class);
+		public static final Cache logoutTokens = CacheConfiguration.dynaConfigCache(jwtConfig.getExpireTokenKeyPrefix(), jwtConfig
                 .getRefreshTokenExpire());
 	}
 
 	@Override
-    public TokenVO getToken(String username, String passwd) {
-		UserDO user = findOneByKv("username", username);
-		if (null == user || !user.getPassword().equals(MD5Utils.encrypt(username, passwd))) {
-            throw new IFastApiException(EnumErrorCode.apiAuthorizationLoginFailed.getCodeStr());
-        }
-        return createToken(user);
+    public TokenVO getToken(UsernamePasswordToken token) {
+        Subject subject = SecurityUtils.getSubject();
+        subject.login(token);
+        UserDO user = findOneByKv("username", token.getUsername());
+        return JWTUtil.createToken(user);
+
     }
 
     @Override
@@ -56,24 +63,13 @@ public class AppUserServiceImpl extends CoreServiceImpl<UserDao, UserDO> impleme
             throw new IFastApiException(EnumErrorCode.apiAuthorizationInvalid.getCodeStr());
         }
 
-		return createToken(user);
+		return JWTUtil.createToken(user);
 	}
 
 	@Override
 	public void logoutToken(String token, String refreshToken) {
         Holder.logoutTokens.putIfAbsent(token, null);
         Holder.logoutTokens.putIfAbsent(refreshToken, null);
-	}
-
-	private TokenVO createToken(UserDO user) {
-        TokenVO vo = new TokenVO();
-        String token        = JWTUtil.sign(user.getId() + "", user.getUsername() + user.getPassword(), Holder.jwtConfig.getExpireTime());
-        String refreshToken = JWTUtil.sign(user.getId() + "", user.getUsername() + user.getPassword(), Holder.jwtConfig.getExpireTime(), true);
-        vo.setToken(token);
-        vo.setRefleshToken(refreshToken);
-        vo.setTokenExpire(Holder.jwtConfig.getExpireTime());
-        vo.setRefreshTokenExpire(Holder.jwtConfig.getRefreshTokenExpire());
-        return vo;
 	}
 
 	private void ensureAvailable(String token, boolean isRefreshToken) {

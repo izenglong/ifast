@@ -3,7 +3,7 @@ package com.ifast.wxmp.controller;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.ifast.common.base.AdminBaseController;
+import com.ifast.common.base.BaseController;
 import com.ifast.common.utils.Result;
 import com.ifast.wxmp.domain.MpConfigDO;
 import com.ifast.wxmp.service.MpConfigService;
@@ -24,7 +24,7 @@ import java.util.Date;
  */
 @Controller
 @RequestMapping("/wxmp/mpConfig")
-public class MpConfigController extends AdminBaseController {
+public class MpConfigController extends BaseController {
     @Autowired
     private MpConfigService mpConfigService;
     

@@ -1,10 +1,9 @@
 package com.ifast.sys.controller;
 
 import com.ifast.common.annotation.Log;
-import com.ifast.common.base.AdminBaseController;
+import com.ifast.common.base.BaseController;
 import com.ifast.common.domain.Tree;
 import com.ifast.common.type.EnumErrorCode;
-import com.ifast.common.utils.MD5Utils;
 import com.ifast.common.utils.Result;
 import com.ifast.oss.domain.FileDO;
 import com.ifast.oss.service.FileService;
@@ -12,11 +11,11 @@ import com.ifast.sys.domain.MenuDO;
 import com.ifast.sys.service.MenuService;
 import com.ifast.wxmp.domain.MpConfigDO;
 import com.ifast.wxmp.service.MpConfigService;
+import lombok.AllArgsConstructor;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,14 +30,12 @@ import java.util.List;
  * <small> 2018年3月23日 | Aron</small>
  */
 @Controller
-public class LoginController extends AdminBaseController {
+@AllArgsConstructor
+public class AdminController extends BaseController {
 
-    @Autowired
-    MenuService menuService;
-    @Autowired
-    FileService fileService;
-    @Autowired
-    MpConfigService mpConfigService;
+    private final MenuService menuService;
+    private final FileService fileService;
+    private final MpConfigService mpConfigService;
 
     @GetMapping({ "/", "" })
     String welcome(Model model) {
@@ -67,9 +64,8 @@ public class LoginController extends AdminBaseController {
     @PostMapping("/login")
     @ResponseBody
     Result<String> ajaxLogin(String username, String password) {
-        password = MD5Utils.encrypt(username, password);
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
-        token.setRememberMe(true);//记住我是可选项，但只有会话缓存到redis等持久存储才能真正记住
+//        token.setRememberMe(true);//记住我是可选项，但只有会话缓存到redis等持久存储才能真正记住
         Subject subject = SecurityUtils.getSubject();
         try {
             subject.login(token);
@@ -78,7 +74,7 @@ public class LoginController extends AdminBaseController {
             return Result.build(EnumErrorCode.userLoginFail.getCode(), EnumErrorCode.userLoginFail.getMsg());
         }
     }
-    
+
     @GetMapping("/main")
     String main() {
         return "main";

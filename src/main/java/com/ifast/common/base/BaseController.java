@@ -1,15 +1,17 @@
 package com.ifast.common.base;
 
+import com.baomidou.mybatisplus.plugins.Page;
+import com.ifast.common.utils.HttpContextUtils;
+import com.ifast.common.utils.Result;
+import com.ifast.common.utils.ShiroUtils;
+import com.ifast.sys.domain.UserDO;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import com.baomidou.mybatisplus.plugins.Page;
-import com.ifast.common.utils.HttpContextUtils;
-import com.ifast.common.utils.ShiroUtils;
-import com.ifast.sys.domain.UserDO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 
@@ -18,9 +20,10 @@ import com.ifast.sys.domain.UserDO;
  * 
  * <small> 2018年2月25日 | Aron</small>
  */
-public abstract class AdminBaseController {
+@Slf4j
+public abstract class BaseController {
 
-    protected Logger log = LoggerFactory.getLogger(this.getClass());
+    // 用户信息相关
 
     public UserDO getUser() {
         return ShiroUtils.getSysUser();
@@ -38,6 +41,8 @@ public abstract class AdminBaseController {
         return getUser().getUsername();
     }
 
+    // 参数请求、分页
+
     /**
      * <pre>
      * 自动获取分页参数，返回分页对象page
@@ -53,10 +58,11 @@ public abstract class AdminBaseController {
         int pageSize = getParaToInt("pageSize", 10);
         Page<E> page = new Page<>(pageNumber, pageSize);
         //支持sort、order参数
-        String sort = HttpContextUtils.getHttpServletRequest().getParameter("sort");
+        HttpServletRequest request = getRequest();
+        String sort = request.getParameter("sort");
         if(StringUtils.isNotBlank(sort)) {
         	page.setOrderByField(sort);
-        	String order = HttpContextUtils.getHttpServletRequest().getParameter("order");
+        	String order = request.getParameter("order");
         	if(StringUtils.isNotBlank(order)){
         	    page.setAsc("asc".equalsIgnoreCase(order));
             }
@@ -64,11 +70,37 @@ public abstract class AdminBaseController {
         return page;
     }
 
-    private int getParaToInt(String key, int defalut) {
+    private int getParaToInt(String key, int defaultValue) {
         String pageNumber = HttpContextUtils.getHttpServletRequest().getParameter(key);
         if (StringUtils.isBlank(pageNumber)) {
-            return defalut;
+            return defaultValue;
         }
         return Integer.parseInt(pageNumber);
     }
+
+    // Servlet
+
+    protected HttpServletRequest getRequest(){
+        return HttpContextUtils.getHttpServletRequest();
+    }
+
+    protected HttpServletResponse getResponse(){
+        return HttpContextUtils.getHttpServletResponse();
+    }
+
+    // 响应结果
+
+    protected Result<String> fail(){
+        return Result.fail();
+    }
+
+    protected Result<String> success(){
+        return success(null);
+    }
+
+    protected <T> Result<T> success(T t){
+        return Result.ok(t);
+    }
+
+
 }

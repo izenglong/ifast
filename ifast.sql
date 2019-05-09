@@ -290,8 +290,9 @@ DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `username` varchar(50) DEFAULT NULL COMMENT '用户名',
+  `salt` varchar(80) DEFAULT NULL COMMENT '盐',
   `name` varchar(100) DEFAULT NULL,
-  `password` varchar(50) DEFAULT NULL COMMENT '密码',
+  `password` varchar(80) DEFAULT NULL COMMENT '密码',
   `deptId` bigint(20) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL COMMENT '邮箱',
   `mobile` varchar(100) DEFAULT NULL COMMENT '手机号',
@@ -314,7 +315,9 @@ CREATE TABLE `sys_user` (
 --  Records of `sys_user`
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_user` VALUES ('1', 'admin', '超级管理员', '33808479d49ca8a3cdc93d4f976d1e3d', '6', 'izenglong@163.com', '15277778888', '1', '1', '2017-08-15 21:40:39', '2017-08-15 21:41:00', '96', '2018-04-02 00:00:00', '151', '创客基地', '', '广东省', '广州市', '番禺区'), ('2', 'test', '临时用户', 'b132f5f968c9373261f74025c23c2222', '6', 'test@ifast.com', '15278792752', '1', '1', '2017-08-14 13:43:05', '2017-08-14 21:15:36', '96', '2018-08-22 00:00:00', null, '', '', '北京市', '北京市市辖区', '东城区'), ('1034088697579159554', 'appUser', 'user', 'fc4d8bf7d69f03344a58f9381dd75dfe', '12', 'appUser@ifast.com', null, '1', null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `sys_user` VALUES ('1', 'admin','6fb30533944d4d0682ae24e45dc772f1', '超级管理员', '92898fba2d9bdafe0f44dcace5082deff13eba85ba633f4299141a661103aac4', '6', 'izenglong@163.com', '15277778888', '1', '1', '2017-08-15 21:40:39', '2017-08-15 21:41:00', '96', '2018-04-02 00:00:00', '151', '创客基地', '', '广东省', '广州市', '番禺区'),
+                              ('2', 'test','6fb30533944d4d0682ae24e45dc772f1', '临时用户', '92898fba2d9bdafe0f44dcace5082deff13eba85ba633f4299141a661103aac4', '6', 'test@ifast.com', '15278792752', '1', '1', '2017-08-14 13:43:05', '2017-08-14 21:15:36', '96', '2018-08-22 00:00:00', null, '', '', '北京市', '北京市市辖区', '东城区'),
+                              ('1034088697579159554', 'appUser','6fb30533944d4d0682ae24e45dc772f1' 'user', '92898fba2d9bdafe0f44dcace5082deff13eba85ba633f4299141a661103aac4', '12', 'appUser@ifast.com', null, '1', null, null, null, null, null, null, null, null, null, null, null);
 COMMIT;
 
 -- ----------------------------

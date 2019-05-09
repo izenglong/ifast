@@ -8,6 +8,10 @@ import org.apache.shiro.subject.Subject;
 
 public class ShiroUtils {
 
+	/**
+	 * 兼容jwt和常规开发时获取用户信息
+	 * @return
+	 */
 	public static UserDO getSysUser() {
 		try {
 			Subject subject = SecurityUtils.getSubject();

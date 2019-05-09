@@ -12,22 +12,22 @@ public enum EnumErrorCode {
     ok(200, "请求成功")
     , unknowFail(500, "未知错误")
     , illegalArgument(400, "参数校验异常")
+    , notAuthorization(401, "未授权")
     , pageNotFound(404, "页面不存在")
-    , notAuthorization(405, "未授权")
-    
-    
+
+
     , duplicateKeyExist(40000, "记录已存在")
-    
+
     , genReadConfigError(40100, "代码生成器获取配置文件失败")
     , genWriteConfigError(40101, "代码生成器修改配置文件失败")
     , genRenderTemplateError(40102, "代码生成器渲染模板失败")
 
     , FileUploadGetBytesError(40200, "文件上传错误")
     , FileUploadError(40201, "文件上传错误")
-    
+
     , deptUpdateErrorExistChilds(40300, "包含下级部门,不允许修改")
     , deptDeleteErrorExistUsers(40301, "包含用户,不允许删除")
-    
+
     , userLoginFail(40401, "用户或密码错误")
     , userUpdatePwd4adminNotAllowed(40402, "超级管理员的账号不允许直接重置！")
     , wxmpMenuSaveMainError(40500, "微信主菜单不能超过3个")
@@ -36,7 +36,7 @@ public enum EnumErrorCode {
     , wxmpMediaGroupSendSyncError(40610, "素材群发失败")
     , wxmpFansSyncError(40700, "粉丝同步失败")
 
-    
+
     // API
     , apiAuthorizationLoginFailed(44000, "用户名或密码错误")
     , apiAuthorizationSignFailed(44000, "token生成失败")
@@ -50,6 +50,9 @@ public enum EnumErrorCode {
     , apiSmsCodeInvalid(44110, "短信验证码错误")
 
     , apiWxMpAppIdError(44200, "appId不合法")
+
+    , apiCardUserNotFound(45000, "用户不存在")
+    , apiCardNotPermission(45001, "没有权限")
 
     ;
 
@@ -93,12 +96,12 @@ public enum EnumErrorCode {
     }
 
     /**
-     * 
+     *
      * <pre>
      * </pre>
-     * 
+     *
      * <small> Aron | 2017-09-05</small>
-     * 
+     *
      * @param args
      */
     public static void main(String[] args) {
@@ -107,5 +110,5 @@ public enum EnumErrorCode {
     }
 
 
-    
+
 }

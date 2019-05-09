@@ -1,30 +1,11 @@
 package com.ifast.sys.controller;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.catalina.servlet4preview.http.HttpServletRequest;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.baomidou.mybatisplus.plugins.Page;
 import com.ifast.common.annotation.Log;
-import com.ifast.common.base.AdminBaseController;
+import com.ifast.common.base.BaseController;
 import com.ifast.common.domain.DictDO;
 import com.ifast.common.domain.Tree;
 import com.ifast.common.service.DictService;
-import com.ifast.common.utils.MD5Utils;
 import com.ifast.common.utils.Result;
 import com.ifast.sys.domain.DeptDO;
 import com.ifast.sys.domain.RoleDO;
@@ -32,6 +13,18 @@ import com.ifast.sys.domain.UserDO;
 import com.ifast.sys.service.RoleService;
 import com.ifast.sys.service.UserService;
 import com.ifast.sys.vo.UserVO;
+import org.apache.catalina.servlet4preview.http.HttpServletRequest;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <pre>
@@ -41,7 +34,7 @@ import com.ifast.sys.vo.UserVO;
  */
 @RequestMapping("/sys/user")
 @Controller
-public class UserController extends AdminBaseController {
+public class UserController extends BaseController {
     private String prefix = "sys/user";
     @Autowired
     UserService userService;
@@ -88,7 +81,6 @@ public class UserController extends AdminBaseController {
     @PostMapping("/save")
     @ResponseBody
     Result<String> save(UserDO user) {
-        user.setPassword(MD5Utils.encrypt(user.getUsername(), user.getPassword()));
         userService.insert(user);
         return Result.ok();
     }

@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @EnableTransactionManagement
 @ServletComponentScan
-@MapperScan("com.ifast.*.dao")
+@MapperScan("com.ifast.**.dao")
 @SpringBootApplication
 public class Application {
 	

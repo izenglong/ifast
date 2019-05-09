@@ -1,7 +1,7 @@
 package com.ifast.sys.controller;
 
 import com.ifast.common.annotation.Log;
-import com.ifast.common.base.AdminBaseController;
+import com.ifast.common.base.BaseController;
 import com.ifast.common.config.Constant;
 import com.ifast.common.domain.Tree;
 import com.ifast.common.type.EnumErrorCode;
@@ -29,7 +29,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/sys/dept")
-public class DeptController extends AdminBaseController {
+public class DeptController extends BaseController {
     private String prefix = "sys/dept";
     @Autowired
     private DeptService sysDeptService;

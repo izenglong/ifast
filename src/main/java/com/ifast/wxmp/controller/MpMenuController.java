@@ -4,7 +4,7 @@ package com.ifast.wxmp.controller;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.ifast.common.annotation.Log;
-import com.ifast.common.base.AdminBaseController;
+import com.ifast.common.base.BaseController;
 import com.ifast.common.domain.Tree;
 import com.ifast.common.utils.Result;
 import com.ifast.wxmp.domain.MpConfigDO;
@@ -29,7 +29,7 @@ import java.util.Objects;
  */
 @Controller
 @RequestMapping("/wxmp/mpMenu")
-public class MpMenuController extends AdminBaseController {
+public class MpMenuController extends BaseController {
     @Autowired
     private MpMenuService mpMenuService;
     @Autowired

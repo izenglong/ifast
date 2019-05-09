@@ -26,16 +26,16 @@ import org.springframework.context.annotation.Configuration;
 public class OSSConfiguration {
 
     /**
-     * 阿里云OSS上传
+     * 本地上传(默认)，需配合Nginx解析静态资源
      */
     @Bean
-    @ConditionalOnProperty(prefix="ifast.oss.aliyun", name="accessKeySecret")
+    @ConditionalOnProperty(prefix="ifast.oss.local", name="localPath")
     @ConditionalOnMissingBean(UploadServer.class)
-    public UploadServer aliyunUploadServer(AliyunOSSProperties properties) {
-    	if(log.isDebugEnabled()){
-    		log.debug("启用阿里云上传服务");
-    	}
-    	return new AliyunUploadServer(properties);
+    public UploadServer localUploadServer(LocalUploadProperties properties) {
+        if(log.isDebugEnabled()){
+            log.debug("启用本地上传服务");
+        }
+        return new LocalUploadServer(properties);
     }
 
     /**
@@ -52,15 +52,16 @@ public class OSSConfiguration {
     }
 
     /**
-     * 本地上传(默认)，需配合Nginx解析静态资源
+     * 阿里云OSS上传
      */
     @Bean
-    @ConditionalOnProperty(prefix="ifast.oss.local", name="localPath")
+    @ConditionalOnProperty(prefix="ifast.oss.aliyun", name="accessKeySecret")
     @ConditionalOnMissingBean(UploadServer.class)
-    public UploadServer localUploadServer(LocalUploadProperties properties) {
+    public UploadServer aliyunUploadServer(AliyunOSSProperties properties) {
         if(log.isDebugEnabled()){
-            log.debug("启用本地上传服务");
+            log.debug("启用阿里云上传服务");
         }
-        return new LocalUploadServer(properties);
+        return new AliyunUploadServer(properties);
     }
+
 }

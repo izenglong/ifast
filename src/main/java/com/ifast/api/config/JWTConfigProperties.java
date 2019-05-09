@@ -24,7 +24,15 @@ public class JWTConfigProperties {
      */
     private Long expireTime = 7200000L;
     /**
-     *  refresh_token过期时间，默认7天，单位为毫秒
+     * <pre>
+     *   refresh_token过期时间，默认7天，单位为毫秒
+     *
+     *   常用时间：
+     *      1 day:86400000
+     *      7 day:604800000
+     *      14 day:1209600000
+     *      30 day:2592000000
+     *  </pre>
      */
     private Long refreshTokenExpire = 604800000L;
 

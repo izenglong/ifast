@@ -4,18 +4,17 @@ import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import com.ifast.api.shiro.JWTAuthenticationFilter;
 import com.ifast.api.shiro.JWTAuthorizingRealm;
 import com.ifast.common.shiro.cache.SpringCacheManagerWrapper;
-import com.ifast.common.shiro.realm.IFastModularRealm;
-import com.ifast.common.utils.SpringContextHolder;
 import com.ifast.common.shiro.session.RedisSessionDAO;
+import com.ifast.common.utils.SpringContextHolder;
 import com.ifast.sys.config.BDSessionListener;
+import com.ifast.sys.service.MenuService;
+import com.ifast.sys.service.RoleService;
+import com.ifast.sys.service.UserService;
 import com.ifast.sys.shiro.SysUserAuthorizingRealm;
-import org.apache.shiro.authc.Authenticator;
-import org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy;
-import org.apache.shiro.authz.Authorizer;
-import org.apache.shiro.authz.ModularRealmAuthorizer;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.CacheManager;
+import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.apache.shiro.mgt.SecurityManager;
-import org.apache.shiro.realm.Realm;
 import org.apache.shiro.session.SessionListener;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.session.mgt.eis.SessionDAO;
@@ -51,13 +50,7 @@ public class ShiroConfiguration {
     
     @Bean
     SessionDAO sessionDAO(ShiroProperties config) {
-//        EnterpriseCacheSessionDAO sessionDAO = new EnterpriseCacheSessionDAO();
-//        CacheManager cacheManager = enterpriseCacheSessionDAO.getCacheManager();
-//        return enterpriseCacheSessionDAO;
-
         RedisSessionDAO sessionDAO = new RedisSessionDAO(config.getSessionKeyPrefix());
-
-//        SessionDAO sessionDAO = new MemorySessionDAO();
         return sessionDAO;
     }
 
@@ -68,15 +61,9 @@ public class ShiroConfiguration {
 
     @Bean
     public RedisTemplate<Object, Object> redisTemplate( RedisConnectionFactory redisConnectionFactory) {
-        RedisTemplate<Object, Object> template = new RedisTemplate<Object, Object>();
+        RedisTemplate<Object, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(redisConnectionFactory);
         template.setKeySerializer(new StringRedisSerializer());
-//        Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer( Object.class );
-//        ObjectMapper om = new ObjectMapper ();
-//        jackson2JsonRedisSerializer.setObjectMapper ( om );
-//        template.setValueSerializer(jackson2JsonRedisSerializer);
-//        template.setHashKeySerializer(new StringRedisSerializer());
-//        template.afterPropertiesSet();
         return template;
     }
 
@@ -85,7 +72,7 @@ public class ShiroConfiguration {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         sessionManager.setSessionIdCookie(simpleCookie);
 
-        Collection<SessionListener> sessionListeners = new ArrayList<SessionListener>();
+        Collection<SessionListener> sessionListeners = new ArrayList<>();
         sessionListeners.add(new BDSessionListener());
         sessionManager.setSessionListeners(sessionListeners);
         sessionManager.setSessionDAO(sessionDAO);
@@ -100,45 +87,43 @@ public class ShiroConfiguration {
     	springCacheManager.setCacheManager(cacheManager);
         return springCacheManager;
     }
-    
+
     @Bean
-    Authenticator authenticator(SysUserAuthorizingRealm sysUserAuthorizingRealm, JWTAuthorizingRealm jwtAuthorizingRealm) {
-        IFastModularRealm authenticator = new IFastModularRealm();
-        authenticator.setAuthenticationStrategy(new AtLeastOneSuccessfulStrategy());
-        List<Realm> realms = new ArrayList<>();
-        realms.add(jwtAuthorizingRealm);
-        realms.add(sysUserAuthorizingRealm);
-        authenticator.setRealms(realms);
-        return authenticator;
+    JWTAuthorizingRealm jwtAuthorizingRealm(MenuService menuService, RoleService roleService){
+        JWTAuthorizingRealm realm = new JWTAuthorizingRealm(menuService, roleService);
+        realm.setCachingEnabled(true);
+        realm.setAuthorizationCachingEnabled(true);
+        return realm;
     }
-    
+
     @Bean
-    Authorizer authorizer(SysUserAuthorizingRealm sysUserAuthorizingRealm, JWTAuthorizingRealm jwtAuthorizingRealm) {
-        ModularRealmAuthorizer authorizer = new ModularRealmAuthorizer();
-        List<Realm> realms = new ArrayList<>();
-        realms.add(jwtAuthorizingRealm);
-        realms.add(sysUserAuthorizingRealm);
-        authorizer.setRealms(realms);
-        return authorizer;
+    SysUserAuthorizingRealm sysUserAuthorizingRealm(MenuService menuService, RoleService roleService, UserService userService){
+        SysUserAuthorizingRealm realm = new SysUserAuthorizingRealm(menuService, roleService, userService);
+        HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher();
+        credentialsMatcher.setHashAlgorithmName(Sha256Hash.ALGORITHM_NAME);
+        realm.setCredentialsMatcher(credentialsMatcher);
+        realm.setCachingEnabled(true);
+        realm.setAuthorizationCachingEnabled(true);
+        return realm;
     }
-    
+
+
     @Bean
-    SecurityManager securityManager(SessionManager sessionManager,Authorizer authorizer, Authenticator authenticator ) {
+    SecurityManager securityManager(SessionManager sessionManager , CacheManager cacheManager, JWTAuthorizingRealm realm1, SysUserAuthorizingRealm realm2) {
         DefaultWebSecurityManager manager = new DefaultWebSecurityManager();
-        manager.setAuthenticator(authenticator);
-        manager.setAuthorizer(authorizer);
-        manager.setCacheManager(cacheManager());
+        manager.setCacheManager(cacheManager);
+        manager.setRealms(Arrays.asList(realm1, realm2));
         manager.setSessionManager(sessionManager);
         return manager;
     }
 
     @Bean
-    ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
+    ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager, UserService userService) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         
         // 添加jwt过滤器
         Map<String, Filter> filterMap = new HashMap<>();
-        filterMap.put("jwt", new JWTAuthenticationFilter());
+        filterMap.put("jwt", new JWTAuthenticationFilter(userService, "/api/user/login"));
         shiroFilterFactoryBean.setFilters(filterMap);
         
         shiroFilterFactoryBean.setSecurityManager(securityManager);
@@ -149,6 +134,7 @@ public class ShiroConfiguration {
         // 微信对接
         filterChainDefinitionMap.put("/wx/mp/msg/**", "anon");
         // api
+        filterChainDefinitionMap.put("/api/user/refresh", "anon");
         filterChainDefinitionMap.put("/api/**", "jwt");
         // email
         filterChainDefinitionMap.put("/emil/**", "anon");
@@ -168,6 +154,7 @@ public class ShiroConfiguration {
         filterChainDefinitionMap.put("/upload/**", "anon");
         filterChainDefinitionMap.put("/files/**", "anon");
         filterChainDefinitionMap.put("/test/**", "anon");
+        filterChainDefinitionMap.put("/tt/**", "anon");
         filterChainDefinitionMap.put("/logout", "logout");
         filterChainDefinitionMap.put("/", "anon");
         filterChainDefinitionMap.put("/**", "authc");

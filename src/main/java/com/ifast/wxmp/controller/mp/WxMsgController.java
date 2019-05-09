@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ifast.common.base.AdminBaseController;
+import com.ifast.common.base.BaseController;
 import com.ifast.wxmp.service.WeixinService;
 import com.ifast.wxmp.util.WxMpConfigHolder;
 
@@ -29,7 +29,7 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
  */
 @RestController
 @RequestMapping("/wx/mp/msg")
-public class WxMsgController extends AdminBaseController {
+public class WxMsgController extends BaseController {
     
     @Autowired
     private WeixinService wxService;

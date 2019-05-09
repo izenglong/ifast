@@ -1,6 +1,6 @@
 package com.ifast.wxmp.controller.mp;
 
-import com.ifast.common.base.AdminBaseController;
+import com.ifast.common.base.BaseController;
 import com.ifast.common.config.IFastProperties;
 import com.ifast.common.exception.IFastException;
 import com.ifast.common.type.EnumErrorCode;
@@ -39,7 +39,7 @@ import java.net.URL;
 @RestController
 @RequestMapping("/wx/mp/api/media")
 @Slf4j
-public class WxMediaController extends AdminBaseController {
+public class WxMediaController extends BaseController {
 
     @Autowired
     private WeixinService wxService;

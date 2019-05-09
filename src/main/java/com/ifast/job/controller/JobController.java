@@ -4,10 +4,11 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.ifast.common.annotation.Log;
-import com.ifast.common.base.AdminBaseController;
+import com.ifast.common.base.BaseController;
 import com.ifast.common.utils.Result;
 import com.ifast.job.domain.TaskDO;
 import com.ifast.job.service.JobService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +25,8 @@ import java.util.Arrays;
  */
 @Controller
 @RequestMapping("/common/job")
-public class JobController extends AdminBaseController {
+@Slf4j
+public class JobController extends BaseController {
     @Autowired
     private JobService taskScheduleJobService;
 

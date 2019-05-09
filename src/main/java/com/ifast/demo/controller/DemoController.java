@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.ifast.common.annotation.Log;
-import com.ifast.common.base.AdminBaseController;
+import com.ifast.common.base.BaseController;
 import com.ifast.common.utils.Result;
 import com.ifast.demo.domain.DemoDO;
 import com.ifast.demo.service.DemoService;
@@ -26,7 +26,7 @@ import java.util.Arrays;
  */
 @Controller
 @RequestMapping("/demo/demoBase")
-public class DemoController extends AdminBaseController {
+public class DemoController extends BaseController {
 	@Autowired
 	private DemoService demoBaseService;
 	
@@ -113,5 +113,7 @@ public class DemoController extends AdminBaseController {
 		demoBaseService.deleteBatchIds(Arrays.asList(ids));
 		return Result.ok();
 	}
-	
+
+
+
 }

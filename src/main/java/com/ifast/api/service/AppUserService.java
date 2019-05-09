@@ -3,6 +3,7 @@ package com.ifast.api.service;
 import com.ifast.api.pojo.vo.TokenVO;
 import com.ifast.common.base.CoreService;
 import com.ifast.sys.domain.UserDO;
+import org.apache.shiro.authc.UsernamePasswordToken;
 
 /**
  * <pre>
@@ -11,7 +12,7 @@ import com.ifast.sys.domain.UserDO;
  */
 public interface AppUserService extends CoreService<UserDO> {
     /** 申请token */
-    TokenVO getToken(String uname, String passwd) ;
+    TokenVO getToken(UsernamePasswordToken token) ;
     /** 刷新token */
     TokenVO refreshToken(String uname, String refreshToken);
     /** 检查token是否有效：未超时、未注销*/

@@ -1,6 +1,9 @@
 package com.ifast.wxmp.util;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.ifast.common.utils.JSONUtils;
+import com.ifast.wxmp.domain.MpConfigDO;
+import com.ifast.wxmp.pojo.type.Const;
 import com.ifast.wxmp.service.MpConfigService;
 import me.chanjar.weixin.common.util.http.apache.DefaultApacheHttpClientBuilder;
 import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
@@ -13,10 +16,9 @@ import org.springframework.stereotype.Component;
 import java.util.Hashtable;
 
 /**
- * 
  * <pre>
  * </pre>
- * 
+ *
  * <small> 2018年6月13日 | Aron</small>
  */
 @Component
@@ -44,23 +46,25 @@ public class WxMpConfigHolder implements InitializingBean {
     }
 
     @Override
-    public void afterPropertiesSet(){
-        mpConfigService.selectList(null).stream().forEach(bean -> {
-            WxMpInMemoryConfigStorage config = new WxMpInMemoryConfigStorage();
-            // 设置微信公众号的appid
-            config.setAppId(bean.getAppId());
-            // 设置微信公众号的app corpSecret
-            config.setSecret(bean.getAppSecret());
-            // 设置微信公众号的token
-            config.setToken(bean.getToken());
-            // 设置消息加解密密钥
-            config.setAesKey(bean.getMsgSecret());
+    public void afterPropertiesSet() {
+        mpConfigService.selectList(
+                new EntityWrapper<>(MpConfigDO.builder().appType(Const.appType.SERIVCE).build()))
+                .forEach(bean -> {
+                    WxMpInMemoryConfigStorage config = new WxMpInMemoryConfigStorage();
+                    // 设置微信公众号的appid
+                    config.setAppId(bean.getAppId());
+                    // 设置微信公众号的app corpSecret
+                    config.setSecret(bean.getAppSecret());
+                    // 设置微信公众号的token
+                    config.setToken(bean.getToken());
+                    // 设置消息加解密密钥
+                    config.setAesKey(bean.getMsgSecret());
 
-            config.setApacheHttpClientBuilder(DefaultApacheHttpClientBuilder.get());
+                    config.setApacheHttpClientBuilder(DefaultApacheHttpClientBuilder.get());
 
-            log.debug("公众号配置初始化：{}", JSONUtils.beanToJson(config));
-            mpConfigs.put(bean.getAppId(), config);
+                    log.debug("公众号配置初始化：{}", JSONUtils.beanToJson(config));
+                    mpConfigs.put(bean.getAppId(), config);
 
-        });
+                });
     }
 }

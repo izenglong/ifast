@@ -4,7 +4,7 @@ import com.ifast.common.type.EnumErrorCode;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ifast.common.base.AdminBaseController;
+import com.ifast.common.base.BaseController;
 import com.ifast.common.utils.Result;
 
 /**
@@ -15,7 +15,7 @@ import com.ifast.common.utils.Result;
  */
 @RestController
 @RequestMapping("/shiro")
-public class ShiroController extends AdminBaseController {
+public class ShiroController extends BaseController {
 
     @RequestMapping("/405")
     public Result<String> http405() {

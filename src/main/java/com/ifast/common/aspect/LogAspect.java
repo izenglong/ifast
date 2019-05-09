@@ -1,25 +1,5 @@
 package com.ifast.common.aspect;
 
-import java.io.Serializable;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
-import org.aspectj.lang.reflect.MethodSignature;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
 import com.ifast.common.annotation.Log;
 import com.ifast.common.base.BaseDO;
 import com.ifast.common.dao.LogDao;
@@ -29,6 +9,24 @@ import com.ifast.common.utils.IPUtils;
 import com.ifast.common.utils.JSONUtils;
 import com.ifast.common.utils.ShiroUtils;
 import com.ifast.sys.domain.UserDO;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Map;
 
 /**
  * <pre>
@@ -38,10 +36,12 @@ import com.ifast.sys.domain.UserDO;
  */
 @Aspect
 @Component
+@Slf4j
+@Data
+@AllArgsConstructor
 public class LogAspect {
-    @Autowired
+
     private LogDao logMapper;
-    private Logger log = LoggerFactory.getLogger(getClass());
 
     @Pointcut("@annotation(com.ifast.common.annotation.Log)")
     public void logPointCut() {
@@ -100,18 +100,9 @@ public class LogAspect {
     @Around("logMapper()")
     public Object mapper(ProceedingJoinPoint point) throws Throwable {
     	String methodName = point.getSignature().getName();
-    	boolean insertBy = false, updateBy = false;
-    	switch(methodName) {
-    	case "insert":
-    	case "insertAllColumn":
-    		insertBy = true;
-    		break;
-    	case "update":
-    	case "updateById":
-    	case "updateAllColumnById":
-    		updateBy = true;
-    		break;
-    	}
+    	boolean insertBy = isInsert(methodName);
+        boolean updateBy = isUpdate(methodName);
+
     	if(insertBy || updateBy) {
     		Object arg0 = point.getArgs()[0];
     		if(arg0 instanceof BaseDO) {
@@ -134,6 +125,14 @@ public class LogAspect {
     	
     	log.info("result({}) {}", time, JSONUtils.beanToJson(result));
     	return result;
+    }
+
+    private boolean isUpdate(String methodName) {
+        return "update".equals(methodName) || "updateById".equals(methodName) || "updateAllColumn".equals(methodName);
+    }
+
+    private boolean isInsert(String methodName) {
+        return "insert".equals(methodName) || "insertAllColumn".equals(methodName);
     }
 
     /**

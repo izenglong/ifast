@@ -9,6 +9,7 @@ import com.ifast.common.utils.Result;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -29,17 +30,17 @@ public class AppUserController {
     private AppUserService userService;
 
     @PostMapping("login")
-    @Log("api测试-登录")
-    @ApiOperation("api测试-登录")
-    public Result<?> token(@RequestBody final UserLoginDTO loginDTO) {
-        TokenVO token = userService.getToken(loginDTO.getUname(), loginDTO.getPasswd());
+    @Log("登录-用户名、密码")
+    @ApiOperation("登录-用户名、密码")
+    public Result<TokenVO> login(@RequestBody final UserLoginDTO loginDTO) {
+        TokenVO token = userService.getToken(new UsernamePasswordToken(loginDTO.getUname(), loginDTO.getPasswd()));
         return Result.ok(token);
     }
-    
+
     @PostMapping("refresh")
     @Log("api测试-刷新token")
     @ApiOperation("api测试-刷新token")
-    public Result<?> refresh(@RequestParam String uname, @RequestBody final String refreshToken) {
+    public Result<TokenVO> refresh(@RequestParam String uname, @RequestBody final String refreshToken) {
     	TokenVO token = userService.refreshToken(uname, refreshToken);
     	return Result.ok(token);
     }

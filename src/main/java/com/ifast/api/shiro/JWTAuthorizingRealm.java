@@ -1,10 +1,10 @@
 package com.ifast.api.shiro;
 
 import com.ifast.api.util.JWTUtil;
-import com.ifast.common.exception.IFastException;
-import com.ifast.common.type.EnumErrorCode;
 import com.ifast.sys.service.MenuService;
 import com.ifast.sys.service.RoleService;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -14,11 +14,8 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.HashSet;
 
 
@@ -27,19 +24,16 @@ import java.util.HashSet;
  * </pre>
  * <small> 2018年4月22日 | Aron</small>
  */
-@Component
+@Slf4j
+@AllArgsConstructor
 public class JWTAuthorizingRealm extends AuthorizingRealm {
 
-    private  Logger log = LoggerFactory.getLogger(this.getClass());
-
-    @Autowired
-    private MenuService menuService;
-    @Autowired
-    private RoleService roleService;
+    private final MenuService menuService;
+    private final RoleService roleService;
 
     @Override
     public String getName() {
-        return "apiRealm";
+        return "jwtRealm";
     }
 
     @Override
@@ -53,16 +47,17 @@ public class JWTAuthorizingRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         SimpleAuthorizationInfo authz = new SimpleAuthorizationInfo();
-        if(!(principals.getPrimaryPrincipal() instanceof  String)){
+        Collection realm = principals.fromRealm(getName());
+        if(realm.isEmpty()){
             return authz;
         }
         String jwt = (String) principals.getPrimaryPrincipal();
         if(log.isDebugEnabled()){
-            log.debug("jwt:" + jwt);
+            log.debug(this.getName() + " get PrimaryPrincipal:" + jwt);
         }
         String userId = JWTUtil.getUserId(jwt);
         if(StringUtils.isBlank(userId)){
-            throw new IFastException(EnumErrorCode.apiAuthorizationFailed.getCodeStr());
+            return authz;
         }
         authz.setStringPermissions(menuService.listPerms(Long.parseLong(userId)));
 
@@ -76,11 +71,11 @@ public class JWTAuthorizingRealm extends AuthorizingRealm {
      * 身份认证
      */
     @Override
-    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authc) throws AuthenticationException {
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         if(log.isDebugEnabled()){
-            log.debug("authc:" + authc.getCredentials() + ", " + authc.getPrincipal());
+            log.debug("token:" + token.getCredentials() + ", " + token.getPrincipal());
         }
-        String token = (String) authc.getCredentials();
-        return new SimpleAuthenticationInfo(token, token, getName());
+        String credentials = (String) token.getCredentials();
+        return new SimpleAuthenticationInfo(credentials, credentials, getName());
     }
 }

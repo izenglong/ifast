@@ -3,7 +3,7 @@ package com.ifast.wxmp.controller;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.ifast.common.base.AdminBaseController;
+import com.ifast.common.base.BaseController;
 import com.ifast.common.utils.Result;
 import com.ifast.wxmp.domain.MpConfigDO;
 import com.ifast.wxmp.domain.MpFansDO;
@@ -26,7 +26,7 @@ import java.util.Arrays;
  */
 @Controller
 @RequestMapping("/wxmp/mpFans")
-public class MpFansController extends AdminBaseController {
+public class MpFansController extends BaseController {
     @Autowired
     private MpFansService mpFansService;
     @Autowired

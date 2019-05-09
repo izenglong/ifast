@@ -24,4 +24,28 @@ public class Const {
         public final static String LOCATION = "7";
     }
 
+    public static class appType {
+        /**
+         * 订阅号
+         */
+        public final static Integer SUBSCRIPTION = 1;
+        /**
+         * 服务号
+         */
+        public final static Integer SERIVCE = 2;
+        /**
+         * 企业号
+         */
+        public final static Integer ENTERPRISE = 3;
+        /**
+         * 小程序
+         */
+        public final static Integer MINI_APP = 4;
+        /**
+         * 测试号
+         */
+        public final static Integer TEST = 5;
+
+    }
+
 }

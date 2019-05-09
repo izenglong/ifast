@@ -1,14 +1,14 @@
 ifast:
   projectName: ifast
-  projectRootURL: http://127.0.0.1:8088/
+  projectRootURL: http://127.0.0.1:${server.port}/
   demoMode: false
   devMode: true
   tempDir: /Users/Aron/dev_projects/idea/ifast/temp/
   jwt:
     userPrimaryKey: userId
     expireTokenKeyPrefix: ifast:expireToken
-    expireTime: 7200000
-    refreshTokenExpire: 86400000
+    expireTime: 60000
+    refreshTokenExpire: 604800000
   swagger:
     title: ifast接口文档
     description: 开发人员太懒，没有写描述
@@ -16,10 +16,10 @@ ifast:
     contactEmail: izenglong@163.com
     contactUrl: http://ifast.site/doc.html
     basePackage: com.ifast
-    termsOfServiceUrl: ${ifast.projectRootURL}/docs.html
+    termsOfServiceUrl: ${ifast.projectRootURL}doc.html
   shiro:
     jsessionidKey: SESSION
-    sessionKeyPrefix: ifast:session
+    sessionKeyPrefix: ${ifast.projectName}:session
   oss:
     local: # 配置 localPath 启用本地上传（默认方式）
       localPath: upload
@@ -36,7 +36,7 @@ ifast:
       bucket: ifast
       accessURL: http://cdn.ifast.site/
   sms:
-    cacheKey: ifast:cache
+    cacheKey: ${ifast.projectName}:cache
     cacheKeyPrefix: sms
     codeExpireTime: 900000
     scenes: # 短信内容清单
@@ -52,13 +52,6 @@ ifast:
       scenes:
         # 配置格式为包含SignName和TemplateCode的json字符串：sys_config.sms_aliyun_validCode = {SignName, TemplateCode}
         validCode: sms_aliyun_validCode
-
-logging:
-  level:
-    com.ifast: debug
-    springfox.documentation: error
-#    org.springframework.web.servlet.mvc.method.annotation: error
-#    org.springframework.context.support: error
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource

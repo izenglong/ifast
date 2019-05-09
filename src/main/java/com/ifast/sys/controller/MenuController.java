@@ -1,7 +1,7 @@
 package com.ifast.sys.controller;
 
 import com.ifast.common.annotation.Log;
-import com.ifast.common.base.AdminBaseController;
+import com.ifast.common.base.BaseController;
 import com.ifast.common.domain.Tree;
 import com.ifast.common.utils.Result;
 import com.ifast.sys.domain.MenuDO;
@@ -22,7 +22,7 @@ import java.util.List;
  */
 @RequestMapping("/sys/menu")
 @Controller
-public class MenuController extends AdminBaseController {
+public class MenuController extends BaseController {
     String prefix = "sys/menu";
     @Autowired
     MenuService menuService;

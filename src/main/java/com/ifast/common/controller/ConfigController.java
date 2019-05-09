@@ -2,7 +2,7 @@ package com.ifast.common.controller;
 
 import com.baomidou.mybatisplus.plugins.Page;
 import com.ifast.common.annotation.Log;
-import com.ifast.common.base.AdminBaseController;
+import com.ifast.common.base.BaseController;
 import com.ifast.common.domain.ConfigDO;
 import com.ifast.common.service.ConfigService;
 import com.ifast.common.utils.Result;
@@ -24,7 +24,7 @@ import java.util.Arrays;
 
 @Controller
 @RequestMapping("/common/config")
-public class ConfigController extends AdminBaseController {
+public class ConfigController extends BaseController {
     @Autowired
     private ConfigService configService;
     

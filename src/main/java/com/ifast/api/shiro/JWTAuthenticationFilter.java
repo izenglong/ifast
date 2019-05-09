@@ -1,73 +1,132 @@
 package com.ifast.api.shiro;
 
-import com.ifast.api.service.AppUserService;
-import com.ifast.common.utils.SpringContextHolder;
+import com.ifast.api.service.impl.AppUserServiceImpl;
+import com.ifast.api.util.JWTUtil;
+import com.ifast.common.type.EnumErrorCode;
+import com.ifast.common.utils.JSONUtils;
+import com.ifast.common.utils.Result;
+import com.ifast.sys.domain.UserDO;
+import com.ifast.sys.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.subject.Subject;
+import org.apache.shiro.web.filter.authc.AuthenticatingFilter;
+import org.apache.shiro.web.util.WebUtils;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.Objects;
+
 
 /**
  * <pre>
  * </pre>
  * <small> 2018年4月22日 | Aron</small>
  */
-public class JWTAuthenticationFilter extends BasicHttpAuthenticationFilter {
+@Slf4j
+public class JWTAuthenticationFilter extends AuthenticatingFilter {
 
-    private Logger log = LoggerFactory.getLogger(this.getClass());
+    private final static String HEADER_AUTHORIZATION = "Authorization";
 
-    /**
-     * 判断是否为登录请求
-     */
-    @Override protected boolean isLoginAttempt(String authzHeader) {
-        return StringUtils.isNotBlank(authzHeader);
+    private final UserService userService;
+
+    public JWTAuthenticationFilter(UserService userService) {
+        this(userService, null);
     }
 
-    @Override protected boolean executeLogin(ServletRequest request, ServletResponse response) {
-        return false;//已经在isAccessAllowed登录过了，不执行父类的登录操作（token不同）
+
+    public JWTAuthenticationFilter(UserService userService, String loginUrl) {
+        this.userService = userService;
+        if (StringUtils.isBlank(loginUrl)) {
+            loginUrl = DEFAULT_LOGIN_URL;
+        }
+        this.setLoginUrl(loginUrl);
     }
 
-    /**
-     * 这里返回true，Controller中可以通过 subject.isAuthenticated() 来判断用户是否登入
-     * 如果有些资源只有登入用户才能访问，我们只需要在方法上面加上 注解 @RequiresAuthentication
-     * 缺点：不能够对GET,POST等请求进行分别过滤鉴权
-     */
-    @Override protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
-        if (isLoginAttempt(request, response)) {
-            HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-            String authorization = httpServletRequest.getHeader("Authorization");
-
-            SpringContextHolder.getBean(AppUserService.class).verifyToken(authorization, false);
-
-            JWTAuthenticationTokenToken token = new JWTAuthenticationTokenToken(authorization);
-            getSubject(request, response).login(token);
+    @Override
+    protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
+        if (isLoginRequest(request, response)) {
             return true;
+        }
+
+        boolean allowed = false;
+        try {
+            allowed = executeLogin(request, response);
+        } catch (IllegalStateException e) {
+            log.error("token无效", e);
+        } catch (Exception e) {
+            log.error("登录失败", e);
+        }
+        return allowed || super.isPermissive(mappedValue);
+
+    }
+
+    @Override
+    protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) {
+
+        String jwt = WebUtils.toHttp(request).getHeader(HEADER_AUTHORIZATION);
+        if (StringUtils.isNotBlank(jwt) && !JWTUtil.isTokenExpired(jwt)) {
+            return new JWTAuthenticationTokenToken(jwt);
+        }
+        return null;
+    }
+
+
+    @Override
+    protected boolean onAccessDenied(ServletRequest request, ServletResponse response) {
+        HttpServletResponse resp = WebUtils.toHttp(response);
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("application/json;charset=UTF-8");
+        Writer writer = null;
+        try {
+            writer= resp.getWriter();
+            writer.write(JSONUtils.beanToJson(Result.build(EnumErrorCode.apiAuthorizationInvalid.getCode(), EnumErrorCode.apiAuthorizationInvalid.getMsg())));
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            if(Objects.nonNull(writer)){
+                try {
+                    writer.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return false;
+    }
+
+
+    @Override
+    protected boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request, ServletResponse response) throws Exception {
+        HttpServletResponse httpResponse = WebUtils.toHttp(response);
+        String newToken = null;
+        if (token instanceof JWTAuthenticationTokenToken) {
+            JWTAuthenticationTokenToken jwt = (JWTAuthenticationTokenToken) token;
+            UserDO user = userService.selectById(Long.parseLong(JWTUtil.getUserId(jwt.getPrincipal())));
+            newToken = JWTUtil.sign(user.getId() + "", user.getUsername() + user.getPassword(), AppUserServiceImpl.Holder.jwtConfig.getExpireTime());
+        }
+        if (StringUtils.isNotBlank(newToken)) {
+            httpResponse.setHeader(HEADER_AUTHORIZATION, newToken);
         }
         return true;
     }
 
-    /**
-     * 跨域处理
-     */
-    @Override protected boolean preHandle(ServletRequest request, ServletResponse response) throws Exception {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-        httpServletResponse.setHeader("Access-control-Allow-Origin", httpServletRequest.getHeader("Origin"));
-        httpServletResponse.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS,PUT,DELETE");
-        httpServletResponse.setHeader("Access-Control-Allow-Headers",
-                httpServletRequest.getHeader("Access-Control-Request-Headers"));
-        if (httpServletRequest.getMethod().equals(RequestMethod.OPTIONS.name())) {
-            httpServletResponse.setStatus(HttpStatus.OK.value());
-            return false;
-        }
-        return super.preHandle(request, response);
+    @Override
+    protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e, ServletRequest request, ServletResponse response) {
+        log.error("Validate token fail, token:{}, error:{}", token.toString(), e.getMessage());
+        return false;
     }
 
+    protected void fillCorsHeader(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+        httpServletResponse.setHeader("Access-control-Allow-Origin", httpServletRequest.getHeader("Origin"));
+        httpServletResponse.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS,HEAD");
+        httpServletResponse.setHeader("Access-Control-Allow-Headers", httpServletRequest.getHeader("Access-Control-Request-Headers"));
+    }
 }

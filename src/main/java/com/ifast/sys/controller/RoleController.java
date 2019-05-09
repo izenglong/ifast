@@ -1,7 +1,7 @@
 package com.ifast.sys.controller;
 
 import com.ifast.common.annotation.Log;
-import com.ifast.common.base.AdminBaseController;
+import com.ifast.common.base.BaseController;
 import com.ifast.common.utils.Result;
 import com.ifast.sys.domain.RoleDO;
 import com.ifast.sys.service.RoleService;
@@ -22,7 +22,7 @@ import java.util.List;
  */
 @RequestMapping("/sys/role")
 @Controller
-public class RoleController extends AdminBaseController {
+public class RoleController extends BaseController {
     String prefix = "sys/role";
     @Autowired
     RoleService roleService;

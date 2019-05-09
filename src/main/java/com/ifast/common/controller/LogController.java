@@ -3,7 +3,7 @@ package com.ifast.common.controller;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.ifast.common.annotation.Log;
-import com.ifast.common.base.AdminBaseController;
+import com.ifast.common.base.BaseController;
 import com.ifast.common.domain.LogDO;
 import com.ifast.common.service.LogService;
 import com.ifast.common.utils.Result;
@@ -22,7 +22,7 @@ import java.util.Arrays;
  */
 @RequestMapping("/common/log")
 @Controller
-public class LogController extends AdminBaseController {
+public class LogController extends BaseController {
     @Autowired
     LogService logService;
     String prefix = "common/log";

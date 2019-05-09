@@ -2,7 +2,7 @@ package com.ifast.common.controller;
 
 import com.baomidou.mybatisplus.plugins.Page;
 import com.ifast.common.annotation.Log;
-import com.ifast.common.base.AdminBaseController;
+import com.ifast.common.base.BaseController;
 import com.ifast.common.domain.DictDO;
 import com.ifast.common.service.DictService;
 import com.ifast.common.utils.Result;
@@ -26,7 +26,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/common/sysDict")
-public class DictController extends AdminBaseController {
+public class DictController extends BaseController {
     @Autowired
     private DictService sysDictService;
     

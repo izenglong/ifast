@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.ifast.common.annotation.Log;
-import com.ifast.common.base.AdminBaseController;
+import com.ifast.common.base.BaseController;
 import com.ifast.common.utils.Result;
 import com.ifast.wxmp.domain.MpArticleDO;
 import com.ifast.wxmp.domain.MpConfigDO;
@@ -27,7 +27,7 @@ import java.util.Arrays;
  */
 @Controller
 @RequestMapping("/wxmp/mpArticle/news")
-public class MpArticleNewsController extends AdminBaseController {
+public class MpArticleNewsController extends BaseController {
     @Autowired
     private MpArticleService mpArticleService;
     @Autowired

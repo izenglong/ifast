@@ -1,7 +1,7 @@
 package com.ifast.wxmp.controller.mp;
 
 import com.ifast.api.exception.IFastApiException;
-import com.ifast.common.base.AdminBaseController;
+import com.ifast.common.base.BaseController;
 import com.ifast.common.utils.JSONUtils;
 import com.ifast.common.utils.Result;
 import com.ifast.wxmp.domain.MpMenuDO;
@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/wx/mp/menu/api")
 @Slf4j
-public class WxMenuController extends AdminBaseController {
+public class WxMenuController extends BaseController {
 
     @Autowired
     private WeixinService wxService;

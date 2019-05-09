@@ -4,10 +4,7 @@ import com.ifast.common.base.CoreServiceImpl;
 import com.ifast.common.domain.Tree;
 import com.ifast.common.exception.IFastException;
 import com.ifast.common.type.EnumErrorCode;
-import com.ifast.common.utils.BuildTree;
-import com.ifast.common.utils.FileType;
-import com.ifast.common.utils.ImageUtils;
-import com.ifast.common.utils.MD5Utils;
+import com.ifast.common.utils.*;
 import com.ifast.oss.domain.FileDO;
 import com.ifast.oss.service.FileService;
 import com.ifast.sys.dao.DeptDao;
@@ -50,7 +47,10 @@ public class UserServiceImpl extends CoreServiceImpl<UserDao, UserDO> implements
     public UserDO selectById(Serializable id) {
         List<Long> roleIds = userRoleMapper.listRoleId(id);
         UserDO user = baseMapper.selectById(id);
-        user.setDeptName(deptMapper.selectById(user.getDeptId()).getName());
+        DeptDO deptDO = deptMapper.selectById(user.getDeptId());
+        if(Objects.nonNull(deptDO)){
+            user.setDeptName(deptDO.getName());
+        }
         user.setroleIds(roleIds);
         return user;
     }
@@ -58,16 +58,24 @@ public class UserServiceImpl extends CoreServiceImpl<UserDao, UserDO> implements
     @Transactional
     @Override
     public boolean insert(UserDO user) {
+
+        String salt = UUIDUtils.get();
+        String encodePasswd = PasswdUtils.get(user.getPassword(), salt);
+        user.setSalt(salt);
+        user.setPassword(encodePasswd);
+
         int count = baseMapper.insert(user);
         Long userId = user.getId();
         List<Long> roles = user.getroleIds();
         userRoleMapper.removeByUserId(userId);
         List<UserRoleDO> list = new ArrayList<>();
-        for (Long roleId : roles) {
-            UserRoleDO ur = new UserRoleDO();
-            ur.setUserId(userId);
-            ur.setRoleId(roleId);
-            list.add(ur);
+        if(Objects.nonNull(roles)){
+            for (Long roleId : roles) {
+                UserRoleDO ur = new UserRoleDO();
+                ur.setUserId(userId);
+                ur.setRoleId(roleId);
+                list.add(ur);
+            }
         }
         if (list.size() > 0) {
             userRoleMapper.batchSave(list);
@@ -113,8 +121,11 @@ public class UserServiceImpl extends CoreServiceImpl<UserDao, UserDO> implements
     @Override
     public int resetPwd(UserVO userVO, UserDO userDO) {
         if (Objects.equals(userVO.getUserDO().getId(), userDO.getId())) {
-            if (Objects.equals(MD5Utils.encrypt(userDO.getUsername(), userVO.getPwdOld()), userDO.getPassword())) {
-                userDO.setPassword(MD5Utils.encrypt(userDO.getUsername(), userVO.getPwdNew()));
+            if (Objects.equals(PasswdUtils.get(userVO.getPwdOld(), userDO.getSalt()), userDO.getPassword())) {
+                String newSalt = UUIDUtils.get();
+                String newPasswd = PasswdUtils.get(userVO.getPwdNew(), newSalt);
+                userDO.setPassword(newPasswd);
+                userDO.setSalt(newSalt);
                 return baseMapper.updateById(userDO);
             } else {
                 throw new IFastException("输入的旧密码有误！");
@@ -189,7 +200,7 @@ public class UserServiceImpl extends CoreServiceImpl<UserDao, UserDO> implements
     @Override
     public Map<String, Object> updatePersonalImg(MultipartFile file, String avatar_data, Long userId) throws Exception {
         String fileName = file.getOriginalFilename();
-        fileName = UUID.randomUUID() + "." + fileName.substring(fileName.lastIndexOf(".") + 1);
+        fileName = UUIDUtils.get() + "." + fileName.substring(fileName.lastIndexOf(".") + 1);
         String url = "";
 
         // 获取图片后缀

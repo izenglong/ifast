@@ -10,14 +10,18 @@ import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.ifast.api.config.JWTConfigProperties;
 import com.ifast.api.exception.IFastApiException;
+import com.ifast.api.pojo.vo.TokenVO;
+import com.ifast.api.service.impl.AppUserServiceImpl;
 import com.ifast.common.type.EnumErrorCode;
 import com.ifast.common.utils.SpringContextHolder;
+import com.ifast.sys.domain.UserDO;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.ExpiredCredentialsException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -27,12 +31,34 @@ import java.util.Date;
  * 
  * <small> 2018年4月28日 | Aron</small>
  */
+@Slf4j
+@Component
 public class JWTUtil {
 
-    private final static Logger log = LoggerFactory.getLogger(JWTUtil.class);
-
 	public static String userPrimaryKey = SpringContextHolder.getBean(JWTConfigProperties.class).getUserPrimaryKey();
-	
+
+
+    public static TokenVO createToken(UserDO user) {
+        TokenVO vo = new TokenVO();
+        String token        = JWTUtil.sign(user.getId() + "", user.getUsername() + user.getPassword(), AppUserServiceImpl.Holder.jwtConfig.getExpireTime());
+        String refreshToken = JWTUtil.sign(user.getId() + "", user.getUsername() + user.getPassword(), AppUserServiceImpl.Holder.jwtConfig.getRefreshTokenExpire(), true);
+        vo.setToken(token);
+        vo.setRefleshToken(refreshToken);
+        vo.setTokenExpire(AppUserServiceImpl.Holder.jwtConfig.getExpireTime());
+        vo.setRefreshTokenExpire(AppUserServiceImpl.Holder.jwtConfig.getRefreshTokenExpire());
+        return vo;
+    }
+
+    /**
+     * token是否过期
+     * @return true：过期
+     */
+    public static boolean isTokenExpired(String token) {
+        Date now = Calendar.getInstance().getTime();
+        DecodedJWT jwt = JWT.decode(token);
+        return jwt.getExpiresAt().before(now);
+    }
+
     /**
      * <pre>
      * </pre>
@@ -93,7 +119,7 @@ public class JWTUtil {
     /**
      * <pre>
      * </pre>
-     * 
+     *
      * <small> 2018年4月28日 | Aron</small>
      * 
      * @param userId 用户标识
@@ -110,6 +136,7 @@ public class JWTUtil {
             throw new IFastApiException(EnumErrorCode.apiAuthorizationSignFailed.getCodeStr());
         }
     }
+
     /**
      * <pre>
      * </pre>

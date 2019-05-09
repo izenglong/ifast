@@ -19,12 +19,14 @@ public class UserDO implements Serializable {
 
     //
     private Long id;
-    // 用户名
-    private String username;
     // 用户真实姓名
     private String name;
+    // 用户名
+    private String username;
     // 密码
     private String password;
+    // salt
+    private String salt;
     // 部门
     private Long deptId;
     @TableField(exist = false)
@@ -35,7 +37,7 @@ public class UserDO implements Serializable {
     private String mobile;
     // 状态 0:禁用，1:正常
     private Integer status;
-    // 创建用户id
+    // 创建用户id5x5x
     private Long userIdCreate;
     // 创建时间
     private Date gmtCreate;
@@ -99,6 +101,14 @@ public class UserDO implements Serializable {
      */
     public String getPassword() {
         return password;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
     public Long getDeptId() {
