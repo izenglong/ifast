@@ -15,8 +15,8 @@ import com.ifast.sys.domain.UserDO;
 import com.ifast.sys.domain.UserRoleDO;
 import com.ifast.sys.service.UserService;
 import com.ifast.sys.vo.UserVO;
+import lombok.AllArgsConstructor;
 import org.apache.commons.lang.ArrayUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,13 +35,12 @@ import java.util.*;
  */
 @Transactional
 @Service("sysUserServiceImpl")
+@AllArgsConstructor
 public class UserServiceImpl extends CoreServiceImpl<UserDao, UserDO> implements UserService {
-    @Autowired
-    private UserRoleDao userRoleMapper;
-    @Autowired
-    private DeptDao deptMapper;
-    @Autowired
-    private FileService sysFileService;
+
+    private final UserRoleDao userRoleMapper;
+    private final DeptDao deptMapper;
+    private final FileService sysFileService;
 
     @Override
     public UserDO selectById(Serializable id) {
@@ -141,7 +140,12 @@ public class UserServiceImpl extends CoreServiceImpl<UserDao, UserDO> implements
         if ("admin".equals(userDO.getUsername())) {
             throw new IFastException(EnumErrorCode.userUpdatePwd4adminNotAllowed.getCodeStr());
         }
-        userDO.setPassword(MD5Utils.encrypt(userDO.getUsername(), userVO.getPwdNew()));
+
+        String salt = UUIDUtils.get();
+        String passwd = PasswdUtils.get(userVO.getPwdNew(), salt);
+        userDO.setSalt(salt);
+        userDO.setPassword(passwd);
+
         return baseMapper.updateById(userDO);
 
     }
