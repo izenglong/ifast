@@ -61,7 +61,7 @@ ifast以基础建设和实用性为切入点，内置了众多很多优秀的基
  * 日期控件： datepicker
  
 # 运行截图
-![运行截图](http://p6r7ke2jc.bkt.clouddn.com/ifast/20180415/login-1523788364377.png)
+![运行截图](https://images.gitee.com/uploads/images/2019/0513/095216_bb97e3b5_903932.png "屏幕截图.png")
 
 # 在线演示
 
