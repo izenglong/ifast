@@ -6,6 +6,7 @@ import com.ifast.common.component.sms.dto.SendDTO;
 import com.ifast.common.component.sms.dto.VerifyDTO;
 import com.ifast.common.component.sms.support.SmsManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/sms")
+@Profile("!prod")
 public class SmsController {
 
     @Autowired private SmsManager smsSerevice;

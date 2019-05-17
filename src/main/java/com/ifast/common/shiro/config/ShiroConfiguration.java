@@ -78,18 +78,18 @@ public class ShiroConfiguration {
         sessionManager.setSessionDAO(sessionDAO);
         return sessionManager;
     }
-    
-    @Bean(name="shiroCacheManager")
-    @DependsOn({"springContextHolder","cacheConfiguration"})
+
+    @Bean(name = "shiroCacheManager")
+    @DependsOn({"springContextHolder", "cacheConfiguration"})
     public CacheManager cacheManager() {
-    	SpringCacheManagerWrapper springCacheManager = new SpringCacheManagerWrapper();
-    	org.springframework.cache.CacheManager cacheManager = SpringContextHolder.getBean(org.springframework.cache.CacheManager.class);
-    	springCacheManager.setCacheManager(cacheManager);
+        SpringCacheManagerWrapper springCacheManager = new SpringCacheManagerWrapper();
+        org.springframework.cache.CacheManager cacheManager = SpringContextHolder.getBean(org.springframework.cache.CacheManager.class);
+        springCacheManager.setCacheManager(cacheManager);
         return springCacheManager;
     }
 
     @Bean
-    JWTAuthorizingRealm jwtAuthorizingRealm(MenuService menuService, RoleService roleService){
+    JWTAuthorizingRealm jwtAuthorizingRealm(MenuService menuService, RoleService roleService) {
         JWTAuthorizingRealm realm = new JWTAuthorizingRealm(menuService, roleService);
         realm.setCachingEnabled(true);
         realm.setAuthorizationCachingEnabled(true);

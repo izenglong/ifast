@@ -12,10 +12,10 @@ import java.util.Date;
 public class BaseDO implements Serializable {
 	/** 由mybatis-plus.global-config.sql-injector:com.baomidou.mybatisplus.mapper.LogicSqlInjector自动维护 */
 	@TableLogic
-	private boolean deleted;
+	private Boolean deleted;
 	/** 由MyBatisConfig.optimisticLockerInterceptor自动维护 */
 	@Version
-	private int version;
+	private Integer version;
 	/** 由MySQL自动维护 */
 	private Date createAt;
 	private Date updateAt;

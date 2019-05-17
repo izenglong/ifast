@@ -2,6 +2,7 @@ package com.ifast.demo.controller;
 
 import com.ifast.demo.dto.TestValidDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ import java.util.concurrent.TimeUnit;
  */
 @RestController
 @RequestMapping("/test")
+@Profile("!prod")
 public class TestController {
 
     @Autowired
