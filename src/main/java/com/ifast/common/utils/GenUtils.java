@@ -29,10 +29,12 @@ import java.util.zip.ZipOutputStream;
  */
 public class GenUtils {
 
+    public static String STR_DELIMITER = "_";
+
     private static Logger log = LoggerFactory.getLogger(GenUtils.class);
 
     public static List<String> getTemplates() {
-        List<String> templates = new ArrayList<String>();
+        List<String> templates = new ArrayList<>();
         templates.add("templates/common/generator/domain.java.vm");
         templates.add("templates/common/generator/Dao.java.vm");
         templates.add("templates/common/generator/Mapper.xml.vm");
@@ -72,7 +74,9 @@ public class GenUtils {
         List<String> baseColumnNames = Arrays.asList("deleted", "version", "createAt", "createBy", "updateAt", "updateBy");
         for (Map<String, String> column : columns) {
         	columnNames.add(column.get("columnName"));
-        	if(baseColumnNames.contains(column.get("columnName"))) continue;
+        	if(baseColumnNames.contains(column.get("columnName"))) {
+        	    continue;
+            }
         	
             ColumnDO columnDO = new ColumnDO();
             columnDO.setColumnName(column.get("columnName"));
@@ -164,15 +168,20 @@ public class GenUtils {
      * 列名转换成Java属性名
      */
     public static String columnToJava(String columnName) {
-        return WordUtils.capitalizeFully(columnName, new char[] { '_' }).replace("_", "");
+        if(columnName.contains(STR_DELIMITER)){
+            return WordUtils.capitalizeFully(columnName, new char[] { '_' }).replace(STR_DELIMITER, "");
+        }else {
+            return WordUtils.uncapitalize(columnName);
+        }
     }
 
     /**
      * 表名转换成Java类名
      */
     public static String tableToJava(String tableName, String tablePrefix, String autoRemovePre) {
+
         if (Constant.Generator.AUTO_REOMVE_PRE.equals(autoRemovePre)) {
-            tableName = tableName.substring(tableName.indexOf("_") + 1);
+            tableName = tableName.substring(tableName.indexOf(STR_DELIMITER) + 1);
         }
         if (StringUtils.isNotBlank(tablePrefix)) {
             tableName = tableName.replace(tablePrefix, "");
