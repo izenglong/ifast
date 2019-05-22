@@ -8,12 +8,30 @@ package com.ifast.common.type;
  */
 public enum EnumErrorCode {
 
-
-    ok(200, "请求成功")
+    /**
+     * 请求成功
+     */
+    success(0, "请求成功")
+    /**
+     * 请求失败
+     */
+    ,fail(1, "请求失败")
+    /**
+     * 服务端内部错误，代码发生报错 等未处理的未知错误情况
+     */
     , unknowFail(500, "未知错误")
+    /**
+     * 使用ApiAssert断言抛出
+     */
     , illegalArgument(400, "参数校验异常")
+    /**
+     * 没有操作权限时使用
+     */
     , notAuthorization(401, "未授权")
-    , pageNotFound(404, "页面不存在")
+    /**
+     * 404 资源不存在
+     */
+    , pageNotFound(404, "资源不存在")
 
 
     , duplicateKeyExist(40000, "记录已存在")

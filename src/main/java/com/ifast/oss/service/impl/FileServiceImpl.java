@@ -8,7 +8,7 @@ import com.ifast.common.utils.FileType;
 import com.ifast.oss.dao.FileDao;
 import com.ifast.oss.domain.FileDO;
 import com.ifast.oss.service.FileService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -20,17 +20,14 @@ import java.util.Date;
  * <small> 2018年3月23日 | Aron</small>
  */
 @Service
+@AllArgsConstructor
 public class FileServiceImpl extends CoreServiceImpl<FileDao, FileDO> implements FileService {
 
-    @Autowired
     private IFastProperties ifastConfig;
-    @Autowired
     private UploadServer uploader;
 
     @Override
     public String upload(byte[] uploadBytes, String fileName) {
-        //处理浏览器文件名获取兼容问题
-
         String url = uploader.upload(uploadBytes, FileNameUtils.getFileName(fileName, ifastConfig));
         FileDO sysFile = new FileDO(FileType.fileType(fileName), url, new Date());
         super.insert(sysFile);

@@ -74,9 +74,7 @@ public class GenUtils {
         List<String> baseColumnNames = Arrays.asList("deleted", "version", "createAt", "createBy", "updateAt", "updateBy");
         for (Map<String, String> column : columns) {
         	columnNames.add(column.get("columnName"));
-        	if(baseColumnNames.contains(column.get("columnName"))) {
-        	    continue;
-            }
+        	if(baseColumnNames.contains(column.get("columnName"))) continue;
         	
             ColumnDO columnDO = new ColumnDO();
             columnDO.setColumnName(column.get("columnName"));

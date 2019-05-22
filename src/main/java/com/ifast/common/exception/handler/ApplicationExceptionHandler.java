@@ -18,7 +18,6 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 
 /**
  * 异常处理器
- * 
  */
 @RestControllerAdvice
 @Slf4j
@@ -31,9 +30,7 @@ public class ApplicationExceptionHandler {
      */
     @ExceptionHandler(IllegalArgumentException.class)
     public Result<String> illegalArgumentException(IllegalArgumentException e) {
-        if(log.isDebugEnabled()){
-            log.debug("全局异常处理:IllegalArgumentException[{}]:{}",e.getClass(),e.getMessage());
-        }
+        log.error("全局异常处理:IllegalArgumentException[{}]:{}", e.getClass(), e.getMessage());
         return Result.build(EnumErrorCode.illegalArgument.getCode(), e.getMessage());
     }
 
@@ -42,9 +39,7 @@ public class ApplicationExceptionHandler {
      */
     @ExceptionHandler(IFastApiException.class)
     public Result<String> handleIFastAPIException(IFastApiException e) {
-        if(log.isDebugEnabled()){
-            log.debug("全局异常处理:IFastApiException[{}]:{}",e.getClass(),e.getMessage());
-        }
+        log.info("全局异常处理:IFastApiException[{}]:{}", e.getClass(), e.getMessage());
         return getStringResult(e.getMessage());
     }
 
@@ -53,14 +48,12 @@ public class ApplicationExceptionHandler {
      */
     @ExceptionHandler(IFastException.class)
     public Object handleIFastException(IFastException e) {
-        if(log.isDebugEnabled()){
-            log.debug("全局异常处理:IFastException[{}]:{}",e.getClass(),e.getMessage());
-        }
-        if(!HttpContextUtils.isAjax()){
+        log.error("全局异常处理:IFastException[{}]:{}", e.getClass(), e.getMessage());
+        if (!HttpContextUtils.isAjax()) {
             ModelAndView mv = new ModelAndView();
             mv.setViewName(ERROR_DEFAULT_PAGE);
             return mv;
-        }else{
+        } else {
             return getStringResult(e.getMessage());
         }
     }
@@ -78,30 +71,24 @@ public class ApplicationExceptionHandler {
 
     @ExceptionHandler(DuplicateKeyException.class)
     public Result<String> handleDuplicateKeyException(DuplicateKeyException e) {
-        if(log.isDebugEnabled()){
-            log.debug("全局异常处理:DuplicateKeyException[{}]:{}",e.getClass(),e.getMessage());
-        }
+        log.error("全局异常处理:DuplicateKeyException[{}]:{}", e.getClass(), e.getMessage());
         return Result.build(EnumErrorCode.duplicateKeyExist.getCode(), EnumErrorCode.duplicateKeyExist.getMsg());
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
     public Result<String> noHandlerFoundException(NoHandlerFoundException e) {
-        if(log.isDebugEnabled()){
-            log.debug("全局异常处理:NoHandlerFoundException[{}]:{}",e.getClass(),e.getMessage());
-        }
+        log.error("全局异常处理:NoHandlerFoundException[{}]:{}", e.getClass(), e.getMessage());
         return Result.build(EnumErrorCode.pageNotFound.getCode(), EnumErrorCode.pageNotFound.getMsg());
     }
 
     @ExceptionHandler(ShiroException.class)
     public Result<String> handleAuthorizationException(ShiroException e) {
-        if(log.isDebugEnabled()){
-            log.debug("全局异常处理:ShiroException[{}][{}]:{}",e.getClass(),e.getClass(), e.getMessage());
-        }
-        if(e instanceof IncorrectCredentialsException) {
-        	return Result.build(EnumErrorCode.apiAuthorizationFailed.getCode(), EnumErrorCode.apiAuthorizationFailed.getMsg());
-        }else if(e instanceof ExpiredCredentialsException) {
-        	return Result.build(EnumErrorCode.apiAuthorizationExpired.getCode(), EnumErrorCode.apiAuthorizationExpired.getMsg());
-        } else if(e instanceof AuthenticationException){
+        log.error("全局异常处理:ShiroException[{}][{}]:{}", e.getClass(), e.getClass(), e.getMessage());
+        if (e instanceof IncorrectCredentialsException) {
+            return Result.build(EnumErrorCode.apiAuthorizationFailed.getCode(), EnumErrorCode.apiAuthorizationFailed.getMsg());
+        } else if (e instanceof ExpiredCredentialsException) {
+            return Result.build(EnumErrorCode.apiAuthorizationExpired.getCode(), EnumErrorCode.apiAuthorizationExpired.getMsg());
+        } else if (e instanceof AuthenticationException) {
             return Result.build(EnumErrorCode.userLoginFail.getCode(), EnumErrorCode.userLoginFail.getMsg());
 
         }
@@ -110,14 +97,12 @@ public class ApplicationExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public Object handleException(Exception e) {
-        if(log.isDebugEnabled()){
-            log.debug("全局异常处理:Exception[{}]:{}",e.getClass(),e.getMessage());
-        }
-        if(!HttpContextUtils.isAjax()){
+        log.error("全局异常处理:Exception[{}]:{}", e.getClass(), e.getMessage());
+        if (!HttpContextUtils.isAjax()) {
             ModelAndView mv = new ModelAndView();
             mv.setViewName(ERROR_DEFAULT_PAGE);
             return mv;
-        }else{
+        } else {
             return Result.build(EnumErrorCode.unknowFail.getCode(), EnumErrorCode.unknowFail.getMsg());
         }
 
