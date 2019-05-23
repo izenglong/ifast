@@ -4,6 +4,7 @@ import com.ifast.common.config.Constant;
 import com.ifast.common.domain.ConfigDO;
 import com.ifast.common.exception.IFastException;
 import com.ifast.common.service.ConfigService;
+import com.ifast.common.type.EnumCommon;
 import com.ifast.common.type.EnumErrorCode;
 import com.ifast.generator.domain.ColumnDO;
 import com.ifast.generator.domain.TableDO;
@@ -74,7 +75,9 @@ public class GenUtils {
         List<String> baseColumnNames = Arrays.asList("deleted", "version", "createAt", "createBy", "updateAt", "updateBy");
         for (Map<String, String> column : columns) {
         	columnNames.add(column.get("columnName"));
-        	if(baseColumnNames.contains(column.get("columnName"))) continue;
+        	if(baseColumnNames.contains(column.get("columnName"))) {
+        	    continue;
+            }
         	
             ColumnDO columnDO = new ColumnDO();
             columnDO.setColumnName(column.get("columnName"));
@@ -129,7 +132,7 @@ public class GenUtils {
         map.put("hasBigDecimal", dataTypes.contains("decimal"));
         //时间类型的包含3种，date、datetime、timestamp
         if (dataTypes.contains("date") || dataTypes.contains("datetime") || dataTypes.contains("timestamp")) {
-            map.put("hasDatetime", 1);
+            map.put("hasDatetime", EnumCommon.YesOrNo.YES.getValue());
         }
         map.put("hasDeleted", columnNames.contains("deleted"));
         map.put("hasVersion", columnNames.contains("version"));
@@ -149,8 +152,8 @@ public class GenUtils {
 
             try {
                 // 添加到zip
-                zip.putNextEntry(new ZipEntry(getFileName(template, tableDO.getClassname(), tableDO.getClassName(),
-                        pack.substring(pack.lastIndexOf(".") + 1))));
+                String fileName = getFileName(template, tableDO.getClassname(), tableDO.getClassName(), pack);
+                zip.putNextEntry(new ZipEntry(fileName));
                 IOUtils.write(sw.toString(), zip, "UTF-8");
                 IOUtils.closeQuietly(sw);
                 zip.closeEntry();
@@ -177,14 +180,10 @@ public class GenUtils {
      * 表名转换成Java类名
      */
     public static String tableToJava(String tableName, String tablePrefix, String autoRemovePre) {
-
-        if (Constant.Generator.AUTO_REOMVE_PRE.equals(autoRemovePre)) {
-            tableName = tableName.substring(tableName.indexOf(STR_DELIMITER) + 1);
+        boolean removeTablePrefix = Constant.Generator.AUTO_REOMVE_PRE.equals(autoRemovePre);
+        if (removeTablePrefix && StringUtils.isNotBlank(tablePrefix) && tableName.startsWith(tablePrefix)) {
+            tableName = tableName.substring(tablePrefix.length());
         }
-        if (StringUtils.isNotBlank(tablePrefix)) {
-            tableName = tableName.replace(tablePrefix, "");
-        }
-
         return columnToJava(tableName);
     }
 
